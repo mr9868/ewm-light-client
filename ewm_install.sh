@@ -1,4 +1,5 @@
 clear;
+rm -rf ewm-light-client
 rm -rf ewm-das;
 echo "========================================"
 echo "=    EWM light-client auto installer   ="
