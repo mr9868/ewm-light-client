@@ -6,7 +6,7 @@ echo -e "=          Created by : Mr9868         ="
 echo -e "=   Github : https://github.io/Mr9868  ="
 echo -e "========================================\n"
 read -p "Input your Private Keys : " pkey
-if [$pkey = ""]; then
+if [[ "$pkey" = "" ]]; then
     echo "Please put your Private key !"
 else
 apt update -y && apt upgrade -y && apt install screen -y
