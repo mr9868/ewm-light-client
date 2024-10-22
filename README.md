@@ -1,5 +1,5 @@
 ## Why you must install from the source ?
-It's so efficient, and easy if facing error from the ipfs daemon, you can just restart it without restarting the main node
+It's so efficient, and easy if you facing any error from the ipfs daemon. Because the process is running separately, you can just restart it without restarting the main node
 ## EWM light-client setup auto installer
 ```
 git clone https://github.com/mr9868/ewm-light-client
