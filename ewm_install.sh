@@ -27,7 +27,7 @@ source ~/.bashrc
 go install honnef.co/go/tools/cmd/staticcheck@latest && make deps && make  && sudo bash install-trusted-setup.sh
 bash -c "wget -O ipfs-latest.tar.gz https://dist.ipfs.tech/kubo/v0."$ipfsv".0/kubo_v0."$ipfsv".0_linux-amd64.tar.gz && tar -xvzf ipfs-latest.tar.gz && sudo bash kubo/install.sh"
 screen -S ipfs -dm bash -c "ipfs daemon --init"   
-screen -S covalent -dm bash -c "./bin/light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key $pkey"
+screen -S covalent -dm bash -c "./bin/light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$pkey""
 rm -rf go-latest.tar.gz
 rm -rf ipfs-latest.tar.gz
 clear;
