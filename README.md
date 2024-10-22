@@ -7,7 +7,23 @@ cd ewm-light-client
 chmod 777 ewm_install.sh
 ./ewm_install.sh
 ```
-
+To check the main node logs :
+```
+screen -r covalent
+```
+To check the ipfs daemon logs :
+```
+screen -r ipfs
+```
+if you facing any error on the ipfs daemon you can just :
+```
+screen -r ipfs
+```
+then ctrl + c to stop,
+then restart again :
+```
+ipfs daemon --init
+```
 
 ## EWM light-client setup manual intalling from source
 
