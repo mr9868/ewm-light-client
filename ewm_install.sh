@@ -31,8 +31,6 @@ echo -e "========================================\n"
 echo "SETUP INSTALLED SUCCESSFULLY !"
 echo "To view ipfs log execute 'screen -r ipfs'"
 echo "To view node log execute 'screen -r covalent'"
-echo "Go version :";
-go version
-echo "ipfs version :";
-ipfs version
+echo "GO version : $(bash -c 'go version')";
+echo "IPFS version : $(bash -c 'ipfs version')";
 fi
