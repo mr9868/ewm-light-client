@@ -10,7 +10,7 @@ read -p "Input your Private Keys : " pkey
 read -p "Choose ipfs version (30/31) :" ipfsv
 if [[ "$pkey" = "" ]]; then
     echo "Please put your Private key !"
-    if [[ "$ipfsv" = "" ]]; then
+    elif [[ "$ipfsv" = "" ]]; then
     echo "Please put your ipfs version !"
 else
 sudo apt update -y && sudo apt upgrade -y && sudo apt install screen -y
