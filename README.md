@@ -1,6 +1,7 @@
 ## EWM light-client setup auto installer
 ```
 git clone https://github.com/mr9868/ewm-light-client
+cd ewm-light-client 
 chmod 777 ewm_install.sh
 ./ewm_install.sh
 ```
