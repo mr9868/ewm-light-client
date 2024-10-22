@@ -5,7 +5,7 @@ echo "=    EWM light-client auto installer   ="
 echo "=          Created by : Mr9868         ="
 echo "=   Github : https://github.io/Mr9868  ="
 echo "========================================\n"
-read -p "Put your Private Keys" pkey
+read -p "Input your Private Keys : " pkey
 if [$pkey = ""]; then
     echo "Please put your Private key !"
 else
