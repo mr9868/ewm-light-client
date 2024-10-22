@@ -1,5 +1,5 @@
 clear;
-rm -rf ewm-light-client;
+rm -rf ewm-das;
 sudo rm -rf /usr/local/bin/ipfs;
 echo -e "========================================"
 echo -e  "=    EWM light-client auto installer   ="
