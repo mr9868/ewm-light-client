@@ -1,6 +1,7 @@
 clear;
 rm -rf ewm-das;
 rm -rf kubo;
+rm -rf /usr/local/bin/ipfs;
 echo -e "========================================"
 echo -e  "=    EWM light-client auto installer   ="
 echo -e "=          Created by : Mr9868         ="
