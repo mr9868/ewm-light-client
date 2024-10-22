@@ -1,8 +1,8 @@
 ## EWM light-client setup auto installer
 ```
 git clone https://github.com/mr9868/covalenthq
-chmod 777 install.sh
-./install.sh
+chmod 777 ewm_install.sh
+./ewm_install.sh
 ```
 
 
