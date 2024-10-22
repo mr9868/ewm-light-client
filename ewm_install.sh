@@ -7,7 +7,7 @@ echo -e "=          Created by : Mr9868         ="
 echo -e "=   Github : https://github.io/Mr9868  ="
 echo -e "========================================\n"
 read -p "Input your Private Keys : " pkey
-read -p "Choose ipfs version : 30/31" ipfsv
+read -p "Choose ipfs version (30/31) :" ipfsv
 if [[ "$pkey" = "" ]]; then
     echo "Please put your Private key !"
     if [[ "$ipfsv" = "" ]]; then
