@@ -1,3 +1,13 @@
+## EWM light-client setup auto installer
+```
+git clone https://github.com/mr9868/covalenthq
+chmod 777 install.sh
+./install.sh
+```
+
+
+## EWM light-client setup manual intalling from source
+
 Clone the repository :
 ```
 git clone https://github.com/covalenthq/ewm-das
