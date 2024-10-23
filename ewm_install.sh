@@ -22,14 +22,14 @@ if [ -z "$pkey" ]; then
   exit 1
 fi
 
-# Check if PRIVATE_KEY is a valid 64-character hexadecimal number
+# Entrypoint validation for PRIVATE_KEY 
 if ! [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]; then
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
   echo "Please input PRIVATE_KEY without '0x' !"
   exit 1
 fi
 }
-
+# Entrypoint validation for IPFS
 function entryPointIPFS(){
 until [[ $ipfsv =~ ^[+]?[0-9]{2}+$ ]]
 do
