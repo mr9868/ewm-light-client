@@ -17,15 +17,8 @@ echo -e "========================================\n"
 
 # Entrypoint Private Key input function
 function entryPointPK(){
-while [ -z "$pkey" ]
-do
-  myHeader;
-  echo "Error: PRIVATE_KEY environment variable is not set."
-  echo
-  read -p "Input your hexadecimal Private Keys ( without 0x ) : " pkey
-done
 
-# Entrypoint validation for PRIVATE_KEY 
+# Check if PK meet requirement 
 until [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]
 do
   myHeader;
