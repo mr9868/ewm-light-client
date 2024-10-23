@@ -8,11 +8,11 @@ sudo rm -rf /usr/local/bin/ipfs;
 # My Header function
 function myHeader(){
 clear;
-echo -e "========================================"
-echo -e  "=    EWM light-client auto installer   ="
-echo -e "=          Created by : Mr9868         ="
-echo -e "=   Github : https://github.io/Mr9868  ="
-echo -e "========================================\n"
+echo -e "===================================================="
+echo -e "=          EWM light-client auto installer         ="
+echo -e "=                Created by : Mr9868               ="
+echo -e "=         Github : https://github.io/Mr9868        ="
+echo -e "====================================================\n"
 }
 
 # Entrypoint Private Key input function
@@ -72,9 +72,8 @@ read -p "Input your hexadecimal Private Keys ( without 0x ) : " pkey
 entryPointPK;
 read -p "Choose ipfs version (29/30/31) : " ipfsv
 entryPointIPFS;
-myHeader;
 echo
-echo "===================================== INSTALLATION START ====================================="
+echo "==================== INSTALLATION START ===================="
 
 # Import private key to bashrc
 echo 'pkey="'$pkey'"' >> ~/.bashrc
