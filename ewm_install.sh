@@ -1,5 +1,6 @@
 clear;
 rm -rf ewm-das;
+pkill -f "ipfs"
 sudo rm -rf /usr/local/bin/ipfs;
 function myHeader(){
 echo -e "========================================"
