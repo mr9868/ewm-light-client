@@ -21,16 +21,15 @@ while [ -z "$pkey" ]
 do
   echo "Error: PRIVATE_KEY environment variable is not set."
   echo
-  read -p "Input your hexadecimal Private Keys : " pkey
+  read -p "Input your hexadecimal Private Keys ( without 0x ) : " pkey
 done
 
 # Entrypoint validation for PRIVATE_KEY 
 until [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]
 do
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
-  echo "Please input PRIVATE_KEY without '0x' !"
   echo
-  read -p "Input your hexadecimal Private Keys : " pkey
+  read -p "Input your hexadecimal Private Keys ( without 0x ) : " pkey
 done
 }
 
@@ -80,7 +79,7 @@ source ~/.bashrc
 }
 
 myHeader;
-read -p "Input your hexadecimal Private Keys : " pkey
+read -p "Input your hexadecimal Private Keys ( without 0x ) : " pkey
 entryPointPK;
 read -p "Choose ipfs version (29/30/31) :" ipfsv
 entryPointIPFS;
