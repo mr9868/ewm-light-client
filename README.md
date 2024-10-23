@@ -1,3 +1,4 @@
+### Covalent light-client installer 
 ## Why you must install from the source ?
 It's so efficient, and easy if you facing any error from the ipfs daemon, because the process is running separately, you can just restart it without restarting the main node. And you can run multiple client in ONE server 🤫
 ## EWM light-client setup auto installer
@@ -29,7 +30,7 @@ ipfs daemon --init
 then close again the screen by pressing ctrl + a +d
 
 ## EWM light-client setup manual intalling from source 
-Warning : Don't do this if you already following step above (auto installation)
+Warning : don't do this if you already following step above ( Auto Installation )
 
 Clone the repository :
 ```
