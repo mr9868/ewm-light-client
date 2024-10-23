@@ -17,24 +17,38 @@ echo -e "========================================\n"
 
 # Entrypoint Private Key input function
 function entryPointPK(){
-if [ -z "$pkey" ]; then
+while [ -z "$pkey" ]
+do
   echo "Error: PRIVATE_KEY environment variable is not set."
-  exit 1
-fi
+  echo
+  read -p "Input your hexadecimal Private Keys : " pkey
+done
 
 # Entrypoint validation for PRIVATE_KEY 
-if ! [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]; then
+until [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]
+do
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
   echo "Please input PRIVATE_KEY without '0x' !"
-  exit 1
-fi
+  echo
+  read -p "Input your hexadecimal Private Keys : " pkey
+done
 }
+
 # Entrypoint validation for IPFS
 function entryPointIPFS(){
 ipfslts="31"
 until [[ $ipfsv =~ ^[+]?[0-9]{2}+$ ]]
 do
     echo "Oops! User input was not 2 characters and/or not a positive integer!"; 
+    echo
+    read -p "Choose ipfs version (29/30/31) :" ipfsv
+done
+
+# Check if user set null for ipfs version
+while [[ "$ipfsv" = "" ]]
+do
+    echo "Error: IPFS version is not set.";
+    echo
     read -p "Choose ipfs version (29/30/31) :" ipfsv
 done
 
@@ -45,12 +59,6 @@ if (($ipfsv<29)); then
     ipfsv=$ipfslts;
 fi
 
-# Check if user set null for ipfs version
-if [[ "$ipfsv" = "" ]]; then
-    echo "Error: IPFS version is not set.";
-    echo "Select to latest version ...";sleep 5;
-    ipfsv=$ipfslts;
-fi
 # Check if user set greater than latest version for ipfs version
 if (($ipfsv>$ipfslts)); then
     echo "Error: You are set the IPFS version greater than the latest version.";
