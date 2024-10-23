@@ -66,5 +66,5 @@ Close the screen by pressing ctrl+a+d
 
 Then execute this command :
 ```
-screen -dmS covalent bash -c "sudo ./bin/light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key YOUR_PRIVATEKEY"
+screen -dmS covalent bash -c "sudo ./bin/light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key YOUR_PRIVATEKEY;exec bash"
 ```
