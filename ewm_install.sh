@@ -6,7 +6,7 @@ pkill -f "ipfs";
 pkill -f "covalent";
 sudo rm -rf /usr/local/bin/ipfs;
 
-# My Header dunction
+# My Header function
 function myHeader(){
 echo -e "========================================"
 echo -e  "=    EWM light-client auto installer   ="
@@ -14,6 +14,19 @@ echo -e "=          Created by : Mr9868         ="
 echo -e "=   Github : https://github.io/Mr9868  ="
 echo -e "========================================\n"
 }
+
+# Go install function
+function installGo(){
+wget -O go-latest.tar.gz https://go.dev/dl/go1.23.2.linux-amd64.tar.gz && 
+sudo tar -C /usr/local -xzf go-latest.tar.gz && 
+echo "" >> ~/.bashrc
+echo 'export GOPATH=$HOME/go' >> ~/.bashrc
+echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
+echo 'export GOBIN=$GOPATH/bin' >> ~/.bashrc
+echo 'export PATH=$PATH:/usr/local/go/bin:$GOBIN' >> ~/.bashrc
+source ~/.bashrc
+}
+
 myHeader;
 read -p "Input your Private Keys : " pkey
 read -p "Choose ipfs version (30/31) :" ipfsv
@@ -33,18 +46,6 @@ sudo apt install screen -y &&
 git clone https://github.com/covalenthq/ewm-das && 
 cd ewm-das && 
 sudo bash install-trusted-setup.sh;
-
-# Go install function
-function installGo(){
-wget -O go-latest.tar.gz https://go.dev/dl/go1.23.2.linux-amd64.tar.gz && 
-sudo tar -C /usr/local -xzf go-latest.tar.gz && 
-echo "" >> ~/.bashrc
-echo 'export GOPATH=$HOME/go' >> ~/.bashrc
-echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
-echo 'export GOBIN=$GOPATH/bin' >> ~/.bashrc
-echo 'export PATH=$PATH:/usr/local/go/bin:$GOBIN' >> ~/.bashrc
-source ~/.bashrc
-}
 
 # Check if go is installed on machine or not
 command -v go >/dev/null 2>&1 || { echo >&2 "Go is not found on this machine, Installing go ... "; sleep 5;installGo;}
