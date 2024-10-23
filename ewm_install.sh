@@ -40,16 +40,6 @@ do
     read -p "Choose ipfs version (29/30/31) : " ipfsv
 done
 
-# Check if user set null for ipfs version
-while [[ "$ipfsv" = "" ]]
-do
-    myHeader;
-    echo "Input your hexadecimal Private Keys ( without 0x ) : "$pkey""
-    echo
-    echo "Error: IPFS version is not set.";
-    read -p "Choose ipfs version (29/30/31) : " ipfsv
-done
-
 # Check if ipfs version is smaller than requirement
 if (($ipfsv<29)); then
     echo "Error: IPFS version doesn't meet requirement.";
@@ -85,6 +75,7 @@ entryPointIPFS;
 myHeader;
 echo
 echo "===================================== INSTALLATION START ====================================="
+
 # Import private key to bashrc
 echo 'pkey="'$pkey'"' >> ~/.bashrc
 
