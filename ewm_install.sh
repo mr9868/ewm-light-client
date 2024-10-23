@@ -15,9 +15,8 @@ echo -e "=   Github : https://github.io/Mr9868  ="
 echo -e "========================================\n"
 }
 
-# Entrypoint function
-function entryPoint(){
-ipfs init;
+# Entrypoint Private Key input function
+function entryPointPK(){
 if [ -z "$pkey" ]; then
   echo "Error: PRIVATE_KEY environment variable is not set."
   exit 1
@@ -28,6 +27,14 @@ if ! [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]; then
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
   exit 1
 fi
+}
+
+function entryPointIPFS(){
+until [[ $ipfsv =~ ^[+]?[0-9]{2}+$ ]]
+do
+    echo "Oops! User input was not 2 characters and/or not a positive integer!"; 
+    exit 1
+done
 
 # Check if ipfs version is smaller than requirement
 if (($ipfsv<30)); then
@@ -65,8 +72,9 @@ source ~/.bashrc
 
 myHeader;
 read -p "Input your Private Keys : " pkey
-read -p "Choose ipfs version ( Skip to choose latest ) :" ipfsv
-entryPoint;
+entryPointPK;
+read -p "Choose ipfs version (29/30/31) :" ipfsv
+entryPointIPFS;
 # Import private key to bashrc
 echo 'pkey="'$pkey'"' >> ~/.bashrc
 
