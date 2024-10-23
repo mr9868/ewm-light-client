@@ -37,7 +37,7 @@ do
     echo "Input your hexadecimal Private Keys ( without 0x ) : "$pkey""
     echo
     echo "Error: Please input 2 digit number of version eg. 31";
-    read -p "Choose ipfs version (29/30/31) :" ipfsv
+    read -p "Choose ipfs version (29/30/31) : " ipfsv
 done
 
 # Check if user set null for ipfs version
@@ -47,7 +47,7 @@ do
     echo "Input your hexadecimal Private Keys ( without 0x ) : "$pkey""
     echo
     echo "Error: IPFS version is not set.";
-    read -p "Choose ipfs version (29/30/31) :" ipfsv
+    read -p "Choose ipfs version (29/30/31) : " ipfsv
 done
 
 # Check if ipfs version is smaller than requirement
@@ -80,7 +80,7 @@ source ~/.bashrc
 myHeader;
 read -p "Input your hexadecimal Private Keys ( without 0x ) : " pkey
 entryPointPK;
-read -p "Choose ipfs version (29/30/31) :" ipfsv
+read -p "Choose ipfs version (29/30/31) : " ipfsv
 entryPointIPFS;
 # Import private key to bashrc
 echo 'pkey="'$pkey'"' >> ~/.bashrc
