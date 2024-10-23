@@ -1,6 +1,5 @@
 # WELCOME, don't forget to leave a star to my project :) mr9868
 # Make sure there is nothing complicated
-clear;
 rm -rf ewm-das;
 pkill -f "ipfs";
 pkill -f "covalent";
@@ -8,6 +7,7 @@ sudo rm -rf /usr/local/bin/ipfs;
 
 # My Header function
 function myHeader(){
+clear;
 echo -e "========================================"
 echo -e  "=    EWM light-client auto installer   ="
 echo -e "=          Created by : Mr9868         ="
@@ -79,7 +79,6 @@ rm -rf go-latest.tar.gz &&
 rm -rf ipfs-latest.tar.gz
 
 # Welldone ! 
-clear;
 myHeader;
 echo "SETUP INSTALLED SUCCESSFULLY !"
 echo "To view ipfs log execute 'screen -r ipfs'"
