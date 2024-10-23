@@ -17,8 +17,7 @@ if [[ "$pkey" = "" ]]; then
     echo "Please put your ipfs version !"
 else
 sudo apt update -y && sudo apt upgrade -y && sudo apt install screen -y && git clone https://github.com/covalenthq/ewm-das
-cd ewm-das
-sudo cp bin/light-client /usr/local/bin/light-client;
+cd ewm-das && sudo cp  bin/light-client /usr/local/bin/light-client && sudo bash install-trusted-setup.sh;
 function installGo(){
 wget -O go-latest.tar.gz https://go.dev/dl/go1.23.2.linux-amd64.tar.gz && sudo tar -C /usr/local -xzf go-latest.tar.gz && echo "" >> ~/.bashrc
 echo 'export GOPATH=$HOME/go' >> ~/.bashrc
