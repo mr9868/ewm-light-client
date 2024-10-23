@@ -71,8 +71,8 @@ entryPoint;
 echo 'pkey="'$pkey'"' >> ~/.bashrc
 
 # Installing required package
-sudo apt update -y && 
-sudo apt upgrade -y && 
+# sudo apt update -y && 
+# sudo apt upgrade -y && 
 sudo apt install screen -y && 
 git clone https://github.com/covalenthq/ewm-das && 
 cd ewm-das && 
