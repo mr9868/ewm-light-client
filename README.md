@@ -16,7 +16,7 @@ screen -r ipfs
 ```
 if you want to run multiple node, just start a screen and execute this :
 ```
-sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key YOUR_PRIVATEKEY
+sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key $pkey
 ```
 
 if you facing any error on the ipfs daemon you can just :
