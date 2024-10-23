@@ -26,6 +26,7 @@ then restart again :
 ```
 ipfs daemon --init
 ```
+then close again the screen by pressing ctrl + a +d
 
 ## EWM light-client setup manual intalling from source
 
