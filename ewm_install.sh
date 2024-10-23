@@ -64,6 +64,7 @@ read -p "Choose ipfs version (29/30/31) : " ipfsv
 entryPointIPFS;
 echo
 echo "==================== INSTALLATION START ===================="
+echo
 
 # Go install function
 function installGo(){
@@ -136,7 +137,9 @@ echo "To view ipfs log execute 'screen -r ipfs'"
 echo "To view node log execute 'screen -r covalent'"
 echo
 echo "================== INSTALLED DEPENDENCIES =================="
+echo
 go version
 ipfs version
 echo
 echo "=================== INSTALLATION SUCCESS ==================="
+echo
