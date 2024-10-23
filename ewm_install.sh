@@ -120,8 +120,9 @@ rm -rf ipfs-latest.tar.gz
 
 # Welldone ! 
 myHeader;
-echo "SETUP INSTALLED SUCCESSFULLY !"
 echo "To view ipfs log execute 'screen -r ipfs'"
 echo "To view node log execute 'screen -r covalent'"
 go version
 ipfs version
+echo
+echo "================== INSTALLATION SUCCESS =================="
