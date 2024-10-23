@@ -19,6 +19,7 @@ echo -e "========================================\n"
 function entryPointPK(){
 while [ -z "$pkey" ]
 do
+  myHeader;
   echo "Error: PRIVATE_KEY environment variable is not set."
   echo
   read -p "Input your hexadecimal Private Keys ( without 0x ) : " pkey
@@ -27,6 +28,7 @@ done
 # Entrypoint validation for PRIVATE_KEY 
 until [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]
 do
+  myHeader;
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
   echo
   read -p "Input your hexadecimal Private Keys ( without 0x ) : " pkey
@@ -38,7 +40,9 @@ function entryPointIPFS(){
 ipfslts="31"
 until [[ $ipfsv =~ ^[+]?[0-9]{2}+$ ]]
 do
-    echo "Oops! User input was not 2 characters and/or not a positive integer!"; 
+    myHeader;
+    echo "Input your hexadecimal Private Keys ( without 0x ) : "$pkey""
+    echo "Error: Please input 2 digit number of version eg. 31"; 
     echo
     read -p "Choose ipfs version (29/30/31) :" ipfsv
 done
@@ -46,6 +50,8 @@ done
 # Check if user set null for ipfs version
 while [[ "$ipfsv" = "" ]]
 do
+    myHeader;
+    echo "Input your hexadecimal Private Keys ( without 0x ) : "$pkey""
     echo "Error: IPFS version is not set.";
     echo
     read -p "Choose ipfs version (29/30/31) :" ipfsv
