@@ -8,11 +8,11 @@ sudo rm -rf /usr/local/bin/ipfs;
 # My Header function
 function myHeader(){
 clear;
-echo -e "===================================================="
-echo -e "=          EWM light-client auto installer         ="
-echo -e "=                Created by : Mr9868               ="
-echo -e "=         Github : https://github.io/Mr9868        ="
-echo -e "====================================================\n"
+echo -e "============================================================"
+echo -e "=              EWM light-client auto installer             ="
+echo -e "=                    Created by : Mr9868                   ="
+echo -e "=             Github : https://github.io/Mr9868            ="
+echo -e "============================================================\n"
 }
 
 # Entrypoint Private Key input function
@@ -125,4 +125,4 @@ echo "To view node log execute 'screen -r covalent'"
 go version
 ipfs version
 echo
-echo "================== INSTALLATION SUCCESS =================="
+echo "=================== INSTALLATION SUCCESS ==================="
