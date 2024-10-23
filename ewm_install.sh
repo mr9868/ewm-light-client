@@ -31,7 +31,7 @@ command -v go >/dev/null 2>&1 || { echo >&2 "Go is not found on this machine, In
 v=`go version | { read _ _ v _; echo ${v#go}; }`
 IFS="." tokens=( ${v} );
 version=${tokens[1]};
-if (($version<23)); then echo "Your go version '"$version"' is outdated, Updating your go ...";sleep 5; installGo;
+if (($version>=23)); then echo "Your go version '"$version"' is outdated, Updating your go ...";sleep 5; installGo;
 else echo "Your go version '"$version"' is updated, Next step ...";sleep 5;
 fi
 unset IFS;
