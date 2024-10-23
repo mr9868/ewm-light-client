@@ -28,7 +28,7 @@ ipfs daemon --init
 ```
 then close again the screen by pressing ctrl + a +d
 
-## EWM light-client setup manual intalling from source
+## EWM light-client setup manual intalling from source ( Don't do this if you already following step above )
 
 Clone the repository :
 ```
@@ -60,11 +60,11 @@ wget https://dist.ipfs.tech/kubo/v0.30.0/kubo_v0.30.0_linux-amd64.tar.gz && tar 
 ```
 make a screen and starting ipfs daemon :
 ```
-apt install screen -y && screen -S ipfs && ipfs daemon --init
+apt install screen -y && screen -dmS ipfs bash -c "ipfs daemon --init;exec bash"
 ```
 Close the screen by pressing ctrl+a+d
 
 Then execute this command :
 ```
-screen -S covalent && ./bin/light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key YOUR_PRIVATEKEY
+screen -dmS covalent bash -c "sudo ./bin/light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key YOUR_PRIVATEKEY"
 ```
