@@ -1,9 +1,9 @@
 # WELCOME, don't forget to leave a star to my project :) mr9868
 
 # Make sure there is nothing complicated
-rm -rf ewm-das;
-pkill -f "ipfs";
-pkill -f "covalent";
+sudo rm -rf ewm-das;
+sudo pkill -f "ipfs";
+sudo pkill -f "covalent";
 goLts="1.23.2"
 ipfslts="31"
 sudo rm -rf /usr/local/bin/ipfs;
