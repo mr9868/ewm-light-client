@@ -1,4 +1,5 @@
 # WELCOME, don't forget to leave a star to my project :) mr9868
+
 # Make sure there is nothing complicated
 sudo rm -rf ewm-das;
 sudo pkill -f "ipfs";
