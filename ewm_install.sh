@@ -23,6 +23,9 @@ if [[ "$pkey" = "" ]]; then
     echo "Please put your ipfs version !"
 else
 
+# Import private key to bashrc
+echo 'pkey="'$pkey'"' >> ~/.bashrc
+
 # Installing required package
 sudo apt update -y && 
 sudo apt upgrade -y && 
