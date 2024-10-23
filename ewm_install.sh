@@ -134,6 +134,8 @@ rm -rf ipfs-latest.tar.gz
 myHeader;
 echo "To view ipfs log execute 'screen -r ipfs'"
 echo "To view node log execute 'screen -r covalent'"
+echo
+echo "================== INSTALLED DEPENDENCIES =================="
 go version
 ipfs version
 echo
