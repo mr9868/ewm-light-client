@@ -8,7 +8,7 @@ echo -e "=          Created by : Mr9868         ="
 echo -e "=   Github : https://github.io/Mr9868  ="
 echo -e "========================================\n"
 }
-myHeader();
+myHeader;
 read -p "Input your Private Keys : " pkey
 read -p "Choose ipfs version (30/31) :" ipfsv
 if [[ "$pkey" = "" ]]; then
@@ -26,12 +26,12 @@ echo 'export GOBIN=$GOPATH/bin' >> ~/.bashrc
 echo 'export PATH=$PATH:/usr/local/go/bin:$GOBIN' >> ~/.bashrc
 source ~/.bashrc
 }
-command -v go >/dev/null 2>&1 || { echo >&2 "Go is not found on this machine, Installing go ... "; sleep 5;installGo();}
+command -v go >/dev/null 2>&1 || { echo >&2 "Go is not found on this machine, Installing go ... "; sleep 5;installGo;}
 
 v=`go version | { read _ _ v _; echo ${v#go}; }`
 IFS="." tokens=( ${v} );
 version=${tokens[1]};
-if (($version<23)); then echo "Your go version '"$version"' is outdated, Updating your go ...";sleep 5; installGo();
+if (($version<23)); then echo "Your go version '"$version"' is outdated, Updating your go ...";sleep 5; installGo;
 else echo "Your go version '"$version"' is updated, Next step ...";sleep 5;
 fi
 unset IFS;
@@ -40,7 +40,7 @@ go install honnef.co/go/tools/cmd/staticcheck@latest && make deps && make  && su
 rm -rf go-latest.tar.gz
 rm -rf ipfs-latest.tar.gz
 clear;
-myHeader();
+myHeader;
 echo "SETUP INSTALLED SUCCESSFULLY !"
 echo "To view ipfs log execute 'screen -r ipfs'"
 echo "To view node log execute 'screen -r covalent'"
