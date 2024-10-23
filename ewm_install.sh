@@ -15,6 +15,42 @@ echo -e "=   Github : https://github.io/Mr9868  ="
 echo -e "========================================\n"
 }
 
+# Entrypoint function
+function entryPoint(){
+ipfs init;
+if [ -z "$pkey" ]; then
+  echo "Error: PRIVATE_KEY environment variable is not set."
+  exit 1
+fi
+
+# Check if PRIVATE_KEY is a valid 64-character hexadecimal number
+if ! [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]; then
+  echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
+  exit 1
+fi
+
+# Check if ipfs version is smaller than requirement
+if (($ipfsv<30)); then
+    echo "Error: IPFS version is not set.";
+    echo "Select to latest version ...";sleep 5;
+    ipfsv="30"
+fi
+
+# Check if user set null for ipfs version
+ipfslts="31"
+if [[ "$ipfsv" = "" ]]; then
+    echo "Error: IPFS version is not set.";
+    echo "Select to latest version ...";sleep 5;
+    ipfsv="30"
+fi
+# Check if user set greater than latest version for ipfs version
+if (($ipfsv>$ipfslts)); then
+    echo "Error: You are set the IPFS version greater than the latest version.";
+    echo "Select to latest version ..."; sleep 5; ipfsv=$ipfslts;
+fi
+
+}
+
 # Go install function
 function installGo(){
 wget -O go-latest.tar.gz https://go.dev/dl/go1.23.2.linux-amd64.tar.gz && 
@@ -29,13 +65,8 @@ source ~/.bashrc
 
 myHeader;
 read -p "Input your Private Keys : " pkey
-read -p "Choose ipfs version (30/31) :" ipfsv
-if [[ "$pkey" = "" ]]; then
-    echo "Please put your Private key !"
-    elif [[ "$ipfsv" = "" ]]; then
-    echo "Please put your ipfs version !"
-else
-
+read -p "Choose ipfs version ( Skip to choose latest ) :" ipfsv
+entryPoint;
 # Import private key to bashrc
 echo 'pkey="'$pkey'"' >> ~/.bashrc
 
@@ -54,8 +85,10 @@ command -v go >/dev/null 2>&1 || { echo >&2 "Go is not found on this machine, In
 v=`go version | { read _ _ v _; echo ${v#go}; }`
 IFS="." tokens=( ${v} );
 version=${tokens[1]};
-if (($version<23)); then echo "Your go version '"$version"' is outdated, Updating your go ...";sleep 5; installGo;
-else echo "Your go version '"$version"' is up to date, Next step ...";sleep 5;
+if (($version<23)); then 
+echo "Your go version '"$version"' is outdated, Updating your go ...";sleep 5; installGo;
+else 
+echo "Your go version '"$version"' is up to date, Next step ...";sleep 5;
 fi
 unset IFS;
 
@@ -85,4 +118,3 @@ echo "To view ipfs log execute 'screen -r ipfs'"
 echo "To view node log execute 'screen -r covalent'"
 go version
 ipfs version
-fi
