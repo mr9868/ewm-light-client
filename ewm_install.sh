@@ -35,8 +35,8 @@ until [[ $ipfsv =~ ^[+]?[0-9]{2}+$ ]]
 do
     myHeader;
     echo "Input your hexadecimal Private Keys ( without 0x ) : "$pkey""
-    echo "Error: Please input 2 digit number of version eg. 31"; 
     echo
+    echo "Error: Please input 2 digit number of version eg. 31";
     read -p "Choose ipfs version (29/30/31) :" ipfsv
 done
 
@@ -45,8 +45,8 @@ while [[ "$ipfsv" = "" ]]
 do
     myHeader;
     echo "Input your hexadecimal Private Keys ( without 0x ) : "$pkey""
-    echo "Error: IPFS version is not set.";
     echo
+    echo "Error: IPFS version is not set.";
     read -p "Choose ipfs version (29/30/31) :" ipfsv
 done
 
