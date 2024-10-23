@@ -1,6 +1,5 @@
 # WELCOME, don't forget to leave a star to my project :) mr9868
 
-
 # Make sure there is nothing complicated
 rm -rf ewm-das;
 pkill -f "ipfs";
