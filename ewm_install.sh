@@ -31,6 +31,7 @@ fi
 }
 # Entrypoint validation for IPFS
 function entryPointIPFS(){
+ipfslts="31"
 until [[ $ipfsv =~ ^[+]?[0-9]{2}+$ ]]
 do
     echo "Oops! User input was not 2 characters and/or not a positive integer!"; 
@@ -38,18 +39,17 @@ do
 done
 
 # Check if ipfs version is smaller than requirement
-if (($ipfsv<30)); then
-    echo "Error: IPFS version is not set.";
+if (($ipfsv<29)); then
+    echo "Error: IPFS version doesn't meet requirement.";
     echo "Select to latest version ...";sleep 5;
-    ipfsv="30"
+    ipfsv=$ipfslts;
 fi
 
 # Check if user set null for ipfs version
-ipfslts="31"
 if [[ "$ipfsv" = "" ]]; then
     echo "Error: IPFS version is not set.";
     echo "Select to latest version ...";sleep 5;
-    ipfsv="30"
+    ipfsv=$ipfslts;
 fi
 # Check if user set greater than latest version for ipfs version
 if (($ipfsv>$ipfslts)); then
