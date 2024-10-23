@@ -82,6 +82,7 @@ read -p "Input your hexadecimal Private Keys ( without 0x ) : " pkey
 entryPointPK;
 read -p "Choose ipfs version (29/30/31) : " ipfsv
 entryPointIPFS;
+myHeader;
 echo
 echo "===================================== INSTALLATION START ====================================="
 # Import private key to bashrc
