@@ -35,7 +35,7 @@ ipfslts="31"
 until [[ $ipfsv =~ ^[+]?[0-9]{2}+$ ]]
 do
     echo "Oops! User input was not 2 characters and/or not a positive integer!"; 
-    exit 1
+    read -p "Choose ipfs version (29/30/31) :" ipfsv
 done
 
 # Check if ipfs version is smaller than requirement
