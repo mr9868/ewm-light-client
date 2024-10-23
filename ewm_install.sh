@@ -80,9 +80,9 @@ entryPointIPFS;
 echo 'pkey="'$pkey'"' >> ~/.bashrc
 
 # Installing required package
-# sudo apt update -y && 
-# sudo apt upgrade -y && 
 sudo apt install screen -y && 
+sudo apt install git -y &&
+sudo apt install wget -y &&
 git clone https://github.com/covalenthq/ewm-das && 
 cd ewm-das && 
 sudo bash install-trusted-setup.sh;
