@@ -2,8 +2,7 @@
 It's so efficient, and easy if you facing any error from the ipfs daemon, because the process is running separately, you can just restart it without restarting the main node. And you can run multiple client in ONE server 🤫
 ## EWM light-client setup auto installer
 ```
-git clone https://github.com/mr9868/ewm-light-client
-cd ewm-light-client 
+wget https://www.github.com/mr9868/ewm_install.sh;
 chmod 777 ewm_install.sh
 ./ewm_install.sh
 ```
