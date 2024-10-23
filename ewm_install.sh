@@ -6,6 +6,7 @@ pkill -f "ipfs";
 pkill -f "covalent";
 goLts="1.23.2"
 ipfslts="31"
+sudo rm -rf /usr/local/bin/ipfs;
 
 # My Header function
 function myHeader(){
