@@ -52,7 +52,6 @@ if (($ipfsv>$ipfslts)); then
     echo "Error: You are set the IPFS version greater than the latest version.";
     echo "Select to latest version ..."; sleep 5; ipfsv=$ipfslts;
 fi
-
 }
 
 # Go install function
