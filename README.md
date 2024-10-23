@@ -28,7 +28,8 @@ ipfs daemon --init
 ```
 then close again the screen by pressing ctrl + a +d
 
-## EWM light-client setup manual intalling from source ( Don't do this if you already following step above )
+## EWM light-client setup manual intalling from source 
+Warning : Don't do this if you already following step above (auto installation)
 
 Clone the repository :
 ```
