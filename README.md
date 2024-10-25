@@ -14,7 +14,7 @@ To check the ipfs daemon logs :
 ```
 screen -r ipfs
 ```
-if you want to run multiple node, just start a screen and execute this :
+if you want to run multiple node, just start a new screen and execute this :
 
 'Dont forget to change your $pkey to your private key'
 ```
