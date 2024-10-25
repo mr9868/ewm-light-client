@@ -15,6 +15,8 @@ To check the ipfs daemon logs :
 screen -r ipfs
 ```
 if you want to run multiple node, just start a screen and execute this :
+
+'Dont forget to change your $pkey to your private key'
 ```
 sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key $pkey
 ```
