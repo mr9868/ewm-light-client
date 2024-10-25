@@ -68,6 +68,10 @@ apt install screen -y && screen -dmS ipfs bash -c "ipfs daemon --init;exec bash"
 Close the screen by pressing ctrl+a+d
 
 Then execute this command :
+' Dont forget to change YOUR_PRIVATEKEY to your private key '
 ```
-screen -dmS covalent bash -c "sudo ./bin/light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key YOUR_PRIVATEKEY;exec bash"
+screen -S covalent2
+```
+```
+sudo ./bin/light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key YOUR_PRIVATEKEY
 ```
