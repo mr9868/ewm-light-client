@@ -57,13 +57,13 @@ unset version;
 
 # Check if installed go is not outdated
 function checkIpfs(){
-command -v ipfs >/dev/null 2>&1 || { echo >&2 "IPFS is not found on this machine, Installing IPFS ... ";sudo pkill -f "ipfs";rm -rf /usr/local/bin/ipfs;
+command -v ipfs >/dev/null 2>&1 || { echo >&2 "IPFS is not found on this machine, Installing IPFS ... ";sudo pkill -f "ipfs";sudo rm -rf /usr/local/bin/ipfs;
 sleep 5;installIpfs;}
 v=`ipfs version | { read _ _ v _; echo ${v#go}; }`
 IFS="." tokens=( ${v} );
 version=${tokens[1]};
 if (($version<$ipfsLts)); then 
-echo "Your IPFS version '"$version"' is outdated, Updating your IPFS ...";sudo pkill -f "ipfs";rm -rf /usr/local/bin/ipfs;sleep 5; installIpfs;
+echo "Your IPFS version '"$version"' is outdated, Updating your IPFS ...";sudo pkill -f "ipfs";sudo rm -rf /usr/local/bin/ipfs;sleep 5; installIpfs;
 else 
 echo "Your IPFS version '"$version"' is up to date, Next step ...";sleep 5;
 fi
@@ -88,16 +88,19 @@ do
 myHeader;
 echo "How many light-node do you want to run  : "$loop""
 read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey
-declare "pkey$i=$pkey"
+varInputPkey="pkey$i=$pkey"
+eval $varInputPkey
 varPkey="echo \$pkey$i"
 #echo 'export pkey'$i'='$(eval $varPkey)'' >> ~/.bashrc
-until [[ "$(eval $varPkey)" =~ ^[0-9a-fA-F]{64}$ ]]
+until [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]
 do
   myHeader;
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
   echo "How many light-node do you want to run  : "$loop""
   read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey
-  declare "pkey$i=$pkey"
+  varInputPkey="pkey$i=$pkey"
+  eval $varInputPkey
+  varPkey="echo \$pkey$i"
 done
 done
 }
@@ -106,8 +109,8 @@ done
 function runLightClient(){
 for i in $(seq 1 $loop);
 do
-varPkeyLc="echo \$pkey$i"
-screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$(eval $varPkeyLc)";exec bash"
+varPkeyLc=$(eval "echo \$pkey$i")
+screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc";exec bash"
 done
 }
 
