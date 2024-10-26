@@ -98,6 +98,24 @@ done
 unset $i
 }
 
+# Run light-client node
+function runLightClient(){
+for i in $(seq 1 $loop);
+do
+screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key $pkey$i;exec bash"
+done
+unset i
+}
+
+# Covalent log
+function covalentLog(){
+for i in $(seq 1 $loop);
+do
+echo "To view node log execute 'screen -r covalent"$i"'"
+done
+unset i
+}
+
 myHeader;
 entryPointPK;
 myHeader;
@@ -129,14 +147,14 @@ screen -dmS ipfs bash -c "ipfs daemon --init;exec bash;" &&
 
 # Installing covalent light-client node
 sudo cp -r bin/light-client /usr/local/bin/light-client && 
-screen -dmS covalent bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key $pkey;exec bash"
+runLightClient &&
 rm -rf go-latest.tar.gz &&
 rm -rf ipfs-latest.tar.gz
 
 # Welldone ! 
 myHeader;
 echo "To view ipfs log execute 'screen -r ipfs'"
-echo "To view node log execute 'screen -r covalent'"
+covalentLog;
 echo
 echo "================== INSTALLED DEPENDENCIES =================="
 echo
