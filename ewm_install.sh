@@ -50,16 +50,13 @@ else
 echo "Your go version '"$version"' is up to date, Next step ...";sleep 5;
 fi
 unset IFS;
-unset tokens;
-unset v;
-unset version;
 }
 
 # Check if installed go is not outdated
 function checkIpfs(){
 command -v ipfs >/dev/null 2>&1 || { echo >&2 "IPFS is not found on this machine, Installing IPFS ... ";sudo pkill -f "ipfs";sudo rm -rf /usr/local/bin/ipfs;
 sleep 5;installIpfs;}
-v=`ipfs version | { read _ _ v _; echo ${v#go}; }`
+v=`ipfs version | { read _ _ v _; echo ${v#gipfs}; }`
 IFS="." tokens=( ${v} );
 version=${tokens[1]};
 if (($version<$ipfsLts)); then 
@@ -68,9 +65,6 @@ else
 echo "Your IPFS version '"$version"' is up to date, Next step ...";sleep 5;
 fi
 unset IFS;
-unset tokens;
-unset v;
-unset version;
 }
 
 # Entrypoint Private Key input function
