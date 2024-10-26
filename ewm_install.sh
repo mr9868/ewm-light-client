@@ -96,7 +96,6 @@ unset $i
 }
 
 myHeader;
-entryPointIPFS;
 entryPointPK;
 myHeader;
 echo
