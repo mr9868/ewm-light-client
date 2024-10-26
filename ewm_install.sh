@@ -18,26 +18,11 @@ echo -e "=             Github : https://github.io/Mr9868            ="
 echo -e "============================================================\n"
 }
 
-# Entrypoint Private Key input function
-function entryPointPK(){
-
-# Check if PK meet requirement 
-until [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]
-do
-  myHeader;
-  echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
-  echo
-  read -p "Input your hexadecimal Private Keys ( without 0x ) : " pkey
-done
-}
-
 # Entrypoint validation for IPFS
 function entryPointIPFS(){
 until [[ $ipfsv =~ ^[+]?[0-9]{2}+$ ]]
 do
     myHeader;
-    echo "Input your hexadecimal Private Keys ( without 0x ) : "$pkey""
-    echo
     echo "Error: Please input 2 digit number of version eg. 31";
     read -p "Choose ipfs version (29/30/31) : " ipfsv
 done
@@ -56,9 +41,27 @@ if (($ipfsv>$ipfslts)); then
 fi
 }
 
+# Entrypoint Private Key input function
+function entryPointPK(){
+# Check if PK meet requirement 
+read -p "How many light-node do you want to run  : " loop
+for i in $(seq 1 $loop);
+do
+read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey$i
+until [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]
+do
+  myHeader;
+  echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
+  echo
+  read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey$i
+done
+done
+}
+
+
+
 
 myHeader;
-read -p "Input your hexadecimal Private Keys ( without 0x ) : " pkey
 entryPointPK;
 read -p "Choose ipfs version (29/30/31) : " ipfsv
 entryPointIPFS;
