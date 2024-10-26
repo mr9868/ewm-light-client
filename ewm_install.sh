@@ -86,14 +86,14 @@ for i in $(seq 1 $loop);
 do
 myHeader;
 echo "How many light-node do you want to run  : "$loop""
-read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey$i
+read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey${i}
 until [[ "$pkey$i" =~ ^[0-9a-fA-F]{64}$ ]]
 do
   myHeader;
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
   echo
   echo "How many light-node do you want to run  : "$loop""
-  read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey$i
+  read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey${i}
 done
 done
 unset $i
@@ -103,7 +103,7 @@ unset $i
 function runLightClient(){
 for i in $(seq 1 $loop);
 do
-screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key $pkey$i;exec bash"
+screen -dmS covalent${i} bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key $pkey$i;exec bash"
 done
 unset i
 }
