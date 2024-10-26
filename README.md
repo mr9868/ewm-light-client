@@ -26,3 +26,11 @@ ipfs daemon --init
 ```
 then close again the screen by pressing ctrl + a +d
 
+
+## Remove light-client
+Warning ! Do this below just for remove your node only !
+This will be permanently delete all data from your light-client!
+
+```
+wget https://raw.githubusercontent.com/mr9868/ewm-light-client/refs/heads/main/remove.sh && chmod 777 remove.sh && ./remove.sh && rm remove.sh
+```
