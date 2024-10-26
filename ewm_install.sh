@@ -6,7 +6,7 @@ sudo rm -rf ewm-das;
 sudo rm ewm_install.sh;
 sudo pkill -f "covalent";
 goLts="1.23.2"
-ipfsLts="0.31.0"
+ipfsLts="31"
 
 # My Header function
 function myHeader(){
@@ -32,7 +32,7 @@ source ~/.bashrc
 
 # Installing IPFS function
 function installIpfs(){
-bash -c "wget -O ipfs-latest.tar.gz https://dist.ipfs.tech/kubo/v"$ipfsLts"/kubo_v"$ipfsLts"_linux-amd64.tar.gz" &&
+bash -c "wget -O ipfs-latest.tar.gz https://dist.ipfs.tech/kubo/v0."$ipfsLts".0/kubo_v0."$ipfsLts".0_linux-amd64.tar.gz" &&
 tar -xvzf ipfs-latest.tar.gz &&
 sudo bash kubo/install.sh && 
 source ~/.bashrc 
