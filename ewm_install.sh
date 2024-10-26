@@ -5,7 +5,7 @@ sudo rm -rf ewm-das;
 sudo pkill -f "ipfs";
 sudo pkill -f "covalent";
 goLts="1.23.2"
-ipfslts="31"
+ipfsLts="31"
 sudo rm -rf /usr/local/bin/ipfs;
 
 # My Header function
@@ -18,27 +18,58 @@ echo -e "=             Github : https://github.io/Mr9868            ="
 echo -e "============================================================\n"
 }
 
-# Entrypoint validation for IPFS
-function entryPointIPFS(){
-until [[ $ipfsv =~ ^[+]?[0-9]{2}+$ ]]
-do
-    myHeader;
-    echo "Error: Please input 2 digit number of version eg. 31";
-    read -p "Choose ipfs version (29/30/31) : " ipfsv
-done
+# Go install function
+function installGo(){
+bash -c "wget -O go-latest.tar.gz https://go.dev/dl/go"$goLts".linux-amd64.tar.gz" &&
+sudo tar -C /usr/local -xzf go-latest.tar.gz && 
+echo "" >> ~/.bashrc
+echo 'export GOPATH=$HOME/go' >> ~/.bashrc
+echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
+echo 'export GOBIN=$GOPATH/bin' >> ~/.bashrc
+echo 'export PATH=$PATH:/usr/local/go/bin:$GOBIN' >> ~/.bashrc
+source ~/.bashrc
+}
 
-# Check if ipfs version is smaller than requirement
-if (($ipfsv<29)); then
-    echo "Error: IPFS version doesn't meet requirement.";
-    echo "Select to latest version ...";sleep 5;
-    ipfsv=$ipfslts;
-fi
+# Installing IPFS function
+function installIpfs(){
+bash -c "wget -O ipfs-latest.tar.gz https://dist.ipfs.tech/kubo/v0."$ipfsLts".0/kubo_v0."$ipfsLts".0_linux-amd64.tar.gz" &&
+tar -xvzf ipfs-latest.tar.gz &&
+sudo bash kubo/install.sh && 
+source ~/.bashrc 
+}
 
-# Check if user set greater than latest version for ipfs version
-if (($ipfsv>$ipfslts)); then
-    echo "Error: You are set the IPFS version greater than the latest version.";
-    echo "Select to latest version ..."; sleep 5; ipfsv=$ipfslts;
+# Check if installed go is not outdated
+function checkGo(){
+command -v go >/dev/null 2>&1 || { echo >&2 "Go is not found on this machine, Installing go ... "; sleep 5;installGo;}
+v=`go version | { read _ _ v _; echo ${v#go}; }`
+IFS="." tokens=( ${v} );
+version=${tokens[1]};
+if (($version<23)); then 
+echo "Your go version '"$version"' is outdated, Updating your go ...";sleep 5; installGo;
+else 
+echo "Your go version '"$version"' is up to date, Next step ...";sleep 5;
 fi
+unset IFS;
+unset tokens;
+unset v;
+unset version;
+}
+
+# Check if installed go is not outdated
+function checkIpfs(){
+command -v ipfs >/dev/null 2>&1 || { echo >&2 "IPFS is not found on this machine, Installing IPFS ... "; sleep 5;installIpfs;}
+v=`ipfs version | { read _ _ v _; echo ${v#go}; }`
+IFS="." tokens=( ${v} );
+version=${tokens[1]};
+if (($version<$ipfsLts)); then 
+echo "Your IPFS version '"$version"' is outdated, Updating your IPFS ...";sleep 5; installIpfs;
+else 
+echo "Your IPFS version '"$version"' is up to date, Next step ...";sleep 5;
+fi
+unset IFS;
+unset tokens;
+unset v;
+unset version;
 }
 
 # Entrypoint Private Key input function
@@ -64,54 +95,13 @@ done
 unset $i
 }
 
-
-
-
 myHeader;
-read -p "Choose ipfs version (29/30/31) : " ipfsv
-entryPointPK;
 entryPointIPFS;
+entryPointPK;
 myHeader;
 echo
 echo "==================== INSTALLATION START ===================="
 echo
-
-# Go install function
-function installGo(){
-bash -c "wget -O go-latest.tar.gz https://go.dev/dl/go"$goLts".linux-amd64.tar.gz" &&
-sudo tar -C /usr/local -xzf go-latest.tar.gz && 
-echo "" >> ~/.bashrc
-echo 'export GOPATH=$HOME/go' >> ~/.bashrc
-echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
-echo 'export GOBIN=$GOPATH/bin' >> ~/.bashrc
-echo 'export PATH=$PATH:/usr/local/go/bin:$GOBIN' >> ~/.bashrc
-source ~/.bashrc
-}
-
-# Check if installed go is not outdated
-function checkGo(){
-v=`go version | { read _ _ v _; echo ${v#go}; }`
-IFS="." tokens=( ${v} );
-version=${tokens[1]};
-if (($version<23)); then 
-echo "Your go version '"$version"' is outdated, Updating your go ...";sleep 5; installGo;
-else 
-echo "Your go version '"$version"' is up to date, Next step ...";sleep 5;
-fi
-unset IFS;
-}
-
-# Installing IPFS function
-function installIpfs(){
-bash -c "wget -O ipfs-latest.tar.gz https://dist.ipfs.tech/kubo/v0."$ipfsv".0/kubo_v0."$ipfsv".0_linux-amd64.tar.gz" &&
-tar -xvzf ipfs-latest.tar.gz &&
-sudo bash kubo/install.sh && 
-source ~/.bashrc 
-}
-
-
-# Import private key to bashrc
-echo 'pkey="'$pkey'"' >> ~/.bashrc
 
 # Installing required package
 sudo apt install screen -y && 
@@ -119,11 +109,11 @@ sudo apt install git -y &&
 sudo apt install wget -y &&
 git clone https://github.com/covalenthq/ewm-das && 
 cd ewm-das && 
-sudo bash install-trusted-setup.sh;
+sudo bash install-trusted-setup.sh &&
 
-# Check if go is installed on machine or not
-command -v go >/dev/null 2>&1 || { echo >&2 "Go is not found on this machine, Installing go ... "; sleep 5;installGo;}
-checkGo;
+# Check if go and ipfs is installed on machine or not
+checkGo &&
+checkIpfs &&
 
 # Installing required Go packages
 go install honnef.co/go/tools/cmd/staticcheck@latest && 
@@ -132,7 +122,7 @@ make  &&
 sudo bash install-trusted-setup.sh &&
 
 # Running ipfs daemon
-installIpfs &&
+checkIpfs &&
 screen -dmS ipfs bash -c "ipfs daemon --init;exec bash;" && 
 
 # Installing covalent light-client node
