@@ -2,6 +2,7 @@
 
 
 # Make sure there is nothing complicated
+cd;
 sudo rm -rf ewm-das;
 sudo rm ewm_install.sh;
 rm -rf go-latest.tar.gz;
@@ -36,6 +37,9 @@ source ~/.bashrc
 function installIpfs(){
 bash -c "wget -O ipfs-latest.tar.gz https://dist.ipfs.tech/kubo/v0."$ipfsLts".0/kubo_v0."$ipfsLts".0_linux-amd64.tar.gz" &&
 tar -xvzf ipfs-latest.tar.gz &&
+sudo rm -rf /usr/local/bin/ipfs &&
+sudo rm -rf kubo &&
+sudo pkill -f "ipfs" &&
 sudo bash kubo/install.sh && 
 source ~/.bashrc 
 }
@@ -56,13 +60,12 @@ unset IFS;
 
 # Check if installed go is not outdated
 function checkIpfs(){
-command -v ipfs >/dev/null 2>&1 || { echo >&2 "IPFS is not found on this machine, Installing IPFS ... ";sudo pkill -f "ipfs";sudo rm -rf /usr/local/bin/ipfs;
-sleep 5;installIpfs;}
+command -v ipfs >/dev/null 2>&1 || { echo >&2 "IPFS is not found on this machine, Installing IPFS ... ";sleep 5;installIpfs;}
 v=`ipfs version | { read _ _ v _; echo ${v#gipfs}; }`
 IFS="." tokens=( ${v} );
 version=${tokens[1]};
 if (($version<$ipfsLts)); then 
-echo "Your IPFS version '"$version"' is outdated, Updating your IPFS ...";sudo pkill -f "ipfs";sudo rm -rf /usr/local/bin/ipfs;sleep 5; installIpfs;
+echo "Your IPFS version '"$version"' is outdated, Updating your IPFS ...";sleep 5; installIpfs;
 else 
 echo "Your IPFS version '"$version"' is up to date, Next step ...";sleep 5;
 fi
@@ -130,13 +133,11 @@ echo
 sudo apt install screen -y && 
 sudo apt install git -y &&
 sudo apt install wget -y &&
+checkGo &&
+checkIpfs &&
 git clone https://github.com/covalenthq/ewm-das && 
 cd ewm-das && 
 sudo bash install-trusted-setup.sh &&
-
-# Check if go and ipfs is installed on machine or not
-checkGo &&
-checkIpfs &&
 
 # Installing required Go packages
 go install honnef.co/go/tools/cmd/staticcheck@latest && 
