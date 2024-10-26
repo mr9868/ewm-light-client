@@ -74,7 +74,6 @@ unset version;
 
 # Entrypoint Private Key input function
 function entryPointPK(){
-pkey=""
 # Check if PK meet requirement 
 read -p "How many light-node do you want to run  : " loop
 until [[ $loop =~ ^[0-9]+$ ]]
@@ -87,7 +86,8 @@ for i in $(seq 1 $loop);
 do
 myHeader;
 echo "How many light-node do you want to run  : "$loop""
-read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " $pkey$i
+read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey+$i
+echo $pkey+$i
 until [[ "$pkey$i" =~ ^[0-9a-fA-F]{64}$ ]]
 do
   myHeader;
