@@ -36,9 +36,9 @@ source ~/.bashrc
 # Installing IPFS function
 function installIpfs(){
 bash -c "wget -O ipfs-latest.tar.gz https://dist.ipfs.tech/kubo/v0."$ipfsLts".0/kubo_v0."$ipfsLts".0_linux-amd64.tar.gz" &&
+rm -rf kubo &&
 tar -xvzf ipfs-latest.tar.gz &&
 sudo rm -rf /usr/local/bin/ipfs &&
-sudo rm -rf kubo &&
 sudo pkill -f "ipfs" &&
 sudo bash kubo/install.sh && 
 source ~/.bashrc 
