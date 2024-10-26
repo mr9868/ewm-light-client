@@ -104,8 +104,9 @@ unset $i
 # Run light-client node
 function runLightClient(){
 for i in $(seq 1 $loop);
+varExec="echo \$pkey$i"
 do
-screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key $pkey${i};exec bash"
+screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key " eval $varPK";exec bash"
 done
 unset i
 }
