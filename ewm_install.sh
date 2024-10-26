@@ -88,6 +88,8 @@ myHeader;
 echo "How many light-node do you want to run  : "$loop""
 read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey
 declare "pkey$i=$pkey"
+#varPkey="echo \$pkey$i"
+#echo 'export pkey'$i'='$(eval $varPkey)'' >> ~/.bashrc
 until [[ "$pkey${i}" =~ ^[0-9a-fA-F]{64}$ ]]
 do
   myHeader;
@@ -104,9 +106,9 @@ unset $i
 # Run light-client node
 function runLightClient(){
 for i in $(seq 1 $loop);
-varExec="echo \$pkey$i"
 do
-screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key " eval $varPK";exec bash"
+varPkey="echo \$pkey$i"
+screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$(eval $varPkey)";exec bash"
 done
 unset i
 }
