@@ -140,7 +140,6 @@ sudo bash install-trusted-setup.sh &&
 
 # Check if go and ipfs is installed on machine or not
 checkGo &&
-checkIpfs &&
 
 # Installing required Go packages
 go install honnef.co/go/tools/cmd/staticcheck@latest && 
