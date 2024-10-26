@@ -5,8 +5,6 @@
 cd;
 sudo rm -rf ewm-das;
 sudo rm ewm_install.sh;
-rm -rf go-latest.tar.gz;
-rm -rf ipfs-latest.tar.gz;
 sudo pkill -f "covalent";
 goLts="1.23.2"
 ipfsLts="31"
@@ -31,6 +29,7 @@ echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
 echo 'export GOBIN=$GOPATH/bin' >> ~/.bashrc
 echo 'export PATH=$PATH:/usr/local/go/bin:$GOBIN' >> ~/.bashrc
 source ~/.bashrc
+rm -rf go-latest.tar.gz;
 }
 
 # Installing IPFS function
@@ -42,6 +41,7 @@ sudo rm -rf /usr/local/bin/ipfs &&
 sudo pkill -f "ipfs" &&
 sudo bash kubo/install.sh && 
 source ~/.bashrc 
+rm -rf ipfs-latest.tar.gz;
 }
 
 # Check if installed go is not outdated
