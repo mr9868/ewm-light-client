@@ -57,12 +57,13 @@ unset version;
 
 # Check if installed go is not outdated
 function checkIpfs(){
-command -v ipfs >/dev/null 2>&1 || { echo >&2 "IPFS is not found on this machine, Installing IPFS ... "; sleep 5;installIpfs;}
+command -v ipfs >/dev/null 2>&1 || { echo >&2 "IPFS is not found on this machine, Installing IPFS ... ";sudo pkill -f "ipfs";rm -rf /usr/local/bin/ipfs;
+sleep 5;installIpfs;}
 v=`ipfs version | { read _ _ v _; echo ${v#go}; }`
 IFS="." tokens=( ${v} );
 version=${tokens[1]};
 if (($version<$ipfsLts)); then 
-echo "Your IPFS version '"$version"' is outdated, Updating your IPFS ...";sleep 5; installIpfs;
+echo "Your IPFS version '"$version"' is outdated, Updating your IPFS ...";sudo pkill -f "ipfs";rm -rf /usr/local/bin/ipfs;sleep 5; installIpfs;
 else 
 echo "Your IPFS version '"$version"' is up to date, Next step ...";sleep 5;
 fi
@@ -108,7 +109,6 @@ do
 varPkeyLc="echo \$pkey$i"
 screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$(eval $varPkeyLc)";exec bash"
 done
-unset i
 }
 
 # Covalent log
