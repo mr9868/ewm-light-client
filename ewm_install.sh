@@ -151,8 +151,6 @@ screen -dmS ipfs bash -c "ipfs daemon --init;exec bash;" &&
 # Installing covalent light-client node
 sudo cp -r bin/light-client /usr/local/bin/light-client && 
 runLightClient &&
-rm -rf go-latest.tar.gz &&
-rm -rf ipfs-latest.tar.gz
 
 # Welldone ! 
 myHeader;
