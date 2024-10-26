@@ -2,11 +2,9 @@
 
 # Make sure there is nothing complicated
 sudo rm -rf ewm-das;
-sudo pkill -f "ipfs";
 sudo pkill -f "covalent";
 goLts="1.23.2"
 ipfsLts="31"
-sudo rm -rf /usr/local/bin/ipfs;
 
 # My Header function
 function myHeader(){
