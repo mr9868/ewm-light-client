@@ -163,3 +163,4 @@ ipfs version
 echo
 echo "=================== INSTALLATION SUCCESS ==================="
 echo
+unset $loop;
