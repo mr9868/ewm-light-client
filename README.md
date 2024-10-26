@@ -29,6 +29,7 @@ then close again the screen by pressing ctrl + a +d
 
 ## Remove light-client
 Warning ! Do this below just for remove your node only !
+
 This will be permanently delete all data from your light-client!
 
 ```
