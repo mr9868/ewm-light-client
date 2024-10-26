@@ -45,10 +45,15 @@ fi
 function entryPointPK(){
 # Check if PK meet requirement 
 read -p "How many light-node do you want to run  : " loop
+until [[ $loop =~ ^[0-9]+$ ]]
+do
+echo "Error: Please input in number !";
+read -p "How many light-node do you want to run  : " loop
+done
 for i in $(seq 1 $loop);
 do
 read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey$i
-until [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]
+until [[ "$pkey$i" =~ ^[0-9a-fA-F]{64}$ ]]
 do
   myHeader;
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
@@ -56,14 +61,15 @@ do
   read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey$i
 done
 done
+unset $i
 }
 
 
 
 
 myHeader;
-entryPointPK;
 read -p "Choose ipfs version (29/30/31) : " ipfsv
+entryPointPK;
 entryPointIPFS;
 myHeader;
 echo
