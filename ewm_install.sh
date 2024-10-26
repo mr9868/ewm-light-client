@@ -88,9 +88,9 @@ myHeader;
 echo "How many light-node do you want to run  : "$loop""
 read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey
 declare "pkey$i=$pkey"
-#varPkey="echo \$pkey$i"
+varPkey="echo \$pkey$i"
 #echo 'export pkey'$i'='$(eval $varPkey)'' >> ~/.bashrc
-until [[ "$pkey${i}" =~ ^[0-9a-fA-F]{64}$ ]]
+until [[ "$(eval $varPkey)" =~ ^[0-9a-fA-F]{64}$ ]]
 do
   myHeader;
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
