@@ -136,6 +136,7 @@ sudo bash install-trusted-setup.sh &&
 
 # Check if go and ipfs is installed on machine or not
 checkGo &&
+checkIpfs &&
 
 # Installing required Go packages
 go install honnef.co/go/tools/cmd/staticcheck@latest && 
@@ -144,7 +145,6 @@ make  &&
 sudo bash install-trusted-setup.sh &&
 
 # Running ipfs daemon
-checkIpfs &&
 screen -dmS ipfs bash -c "ipfs daemon --init;exec bash;" && 
 
 # Installing covalent light-client node
