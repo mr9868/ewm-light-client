@@ -4,6 +4,8 @@
 # Make sure there is nothing complicated
 sudo rm -rf ewm-das;
 sudo rm ewm_install.sh;
+rm -rf go-latest.tar.gz;
+rm -rf ipfs-latest.tar.gz;
 sudo pkill -f "covalent";
 goLts="1.23.2"
 ipfsLts="31"
