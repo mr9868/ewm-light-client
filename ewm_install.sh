@@ -94,13 +94,11 @@ until [[ "$(eval $varPkey)" =~ ^[0-9a-fA-F]{64}$ ]]
 do
   myHeader;
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
-  echo
   echo "How many light-node do you want to run  : "$loop""
   read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey
   declare "pkey$i=$pkey"
 done
 done
-unset $i
 }
 
 # Run light-client node
