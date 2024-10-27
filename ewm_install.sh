@@ -164,7 +164,7 @@ do
 varPkeyLc=$(eval "echo \$pkey$i")
 if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :500"$i" --private-key "$varPkeyLc" | sudo tee covalent"$i".log;exec bash"
+screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :50"$i" --private-key "$varPkeyLc" | sudo tee covalent"$i".log;exec bash"
 else
 screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc" | sudo tee covalent"$i".log;exec bash"
 fi
@@ -203,20 +203,20 @@ echo '
     "HTTPHeaders": {}
   },
   "Addresses": {
-    "API": "/ip4/127.0.0.1/tcp/500'$i'",
+    "API": "/ip4/127.0.0.1/tcp/50'$i'",
     "Announce": null,
     "AppendAnnounce": null,
-    "Gateway": "/ip4/127.0.0.1/tcp/808'$i'",
+    "Gateway": "/ip4/127.0.0.1/tcp/80'$i'",
     "NoAnnounce": null,
     "Swarm": [
-      "/ip4/0.0.0.0/tcp/400'$i'",
-      "/ip6/::/tcp/400'$i'",
-      "/ip4/0.0.0.0/udp/400'$i'/webrtc-direct",
-      "/ip4/0.0.0.0/udp/400'$i'/quic-v1",
-      "/ip4/0.0.0.0/udp/400'$i'/quic-v1/webtransport",
-      "/ip6/::/udp/400'$i'/webrtc-direct",
-      "/ip6/::/udp/400'$i'/quic-v1",
-      "/ip6/::/udp/400'$i'/quic-v1/webtransport"
+      "/ip4/0.0.0.0/tcp/40'$i'",
+      "/ip6/::/tcp/40'$i'",
+      "/ip4/0.0.0.0/udp/40'$i'/webrtc-direct",
+      "/ip4/0.0.0.0/udp/40'$i'/quic-v1",
+      "/ip4/0.0.0.0/udp/40'$i'/quic-v1/webtransport",
+      "/ip6/::/udp/40'$i'/webrtc-direct",
+      "/ip6/::/udp/40'$i'/quic-v1",
+      "/ip6/::/udp/40'$i'/quic-v1/webtransport"
     ]
   },
   "AutoNAT": {},
@@ -358,9 +358,9 @@ if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 for i in $(seq 1 $loop);
 do
-sudo ufw allow 500$1
-sudo ufw allow 400$1
-sudo ufw allow 808$i
+sudo ufw allow 50$1
+sudo ufw allow 40$1
+sudo ufw allow 80$i
 mkdir ~/.ipfs$i
 ipfsConf
 screen -dmS ipfs$i -L -Logfile ipfs$i.log bash -c "IPFS_PATH=~/.ipfs"$i" ipfs daemon --init;exec bash;" 
