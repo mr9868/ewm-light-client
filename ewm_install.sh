@@ -122,15 +122,15 @@ fi
 function tgConf(){
 echo "
 # Send tg message
-function tgMsg(){
+function tgConf(){
 # Set the API token and chat ID
 API_TOKEN=$tgApiQn   
 CHAT_ID=$tgIdQn
-MESSAGE=\$(eval \" cat ipfs.log\"); 
-curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$MESSAGE\"
 sleep 100;
 for akun in \$(seq 1 $loop);
 do  
+MESSAGE=\$(eval \" cat ipfs\"\$akun\".log | grep ready\"); 
+curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$MESSAGE\"
 msgStart=\$(eval \" cat covalent\"\$akun\".log | awk '{print tolower(\\\$0)}' | grep -ow '\w*0x\w*'\")
 accStart=\$(eval \" echo 'Address \$akun : \\\`\$msgStart\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$accStart\" -d parse_mode='MarkdownV2'
