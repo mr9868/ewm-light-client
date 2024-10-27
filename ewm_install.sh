@@ -187,8 +187,8 @@ else
 for i in $(seq 1 $loop);
 do
 echo "To view node"$i" log execute 'screen -r covalent"$i"'"
-echo "To view ipfs log execute 'screen -r ipfs'"
 done
+echo "To view ipfs log execute 'screen -r ipfs'"
 fi
 }
 
