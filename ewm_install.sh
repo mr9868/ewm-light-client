@@ -143,7 +143,7 @@ done
 done
 }
 tgMsg;
-" > tgMsg.sh
+" > ewm-das/tgMsg.sh
 }
 
 
@@ -152,7 +152,7 @@ function runLightClient(){
 for i in $(seq 1 $loop);
 do
 varPkeyLc=$(eval "echo \$pkey$i")
-screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc" > covalent"$i".log"
+screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc" | sudo tee covalent"$i".log;exec bash"
 done
 }
 
@@ -189,7 +189,7 @@ make  &&
 sudo bash install-trusted-setup.sh &&
 
 # Running ipfs daemon
-screen -dmS ipfs bash -c "ipfs daemon --init > ipfs.log;exec bash;" && 
+screen -dmS ipfs bash -c "ipfs daemon --init | sudo tee ipfs.log;exec bash;" && 
 
 # Installing covalent light-client node
 sudo cp -r bin/light-client /usr/local/bin/light-client && 
