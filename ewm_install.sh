@@ -397,6 +397,7 @@ entryPointIpfs &&
 # Installing covalent light-client node
 sudo cp -r bin/light-client /usr/local/bin/light-client && 
 runLightClient &&
+tgInit &&
 
 # Welldone ! 
 myHeader;
@@ -409,5 +410,4 @@ ipfs version
 echo
 echo "=================== INSTALLATION SUCCESS ==================="
 echo
-tgInit
 unset $loop;
