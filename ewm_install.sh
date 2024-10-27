@@ -128,13 +128,13 @@ function tgMsg(){
 # Set the API token and chat ID
 API_TOKEN=$tgApiQn   
 CHAT_ID=$tgIdQn
-MESSAGE=\$(\"cat ipfs.log\");   
+MESSAGE=\$(eval \" cat ipfs.log\");   
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$MESSAGE\"
 sleep 30;
 for akun in \$(seq 1 $loop);
 do  
-msgStart=\$(\"cat covalent\"\$akun\".log | awk '{print tolower(\$0)}' | grep -ow '\w*0x\w*'\")
-accStart=\$(\"echo 'Address \$akun : \$msgStart'\")
+msgStart=\$(eval \" cat covalent\"\$akun\".log | awk '{print tolower(\$0)}' | grep -ow '\w*0x\w*'\")
+accStart=\$(eval \" echo 'Address \$akun : \`\$msgStart'\`\")
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$accStart\"
 done
 
@@ -142,10 +142,10 @@ while sleep 1800;
 do
 for i in \$(seq 1 $loop);
 do  
-msgCount=\$(\"cat covalent\"\$i\".log | grep -c 'verified'\")
-msgError=\$(\"cat covalent\"\$i\".log | grep 'ERROR'\")
-accMsg=\$(\"echo 'Account \$i has \$msgCount verified blocks'\")
-ipfsMsg=\$(\"cat ipfs.log | grep 'ERROR'\");   
+msgCount=\$(eval \" cat covalent\"\$i\".log | grep -c 'verified'\")
+msgError=\$(eval \" cat covalent\"\$i\".log | grep 'ERROR'\")
+accMsg=\$(eval \"echo ' Account \$i has \$msgCount verified blocks'\")
+ipfsMsg=\$(eval \" cat ipfs.log | grep 'ERROR'\");   
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$accMsg\"                
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$msgError\"                
 
