@@ -130,8 +130,12 @@ API_TOKEN=$tgApiQn
 CHAT_ID=$tgIdQn
 MESSAGE=\$(eval \"cat ipfs.log\");   
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$MESSAGE\"
-msgStart=\$(eval \"cat covalent\"\$i\".log | grep 'Client id'\")
+
+for akun in \$(seq 1 $loop);
+do  
+msgStart=\$(eval \"cat covalent\"\$akun\".log | grep 'Client id'\")
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$msgStart\"
+done
 
 while sleep 1800;
 do
