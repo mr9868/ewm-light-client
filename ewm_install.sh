@@ -134,8 +134,8 @@ while sleep 5;
 do
 for akun in \$(seq 1 $loop);
 do  
-msgStart=\$(eval \"cat covalent\"\$akun\".log | grep 'Client id'\")
-accStart=\$(eval \"echo 'Account \$i : \$msgStart'\")
+msgStart=\$(eval \"cat covalent\"\$akun\".log | grep 'Client id' | awk '{print \$7}'\")
+accStart=\$(eval \"echo 'Account \$i address : \$msgStart'\")
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$accStart\"
 done
 done
