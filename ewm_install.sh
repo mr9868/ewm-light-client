@@ -152,7 +152,7 @@ function runLightClient(){
 for i in $(seq 1 $loop);
 do
 varPkeyLc=$(eval "echo \$pkey$i")
-screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc" > covalent"$i".log;exec bash"
+screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc" > covalent"$i".log"
 done
 }
 
