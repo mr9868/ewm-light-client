@@ -122,7 +122,7 @@ fi
 function tgConf(){
 echo "
 # Send tg message
-function tgConf(){
+function tgMsg(){
 # Set the API token and chat ID
 API_TOKEN=$tgApiQn   
 CHAT_ID=$tgIdQn
@@ -152,7 +152,7 @@ curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\
 done
 done
 }
-tgConf;
+tgMsg;
 " > tgConf.sh
 }
 
@@ -190,7 +190,7 @@ function tgInit(){
 if [[ "$tgQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 tgConf;
-screen -dmS ewmLog bash -c "chmod 777 tgConf.sh;echo 'Running process ...' && bash tgConf.sh;exec bash"
+screen -dmS ewmLog bash -c "chmod 777 tgConf.sh;bash tgConf.sh;exec bash"
 else
 echo "Telegram bot: Not configured, Next ..."
 fi
