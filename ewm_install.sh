@@ -133,8 +133,8 @@ while sleep 10;
 do
 for i in \$(seq 1 $loop);
 do  
-msgCount=\$(\$eval \"cat covalent\"\$i\".log | grep 'verified=true'\")
-accMsg=\$(eval \"echo 'Account \$i has \$msgCount verified blocks')
+msgCount=\$(eval \"cat covalent\"\$i\".log | grep -c 'verified=true'\")
+accMsg=\$(eval \"echo 'Account \$i has \$msgCount verified blocks'\")
 ipfsMsg=\$(eval \"cat ipfs.log | grep 'ERROR'\");   
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$accMsg\"                
 # Use the curl command to send the message       
