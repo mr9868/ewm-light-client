@@ -160,7 +160,6 @@ unset i
 
 myHeader;
 entryPointPK;
-entryPointTg;
 myHeader;
 echo
 echo "==================== INSTALLATION START ===================="
@@ -201,4 +200,5 @@ ipfs version
 echo
 echo "=================== INSTALLATION SUCCESS ==================="
 echo
+entryPointTg;
 unset $loop;
