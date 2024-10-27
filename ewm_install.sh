@@ -143,7 +143,7 @@ do
 for i in \$(seq 1 $loop);
 do  
 msgCount=\$(eval \" cat covalent\"\$i\".log | grep -c 'verified'\")
-msgError=\$(eval \" cat covalent\"\$i\".log | grep 'ERROR'\")
+msgError=\$(eval \" cat covalent\"\$i\".log | grep -E 'FATAL|ERROR'\")
 accMsg=\$(eval \"echo ' Account \$i has \$msgCount verified blocks'\")
 ipfsMsg=\$(eval \" cat ipfs.log | grep 'ERROR'\");   
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$accMsg\"                
