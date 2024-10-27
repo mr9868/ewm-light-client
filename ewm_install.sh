@@ -139,7 +139,7 @@ varLog='cat covalent"$i".log | grep -c verified=true'
 # Set the message text                     
 MESSAGE='Account "$i": \$(eval \$varLog) block verified'; 
 # Use the curl command to send the message       
-curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text='\$MESSAGE'
+curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\$MESSAGE
 done
 done
 }
