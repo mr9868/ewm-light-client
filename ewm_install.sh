@@ -334,7 +334,7 @@ echo '
     }
   }
 }
-' > /root/.ipfs$i/config
+' > ~/.ipfs$i/config
 }
 
 # ipfs entrypoint
