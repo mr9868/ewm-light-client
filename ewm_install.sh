@@ -110,7 +110,7 @@ if [[ "$tgQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
-screen -dmS ewmLog bash -c ""$(tgMsg)";exec bash;" 
+screen -dmS ewmLog bash -c ""$(tgMsg &)";exec bash;" 
 # echo "tgId:"$tgIdQn"" >> ~/.bashrc
 # echo "tgApi:"$tgApiQn"" >> ~/.bashrc
 else
