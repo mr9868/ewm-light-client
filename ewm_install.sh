@@ -127,7 +127,7 @@ function tgMsg(){
 # Set the API token and chat ID
 API_TOKEN=\"$tgApiQn\"
 CHAT_ID=\"$tgIdQn\"
-MESSAGE=\$(eval \" echo 'Please wait ....'); 
+MESSAGE=\$(eval \" echo 'Please wait ....'\"); 
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$MESSAGE\"
 sleep 120;
 for akun in \$(seq 1 $loop);
