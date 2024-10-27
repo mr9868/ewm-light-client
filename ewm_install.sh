@@ -134,8 +134,8 @@ while sleep 10;
 do
 for i in \$(seq 1 $loop);
 do       
-logMsg=\"cat covalent\"\$i\".log | grep 'verified=true'
-ipfsMsg=\$(eval 'cat ipfs.log' | grep 'ERROR');   
+logMsg=\"cat covalent\"\$i\".log | grep 'verified=true'\"
+ipfsMsg=\$(eval \"cat ipfs.log | grep 'ERROR'\");   
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$ipfsMsg\"
 
 # Set the message text                     
