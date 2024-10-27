@@ -103,12 +103,47 @@ done
 done
 }
 
+# Entrypoint for telegram monitor question
+function entryPointTg(){
+read -p "Do you want to add telegram monitor ? (y/n)  : " tgQn
+if [[ "$tgQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+then
+read -p "Please provide your bot API Key from @botFather : " tgApiQn
+read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
+# echo "tgId:"$tgIdQn"" >> ~/.bashrc
+# echo "tgApi:"$tgApiQn"" >> ~/.bashrc
+else
+echo "Next step ..."
+fi
+}
+
+# Send tg message
+function tgMsg(){
+# Set the API token and chat ID
+API_TOKEN="$tgApiQn"   
+CHAT_ID="$tgIdQn"
+MESSAGE=$(eval "cat ipfs.log");   
+curl -s -X POST https://api.telegram.org/bot$API_TOKEN/sendMessage -d chat_id=$CHAT_ID -d text="$MESSAGE"
+
+while sleep 3600;
+do
+for i in $(seq 1 $loop);
+do         
+# Set the message text                     
+MESSAGE=$(eval "cat covalent"$i".log");  
+# Use the curl command to send the message       
+curl -s -X POST https://api.telegram.org/bot$API_TOKEN/sendMessage -d chat_id=$CHAT_ID -d text="$MESSAGE"
+done
+done
+}
+
+
 # Run light-client node
 function runLightClient(){
 for i in $(seq 1 $loop);
 do
 varPkeyLc=$(eval "echo \$pkey$i")
-screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc";exec bash"
+screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc" > light_client"$i".log;exec bash"
 done
 }
 
@@ -123,6 +158,7 @@ unset i
 
 myHeader;
 entryPointPK;
+entryPointTg;
 myHeader;
 echo
 echo "==================== INSTALLATION START ===================="
@@ -145,7 +181,7 @@ make  &&
 sudo bash install-trusted-setup.sh &&
 
 # Running ipfs daemon
-screen -dmS ipfs bash -c "ipfs daemon --init;exec bash;" && 
+screen -dmS ipfs bash -c "ipfs daemon --init > ipfs.log;exec bash;" && 
 
 # Installing covalent light-client node
 sudo cp -r bin/light-client /usr/local/bin/light-client && 
