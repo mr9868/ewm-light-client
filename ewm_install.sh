@@ -144,7 +144,7 @@ curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\
 done
 done
 }
-tgMsg
+tgMsg;
 " > tgMsg.sh
 }
 
