@@ -125,12 +125,13 @@ CHAT_ID="$tgIdQn"
 MESSAGE=$(eval "cat ipfs.log");   
 curl -s -X POST https://api.telegram.org/bot$API_TOKEN/sendMessage -d chat_id=$CHAT_ID -d text="$MESSAGE"
 
-while sleep 3600;
+while sleep 1750;
 do
 for i in $(seq 1 $loop);
-do         
+do       
+varLog="cat covalent"$i".log | grep -c 'verified=true'"
 # Set the message text                     
-MESSAGE=$(eval "cat covalent"$i".log");  
+MESSAGE="Account "$i": $(eval $varLog) block verified";  
 # Use the curl command to send the message       
 curl -s -X POST https://api.telegram.org/bot$API_TOKEN/sendMessage -d chat_id=$CHAT_ID -d text="$MESSAGE"
 done
@@ -186,6 +187,8 @@ screen -dmS ipfs bash -c "ipfs daemon --init > ipfs.log;exec bash;" &&
 # Installing covalent light-client node
 sudo cp -r bin/light-client /usr/local/bin/light-client && 
 runLightClient &&
+
+screen -dmS ewmLog bash -c ""$(tgMsg)";exec bash;" &&
 
 # Welldone ! 
 myHeader;
