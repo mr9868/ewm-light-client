@@ -110,6 +110,7 @@ if [[ "$tgQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
+screen -dmS ewmLog bash -c ""$(tgMsg)";exec bash;" 
 # echo "tgId:"$tgIdQn"" >> ~/.bashrc
 # echo "tgApi:"$tgApiQn"" >> ~/.bashrc
 else
@@ -187,8 +188,6 @@ screen -dmS ipfs bash -c "ipfs daemon --init > ipfs.log;exec bash;" &&
 # Installing covalent light-client node
 sudo cp -r bin/light-client /usr/local/bin/light-client && 
 runLightClient &&
-
-screen -dmS ewmLog bash -c ""$(tgMsg)";exec bash;" &&
 
 # Welldone ! 
 myHeader;
