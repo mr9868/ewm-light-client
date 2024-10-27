@@ -190,7 +190,7 @@ function tgInit(){
 if [[ "$tgQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 tgConf;
-screen -dmS ewmLog bash -c "chmod 777 tgMsg.sh;echo 'Running process ...' && bash tgMsg.sh;exec bash"
+screen -dmS ewmLog bash -c "chmod 777 tgConf.sh;echo 'Running process ...' && bash tgConf.sh;exec bash"
 else
 echo "Telegram bot: Not configured, Next ..."
 fi
