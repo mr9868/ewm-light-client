@@ -128,7 +128,7 @@ function tgMsg(){
 API_TOKEN=$tgApiQn   
 CHAT_ID=$tgIdQn
 MESSAGE=\$(eval 'cat ipfs.log');   
-curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text='\$MESSAGE'
+curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\$MESSAGE
 
 while sleep 10;
 do
