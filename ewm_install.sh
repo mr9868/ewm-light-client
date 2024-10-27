@@ -110,7 +110,7 @@ if [[ "$tgQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
-tgMsg &
+screen -dmS ewmLog && tgMsg & 
 # echo "tgId:"$tgIdQn"" >> ~/.bashrc
 # echo "tgApi:"$tgApiQn"" >> ~/.bashrc
 else
@@ -126,7 +126,7 @@ CHAT_ID="$tgIdQn"
 MESSAGE=$(eval "cat ipfs.log");   
 curl -s -X POST https://api.telegram.org/bot$API_TOKEN/sendMessage -d chat_id=$CHAT_ID -d text="$MESSAGE"
 
-while sleep 1750;
+while sleep 10;
 do
 for i in $(seq 1 $loop);
 do       
