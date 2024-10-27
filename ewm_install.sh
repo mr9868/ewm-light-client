@@ -112,8 +112,6 @@ if [[ "$tgQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
-tgMsg;
-screen -dmS ewmLog bash -c "chmod 777 tgMsg.sh;echo 'Running process ...' && bash tgMsg.sh;exec bash"
 # echo "tgId:"$tgIdQn"" >> ~/.bashrc
 # echo "tgApi:"$tgApiQn"" >> ~/.bashrc
 else
@@ -121,7 +119,7 @@ echo "See yaa ..."
 fi
 }
 
-function tgMsg(){
+function tgConf(){
 echo "
 # Send tg message
 function tgMsg(){
@@ -154,8 +152,8 @@ curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\
 done
 done
 }
-tgMsg;
-" > tgMsg.sh
+tgConf;
+" > tgConf.sh
 }
 
 
@@ -177,8 +175,25 @@ done
 function covalentLog(){
 for i in $(seq 1 $loop);
 do
-echo "To view node log execute 'screen -r covalent"$i"'"
+if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+then
+echo "To view node"$i" log execute 'screen -r covalent"$i"'"
+echo "To view ipfs"$i" log execute 'screen -r ipfs"$i"'"
+else
+echo "To view node"$i" log execute 'screen -r covalent"$i"'"
+echo "To view ipfs log execute 'screen -r ipfs'"
+fi
 done
+}
+
+function tgInit(){
+if [[ "$tgQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+then
+tgConf;
+screen -dmS ewmLog bash -c "chmod 777 tgMsg.sh;echo 'Running process ...' && bash tgMsg.sh;exec bash"
+else
+echo "Telegram bot: Not configured, Next ..."
+fi
 }
 
 function ipfsConf(){
@@ -339,7 +354,6 @@ echo '
 
 # ipfs entrypoint
 function entryPointIpfs(){
-read -p "Do you want to running multiple ipfs ? (y/n)  : " ipfsQn
 if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 for i in $(seq 1 $loop);
@@ -354,6 +368,8 @@ fi
 
 myHeader;
 entryPointPK;
+read -p "Do you want to running multiple ipfs ? (y/n)  : " ipfsQn
+entryPointTg;
 myHeader;
 echo
 echo "==================== INSTALLATION START ===================="
@@ -384,7 +400,6 @@ runLightClient &&
 
 # Welldone ! 
 myHeader;
-echo "To view ipfs log execute 'screen -r ipfs'"
 covalentLog;
 echo
 echo "================== INSTALLED DEPENDENCIES =================="
@@ -394,5 +409,5 @@ ipfs version
 echo
 echo "=================== INSTALLATION SUCCESS ==================="
 echo
-entryPointTg;
+tgInit
 unset $loop;
