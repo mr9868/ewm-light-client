@@ -351,10 +351,7 @@ echo '
 }
 ' > ~/.ipfs$i/config
 
-echo '
-datastore_spec
-{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}
-' > ~/.ipfs$i/datastore_spec
+echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ~/.ipfs$i/datastore_spec
 echo '16' > ~/.ipfs$i/version
 }
 
