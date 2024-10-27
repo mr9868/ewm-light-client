@@ -184,9 +184,11 @@ echo "To view node"$i" log execute 'screen -r covalent"$i"'"
 echo "To view ipfs"$i" log execute 'screen -r ipfs"$i"'"
 done
 else
-
+for i in $(seq 1 $loop);
+do
 echo "To view node"$i" log execute 'screen -r covalent"$i"'"
 echo "To view ipfs log execute 'screen -r ipfs'"
+done
 fi
 }
 
