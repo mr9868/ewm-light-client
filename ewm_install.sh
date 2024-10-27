@@ -358,7 +358,9 @@ if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 for i in $(seq 1 $loop);
 do
-rm -rf ~/.ipfs*
+sudo ufw allow 500$1
+sudo ufw allow 400$1
+sudo ufw allow 808$i
 mkdir ~/.ipfs$i
 ipfsConf
 screen -dmS ipfs$i -L -Logfile ipfs$i.log bash -c "IPFS_PATH=~/.ipfs"$i" ipfs daemon --init;exec bash;" 
@@ -381,6 +383,7 @@ echo
 sudo apt install screen -y && 
 sudo apt install git -y &&
 sudo apt install wget -y &&
+sudo apt install ufw -y &&
 checkGo &&
 checkIpfs &&
 git clone https://github.com/covalenthq/ewm-das && 
