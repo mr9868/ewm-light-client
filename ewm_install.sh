@@ -5,6 +5,7 @@
 cd;
 sudo rm -rf ewm-das;
 sudo pkill -f "covalent" &&
+sudo pkill -f "ipfs" &&
 goLts="1.23.2" &&
 ipfsLts="31"
 
@@ -110,7 +111,8 @@ if [[ "$tgQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
-screen -dmS ewmLog && tgMsg & 
+tgMsg;
+screen -dmS ewmLog bash -c "chmod 777 tgMsg.sh; bash tgMsg.sh;exec bash"
 # echo "tgId:"$tgIdQn"" >> ~/.bashrc
 # echo "tgApi:"$tgApiQn"" >> ~/.bashrc
 else
@@ -118,25 +120,31 @@ echo "Next step ..."
 fi
 }
 
+function tgMsg(){
+echo "
 # Send tg message
 function tgMsg(){
 # Set the API token and chat ID
-API_TOKEN="$tgApiQn"   
-CHAT_ID="$tgIdQn"
-MESSAGE=$(eval "cat ipfs.log");   
-curl -s -X POST https://api.telegram.org/bot$API_TOKEN/sendMessage -d chat_id=$CHAT_ID -d text="$MESSAGE"
+API_TOKEN=$tgApiQn   
+CHAT_ID=$tgIdQn
+MESSAGE=\$(eval 'cat ipfs.log');   
+curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text='\$MESSAGE'
 
 while sleep 10;
 do
-for i in $(seq 1 $loop);
+for i in \$(seq 1 $loop);
 do       
-varLog="cat covalent"$i".log | grep -c 'verified=true'"
+varLog='cat covalent"$i".log | grep -c verified=true
+
 # Set the message text                     
-MESSAGE="Account "$i": $(eval $varLog) block verified";  
+MESSAGE='Account "$i": \$(eval \$varLog) block verified'; 
 # Use the curl command to send the message       
-curl -s -X POST https://api.telegram.org/bot$API_TOKEN/sendMessage -d chat_id=$CHAT_ID -d text="$MESSAGE"
+curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text='\$MESSAGE'
 done
 done
+}
+tgMsg
+" > tgMsg.sh
 }
 
 
