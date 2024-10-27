@@ -127,7 +127,7 @@ function tgMsg(){
 # Set the API token and chat ID
 API_TOKEN=$tgApiQn   
 CHAT_ID=$tgIdQn
-MESSAGE=\$(eval \"cat ipfs.log\");   
+MESSAGE=\$(eval \"cat -f ipfs.log\");   
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$MESSAGE\"
 while sleep 10;
 do
@@ -152,7 +152,7 @@ function runLightClient(){
 for i in $(seq 1 $loop);
 do
 varPkeyLc=$(eval "echo \$pkey$i")
-screen -dmS covalent$i bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc" | sudo tee covalent"$i".log;exec bash"
+screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc" | sudo tee covalent"$i".log;exec bash"
 done
 }
 
@@ -189,7 +189,7 @@ make  &&
 sudo bash install-trusted-setup.sh &&
 
 # Running ipfs daemon
-screen -dmS ipfs bash -c "ipfs daemon --init | sudo tee ipfs.log;exec bash;" && 
+screen -dmS ipfs -L -Logfile ipfs.log bash -c "ipfs daemon --init;exec bash;" && 
 
 # Installing covalent light-client node
 sudo cp -r bin/light-client /usr/local/bin/light-client && 
