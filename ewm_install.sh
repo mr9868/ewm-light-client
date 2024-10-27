@@ -112,7 +112,7 @@ then
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
 tgMsg;
-screen -dmS ewmLog bash -c "chmod 777 tgMsg.sh; bash tgMsg.sh;exec bash"
+screen -dmS ewmLog bash -c "chmod 777 tgMsg.sh;echo 'Running process ...' && bash tgMsg.sh;exec bash"
 # echo "tgId:"$tgIdQn"" >> ~/.bashrc
 # echo "tgApi:"$tgApiQn"" >> ~/.bashrc
 else
