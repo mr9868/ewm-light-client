@@ -132,9 +132,9 @@ MESSAGE=\$(eval \"cat ipfs.log\");
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$MESSAGE\"
 while sleep 2;
 do
-for akun in \$(seq 1 $loop);
+for i in \$(seq 1 $loop);
 do  
-msgStart=\$(eval \"cat covalent\"\$akun\".log | grep 'Client id' | awk '{print \$7}'\")
+msgStart=\$(eval \"cat covalent\"\$i\".log | grep 'Client id' | awk '{print \$7}'\")
 accStart=\$(eval \"echo 'Account \$i address : \$msgStart'\")
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$accStart\"
 done
