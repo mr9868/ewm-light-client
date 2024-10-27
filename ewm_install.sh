@@ -7,7 +7,7 @@ sudo rm -rf ewm-das;
 sudo pkill -f "covalent*" &&
 sudo pkill -f "ipfs*" &&
 sudo pkill -f "ewmLog" &&
-sudo rm -rf .ipfs* &&
+sudo rm -rf ~/.ipfs* &&
 goLts="1.23.2" &&
 ipfsLts="31"
 
@@ -358,6 +358,7 @@ if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 for i in $(seq 1 $loop);
 do
+rm -rf ~/.ipfs*
 mkdir ~/.ipfs$i
 ipfsConf
 screen -dmS ipfs$i -L -Logfile ipfs$i.log bash -c "IPFS_PATH=~/.ipfs"$i" ipfs daemon --init;exec bash;" 
