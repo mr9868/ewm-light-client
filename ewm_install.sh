@@ -164,7 +164,12 @@ function runLightClient(){
 for i in $(seq 1 $loop);
 do
 varPkeyLc=$(eval "echo \$pkey$i")
+if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+then
+screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :500"$i" --private-key "$varPkeyLc" | sudo tee covalent"$i".log;exec bash"
+else
 screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc" | sudo tee covalent"$i".log;exec bash"
+fi
 done
 }
 
@@ -174,7 +179,177 @@ for i in $(seq 1 $loop);
 do
 echo "To view node log execute 'screen -r covalent"$i"'"
 done
-unset i
+}
+
+function ipfsConf(){
+echo '
+{
+  "API": {
+    "HTTPHeaders": {}
+  },
+  "Addresses": {
+    "API": "/ip4/127.0.0.1/tcp/500'$i'",
+    "Announce": null,
+    "AppendAnnounce": null,
+    "Gateway": "/ip4/127.0.0.1/tcp/808'$i'",
+    "NoAnnounce": null,
+    "Swarm": [
+      "/ip4/0.0.0.0/tcp/400'$i'",
+      "/ip6/::/tcp/400'$i'",
+      "/ip4/0.0.0.0/udp/400'$i'/webrtc-direct",
+      "/ip4/0.0.0.0/udp/400'$i'/quic-v1",
+      "/ip4/0.0.0.0/udp/400'$i'/quic-v1/webtransport",
+      "/ip6/::/udp/400'$i'/webrtc-direct",
+      "/ip6/::/udp/400'$i'/quic-v1",
+      "/ip6/::/udp/400'$i'/quic-v1/webtransport"
+    ]
+  },
+  "AutoNAT": {},
+  "Bootstrap": [
+    "/dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN",
+    "/dnsaddr/bootstrap.libp2p.io/p2p/QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa",
+    "/dnsaddr/bootstrap.libp2p.io/p2p/QmbLHAnMoJPWSCR5Zhtx6BHJX9KiKNN6tpvbUcqanj75Nb",
+    "/dnsaddr/bootstrap.libp2p.io/p2p/QmcZf59bWwK5XFi76CZX8cbJ4BhTzzA3gU1ZjYZcYW3dwt",
+    "/ip4/104.131.131.82/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ",
+    "/ip4/104.131.131.82/udp/4001/quic-v1/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ"
+  ],
+  "DNS": {
+    "Resolvers": {}
+  },
+  "Datastore": {
+    "BloomFilterSize": 0,
+    "GCPeriod": "1h",
+    "HashOnRead": false,
+    "Spec": {
+      "mounts": [
+        {
+          "child": {
+            "path": "blocks",
+            "shardFunc": "/repo/flatfs/shard/v1/next-to-last/2",
+            "sync": true,
+            "type": "flatfs"
+          },
+          "mountpoint": "/blocks",
+          "prefix": "flatfs.datastore",
+          "type": "measure"
+        },
+        {
+          "child": {
+            "compression": "none",
+            "path": "datastore",
+            "type": "levelds"
+          },
+          "mountpoint": "/",
+          "prefix": "leveldb.datastore",
+          "type": "measure"
+        }
+      ],
+      "type": "mount"
+    },
+    "StorageGCWatermark": 90,
+    "StorageMax": "10GB"
+  },
+  "Discovery": {
+    "MDNS": {
+      "Enabled": true
+    }
+  },
+  "Experimental": {
+    "FilestoreEnabled": false,
+    "Libp2pStreamMounting": false,
+    "OptimisticProvide": false,
+    "OptimisticProvideJobsPoolSize": 0,
+    "P2pHttpProxy": false,
+    "StrategicProviding": false,
+    "UrlstoreEnabled": false
+  },
+  "Gateway": {
+    "DeserializedResponses": null,
+    "DisableHTMLErrors": null,
+    "ExposeRoutingAPI": null,
+    "HTTPHeaders": {},
+    "NoDNSLink": false,
+    "NoFetch": false,
+    "PublicGateways": null,
+    "RootRedirect": ""
+  },
+  "Identity": {
+    "PeerID": "12D3KooWQHfx6z8tYf35wPpidxEnom4cczkg55fUBU2wpFRwxdek",
+    "PrivKey": "CAESQNbZWjzcfuv2euUlx2c8o+XoxAlHhaG+jEI7FvzsiLGC1wJnsaxmbVj2ieVryhlrzKAaoXF4iU+D9ry52cKBSZU="
+  },
+  "Import": {
+    "CidVersion": null,
+    "HashFunction": null,
+    "UnixFSChunker": null,
+    "UnixFSRawLeaves": null
+  },
+  "Internal": {},
+  "Ipns": {
+    "RecordLifetime": "",
+    "RepublishPeriod": "",
+    "ResolveCacheSize": 128
+  },
+  "Migration": {
+    "DownloadSources": [],
+    "Keep": ""
+  },
+  "Mounts": {
+    "FuseAllowOther": false,
+    "IPFS": "/ipfs",
+    "IPNS": "/ipns"
+  },
+  "Peering": {
+    "Peers": null
+  },
+  "Pinning": {
+    "RemoteServices": {}
+  },
+  "Plugins": {
+    "Plugins": null
+  },
+  "Provider": {
+    "Strategy": ""
+  },
+  "Pubsub": {
+    "DisableSigning": false,
+    "Router": ""
+  },
+  "Reprovider": {},
+  "Routing": {
+    "Methods": null,
+    "Routers": null
+  },
+  "Swarm": {
+    "AddrFilters": null,
+    "ConnMgr": {},
+    "DisableBandwidthMetrics": false,
+    "DisableNatPortMap": false,
+    "RelayClient": {},
+    "RelayService": {},
+    "ResourceMgr": {},
+    "Transports": {
+      "Multiplexers": {},
+      "Network": {},
+      "Security": {}
+    }
+  }
+}
+' > /root/.ipfs$i
+}
+
+# ipfs entrypoint
+function entryPointIpfs(){
+read -p "Do you want to running multiple ipfs ? (y/n)  : " ipfsQn
+if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+then
+for i in $(seq 1 $loop);
+do
+ipfsConf
+screen -dmS ipfs$i -L -Logfile ipfs$i.log bash -c "IPFS_PATH=~/.ipfs"$i" ipfs daemon --init;exec bash;" 
+done
+else
+echo "Next ..."
+fi
 }
 
 myHeader;
@@ -201,7 +376,7 @@ make  &&
 sudo bash install-trusted-setup.sh &&
 
 # Running ipfs daemon
-screen -dmS ipfs -L -Logfile ipfs.log bash -c "ipfs daemon --init;exec bash;" && 
+entryPointIpfs &&
 
 # Installing covalent light-client node
 sudo cp -r bin/light-client /usr/local/bin/light-client && 
