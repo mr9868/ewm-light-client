@@ -7,6 +7,7 @@ sudo rm -rf ewm-das;
 sudo pkill -f "covalent*" &&
 sudo pkill -f "ipfs*" &&
 sudo pkill -f "ewmLog" &&
+sudo rm -rf .ipfs* &&
 goLts="1.23.2" &&
 ipfsLts="31"
 
