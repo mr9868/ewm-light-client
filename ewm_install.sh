@@ -133,7 +133,7 @@ curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\
 
 for akun in \$(seq 1 $loop);
 do  
-sleep 300;
+sleep 120;
 msgStart=\$(eval \"cat covalent\"\$akun\".log | grep 'Client id' | awk '{print \$7}'\")
 accStart=\$(eval \"echo 'Account \$akun address : \$msgStart'\")
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$accStart\"
