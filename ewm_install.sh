@@ -4,7 +4,6 @@
 # Make sure there is nothing complicated
 cd;
 sudo rm -rf ewm-das;
-sudo rm ewm_install.sh;
 sudo pkill -f "covalent";
 goLts="1.23.2"
 ipfsLts="31"
