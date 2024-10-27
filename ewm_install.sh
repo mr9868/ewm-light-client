@@ -134,7 +134,7 @@ while sleep 10;
 do
 for i in \$(seq 1 $loop);
 do       
-varLog='cat covalent"$i".log | grep -c verified=true
+varLog='cat covalent"$i".log | grep -c verified=true'
 
 # Set the message text                     
 MESSAGE='Account "$i": \$(eval \$varLog) block verified'; 
