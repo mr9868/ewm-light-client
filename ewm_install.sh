@@ -357,6 +357,7 @@ if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 for i in $(seq 1 $loop);
 do
+mkdir ~/.ipfs$i
 ipfsConf
 screen -dmS ipfs$i -L -Logfile ipfs$i.log bash -c "IPFS_PATH=~/.ipfs"$i" ipfs daemon --init;exec bash;" 
 done
