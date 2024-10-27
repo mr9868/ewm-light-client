@@ -127,7 +127,7 @@ function tgMsg(){
 # Set the API token and chat ID
 API_TOKEN=\"$tgApiQn\"
 CHAT_ID=\"$tgIdQn\"
-sleep 60;
+sleep 200;
 for akun in \$(seq 1 $loop);
 do  
 MESSAGE=\$(eval \" cat ipfs\"\$akun\".log | grep ready\"); 
