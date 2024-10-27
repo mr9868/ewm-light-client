@@ -128,7 +128,8 @@ function tgMsg(){
 # Set the API token and chat ID
 API_TOKEN=$tgApiQn   
 CHAT_ID=$tgIdQn
-MESSAGE=\$(eval \" cat ipfs.log\");   
+MESSAGE=\$(eval \" cat ipfs.log\"); 
+MESSAGE+=\"\nPlease wait for 1-2 hours\";
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$MESSAGE\"
 sleep 30;
 for akun in \$(seq 1 $loop);
