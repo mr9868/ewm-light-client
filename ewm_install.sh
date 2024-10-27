@@ -6,6 +6,7 @@ cd;
 sudo rm -rf ewm-das;
 sudo pkill -f "covalent*" &&
 sudo pkill -f "ipfs*" &&
+sudo pkill -f "ewmLog" &&
 goLts="1.23.2" &&
 ipfsLts="31"
 
@@ -116,7 +117,7 @@ screen -dmS ewmLog bash -c "chmod 777 tgMsg.sh;echo 'Running process ...' && bas
 # echo "tgId:"$tgIdQn"" >> ~/.bashrc
 # echo "tgApi:"$tgApiQn"" >> ~/.bashrc
 else
-echo "Next step ..."
+echo "See yaa ..."
 fi
 }
 
@@ -133,7 +134,7 @@ while sleep 1800;
 do
 for i in \$(seq 1 $loop);
 do  
-msgCount=\$(eval \"cat covalent\"\$i\".log | grep -c 'verified=true'\")
+msgCount=\$(eval \"cat covalent\"\$i\".log | grep -c 'verified'\")
 accMsg=\$(eval \"echo 'Account \$i has \$msgCount verified blocks'\")
 ipfsMsg=\$(eval \"cat ipfs.log | grep 'ERROR'\");   
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$accMsg\"                
