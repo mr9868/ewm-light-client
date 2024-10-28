@@ -88,16 +88,15 @@ for i in $(seq 1 $loop);
 do
 myHeader;
 echo "How many light-node do you want to run  : "$loop""
-read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey
-varInputPkey="pkey$i=$pkey"
+read -p "Input your $(eval 'echo -e  "\033[1;33m client $i\033[0m"') hexadecimal Private Keys ( without 0x ) : " pkeyvarInputPkey="pkey$i=$pkey"
 eval $varInputPkey
 varPkey="echo \$pkey$i"
 #echo 'export pkey'$i'='$(eval $varPkey)'' >> ~/.bashrc
 until [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]
 do
   myHeader;
-  echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
   echo "How many light-node do you want to run  : "$loop""
+  echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
   read -p "Input your client "$i" hexadecimal Private Keys ( without 0x ) : " pkey
   varInputPkey="pkey$i=$pkey"
   eval $varInputPkey
@@ -423,6 +422,7 @@ sudo apt install git -y &&
 sudo apt install wget -y &&
 sudo apt install ufw -y && >/dev/null 2>&1 & disown'
 entryPointPK;
+myHeader;
 checkGo &&
 checkIpfs &&
 myHeader;
@@ -434,7 +434,7 @@ read -p "Do you want to set automatic port ? (y/n)  : " ipfsAutoQn
 # Running ipfs daemon
 entryPointIpfs &&
 entryPointTg;
-#myHeader;
+myHeader;
 echo
 echo "==================== INSTALLATION START ===================="
 echo
