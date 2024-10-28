@@ -33,7 +33,8 @@ then close again the screen by pressing ctrl + a +d
 4. Setting up your bot names eg: Covalent Monitor Bot
 5. Setting up your bot username eg: MyCovalentMonitor_Bot
 
- *Warning: Username is unique, username cannot be the same with other telegram users*
+*Warning: Username is unique, username cannot be the same with other telegram users*
+
 7. Write up your HTTP API
 8. Start your bot
 
