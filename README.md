@@ -29,13 +29,14 @@ then close again the screen by pressing ctrl + a +d
 ### How to setting up telegram bot and get your bot API KEY
 1. Go to [https://t.me/botfather]
 2. Start the bot
-3. Setting up your bot names eg: Covalent Bot
-4. Setting up your bot username eg: CovalentBot
-5. Write up your HTTP API
-6. Start your bot
+3. type */newbot*
+4. Setting up your bot names eg: Covalent Bot
+5. Setting up your bot username eg: CovalentBot
+6. Write up your HTTP API
+7. Start your bot
 
 ### Here is the example :
-[![2Bcvztj.md.jpg](https://iili.io/2Bcvztj.md.jpg)](https://freeimage.host/i/2Bcvztj)
+[![2BcmmUF.md.jpg](https://iili.io/2BcmmUF.md.jpg)](https://freeimage.host/i/2BcmmUF)
 
 ### How to get your chat ID
 1. Go to [https://t.me/getidsbot] 
