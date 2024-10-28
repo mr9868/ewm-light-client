@@ -166,9 +166,9 @@ do
 varPkeyLc=$(eval "echo \$pkey$i")
 if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :50"$i" --private-key "$varPkeyLc" | sudo tee covalent"$i".log;exec bash"
+screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :50"$i" --private-key "$varPkeyLc" ;exec bash"
 else
-screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc" | sudo tee covalent"$i".log;exec bash"
+screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc" ;exec bash"
 fi
 done
 }
@@ -375,7 +375,7 @@ ipfsConf
 screen -dmS ipfs$i -L -Logfile ipfs$i.log bash -c "IPFS_PATH=~/.ipfs"$i" ipfs daemon --init;exec bash;" 
 done
 else
-screen -dmS ipfs -L -Logfile ipfs.log bash -c "ipfs daemon --init;exec bash;" 
+screen -dmS ipfs -L -Logfile ipfs1.log bash -c "ipfs daemon --init;exec bash;" 
 fi
 }
 
