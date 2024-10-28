@@ -166,7 +166,12 @@ do
 varPkeyLc=$(eval "echo \$pkey$i")
 if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :50"$i" --private-key "$varPkeyLc" ;exec bash"
+if [[ "$ipfsAutoQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+then
+screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :"$mainPort" --private-key "$varPkeyLc" ;exec bash"
+else
+screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :"$mainPort" --private-key "$varPkeyLc" ;exec bash"
+fi
 else
 screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc" ;exec bash"
 fi
@@ -176,7 +181,7 @@ done
 # Covalent log
 function covalentLog(){
 
-if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+if [[ "$ipfsAutoQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 for i in $(seq 1 $loop);
 do
@@ -203,26 +208,32 @@ fi
 }
 
 function ipfsConf(){
+if [[ "$ipfsAutoQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+then
+mainPort="500"$i""
+secPort="400"$i""
+trdPort="808"$i""
+fi
 echo '
 {
   "API": {
     "HTTPHeaders": {}
   },
   "Addresses": {
-    "API": "/ip4/127.0.0.1/tcp/50'$i'",
+    "API": "/ip4/127.0.0.1/tcp/'$mainPort'",
     "Announce": null,
     "AppendAnnounce": null,
-    "Gateway": "/ip4/127.0.0.1/tcp/80'$i'",
+    "Gateway": "/ip4/127.0.0.1/tcp/'$trdPort'",
     "NoAnnounce": null,
     "Swarm": [
-      "/ip4/0.0.0.0/tcp/40'$i'",
-      "/ip6/::/tcp/40'$i'",
-      "/ip4/0.0.0.0/udp/40'$i'/webrtc-direct",
-      "/ip4/0.0.0.0/udp/40'$i'/quic-v1",
-      "/ip4/0.0.0.0/udp/40'$i'/quic-v1/webtransport",
-      "/ip6/::/udp/40'$i'/webrtc-direct",
-      "/ip6/::/udp/40'$i'/quic-v1",
-      "/ip6/::/udp/40'$i'/quic-v1/webtransport"
+      "/ip4/0.0.0.0/tcp/'$secPort'",
+      "/ip6/::/tcp/'$secPort'",
+      "/ip4/0.0.0.0/udp/'$secPort'/webrtc-direct",
+      "/ip4/0.0.0.0/udp/'$secPort'/quic-v1",
+      "/ip4/0.0.0.0/udp/'$secPort'/quic-v1/webtransport",
+      "/ip6/::/udp/'$secPort'/webrtc-direct",
+      "/ip6/::/udp/'$secPort'/quic-v1",
+      "/ip6/::/udp/'$secPort'/quic-v1/webtransport"
     ]
   },
   "AutoNAT": {},
@@ -365,6 +376,8 @@ echo '16' > ~/.ipfs$i/version
 function entryPointIpfs(){
 if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
+if [[ "$ipfsAutoQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+then
 for i in $(seq 1 $loop);
 do
 sudo ufw allow 50$1
@@ -375,13 +388,36 @@ ipfsConf
 screen -dmS ipfs$i -L -Logfile ipfs$i.log bash -c "IPFS_PATH=~/.ipfs"$i" ipfs daemon --init;exec bash;" 
 done
 else
+read -p "Set main port eg. 5001 : " mainPort
+read -p "Set seccond port eg. 4001 : " secPort
+read -p "Set third port eg. 8080 : " trdPort
+if [[ "$mainPort" == "" ]];
+then
+mainPort="5001"
+fi
+if [[ "$secPort" == "" ]];
+then
+secPort="4001"
+fi
+if [[ "$trdPort" == "" ]];
+then
+trdPort="8080"
+fi
+sudo ufw allow $mainPort
+sudo ufw allow $secPort
+sudo ufw allow $trdPort
+ipfsConf
+screen -dmS ipfs1 -L -Logfile ipfs1.log bash -c "IPFS_PATH=~/.ipfs1 ipfs daemon --init;exec bash;" 
+fi
+else
 screen -dmS ipfs -L -Logfile ipfs1.log bash -c "ipfs daemon --init;exec bash;" 
 fi
 }
 
 myHeader;
 entryPointPK;
-read -p "Do you want to running multiple ipfs ? (y/n)  : " ipfsQn
+read -p "Do you want to set client port ? (y/n)  : " ipfsQn
+read -p "Do you want to set automatic port ? (y/n)  : " ipfsAutoQn
 entryPointTg;
 myHeader;
 echo
