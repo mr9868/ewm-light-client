@@ -30,8 +30,9 @@ then close again the screen by pressing ctrl + a +d
 1. Go to [https://t.me/botfather]
 2. Start the bot
 3. type */newbot*
-4. Setting up your bot names eg: Covalent Bot
-5. Setting up your bot username eg: CovalentBot
+4. Setting up your bot names eg: Covalent Monitor Bot
+5. Setting up your bot username eg: MyCovalentMonitor_Bot
+ *Warning: Username is unique, username cannot be the same with other telegram users*
 6. Write up your HTTP API
 7. Start your bot
 
