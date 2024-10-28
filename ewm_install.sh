@@ -417,6 +417,7 @@ fi
 myHeader;
 entryPointPK;
 read -p "Do you want to set client port ? (y/n)  : " ipfsQn
+echo "Note: If you choose automatic port, light client and IPFS will run different port on each account"
 read -p "Do you want to set automatic port ? (y/n)  : " ipfsAutoQn
 entryPointTg;
 myHeader;
