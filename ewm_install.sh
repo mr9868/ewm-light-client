@@ -213,6 +213,8 @@ then
 mainPort="500"$i""
 secPort="400"$i""
 trdPort="808"$i""
+else
+i=1
 fi
 echo '
 {
@@ -416,6 +418,10 @@ fi
 }
 
 myHeader;
+sudo bash -c 'sudo apt install screen -y && 
+sudo apt install git -y &&
+sudo apt install wget -y &&
+sudo apt install ufw -y && >/dev/null 2>&1 & disown'
 entryPointPK;
 checkGo &&
 checkIpfs &&
@@ -434,10 +440,6 @@ echo "==================== INSTALLATION START ===================="
 echo
 
 # Installing required package
-sudo apt install screen -y && 
-sudo apt install git -y &&
-sudo apt install wget -y &&
-sudo apt install ufw -y &&
 git clone https://github.com/covalenthq/ewm-das && 
 cd ewm-das && 
 sudo bash install-trusted-setup.sh &&
