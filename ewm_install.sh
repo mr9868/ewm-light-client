@@ -88,7 +88,7 @@ for i in $(seq 1 $loop);
 do
 myHeader;
 echo "How many light-node do you want to run  : "$loop""
-read -p "Input your \033[1;33m client $i \033[0m hexadecimal Private Keys ( without 0x ) : " pkey
+read -p "$(eval 'echo -e "Input your \033[1;33m client $i \033[0m hexadecimal Private Keys ( without 0x ) : "')" pkey
 varInputPkey="pkey$i=$pkey"
 eval $varInputPkey
 varPkey=$(eval "echo \$pkey$i")
@@ -98,7 +98,7 @@ do
   myHeader;
   echo "How many light-node do you want to run  : "$loop""
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
-  read -p "Input your \033[1;33m client $i \033[0m hexadecimal Private Keys ( without 0x ) : " pkey
+  read -p "$(eval 'echo -e "Input your \033[1;33m client $i \033[0m hexadecimal Private Keys ( without 0x ) : "')" pkey
   varInputPkey="pkey$i=$pkey"
   eval $varInputPkey
   varPkey=$(eval "echo \$pkey$i")
