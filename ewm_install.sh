@@ -406,6 +406,7 @@ fi
 sudo ufw allow $mainPort
 sudo ufw allow $secPort
 sudo ufw allow $trdPort
+mkdir ~/.ipfs1
 ipfsConf
 screen -dmS ipfs1 -L -Logfile ipfs1.log bash -c "IPFS_PATH=~/.ipfs1 ipfs daemon --init;exec bash;" 
 fi
