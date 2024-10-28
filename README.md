@@ -26,6 +26,7 @@ ipfs daemon --init
 ```
 then close again the screen by pressing ctrl + a +d
 
+[![2Bcvztj.md.jpg](https://iili.io/2Bcvztj.md.jpg)](https://freeimage.host/i/2Bcvztj)
 
 ## Remove light-client
 Warning ! Do this below just for remove your node only !
