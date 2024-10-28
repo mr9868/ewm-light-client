@@ -32,9 +32,10 @@ then close again the screen by pressing ctrl + a +d
 3. type */newbot*
 4. Setting up your bot names eg: Covalent Monitor Bot
 5. Setting up your bot username eg: MyCovalentMonitor_Bot
+
  *Warning: Username is unique, username cannot be the same with other telegram users*
-6. Write up your HTTP API
-7. Start your bot
+7. Write up your HTTP API
+8. Start your bot
 
 ### Here is the example :
 [![2BcmmUF.md.jpg](https://iili.io/2BcmmUF.md.jpg)](https://freeimage.host/i/2BcmmUF)
