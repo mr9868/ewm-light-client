@@ -26,7 +26,25 @@ ipfs daemon --init
 ```
 then close again the screen by pressing ctrl + a +d
 
+### How to setting up telegram bot and get your bot API KEY
+1. Go to [https://t.me/botfather]
+2. Start the bot
+3. Setting up your bot names eg: Covalent Bot
+4. Setting up your bot username eg: CovalentBot
+5. Write up your HTTP API
+6. Start your bot
+
+### Here is the example :
 [![2Bcvztj.md.jpg](https://iili.io/2Bcvztj.md.jpg)](https://freeimage.host/i/2Bcvztj)
+
+### How to get your chat ID
+1. Go to [https://t.me/getidsbot] 
+2. Start the bot
+3. Click and copy your chat ID
+
+### Here is the example
+[![2Bcsn1a.md.jpg](https://iili.io/2Bcsn1a.md.jpg)](https://freeimage.host/i/2Bcsn1a)
+
 
 ## Remove light-client
 Warning ! Do this below just for remove your node only !
