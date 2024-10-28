@@ -419,6 +419,11 @@ entryPointPK;
 read -p "Do you want to set client port ? (y/n)  : " ipfsQn
 echo "Note: If you choose automatic port, light client and IPFS will run different port on each account"
 read -p "Do you want to set automatic port ? (y/n)  : " ipfsAutoQn
+checkGo &&
+checkIpfs &&
+
+# Running ipfs daemon
+entryPointIpfs &&
 entryPointTg;
 myHeader;
 echo
@@ -430,8 +435,6 @@ sudo apt install screen -y &&
 sudo apt install git -y &&
 sudo apt install wget -y &&
 sudo apt install ufw -y &&
-checkGo &&
-checkIpfs &&
 git clone https://github.com/covalenthq/ewm-das && 
 cd ewm-das && 
 sudo bash install-trusted-setup.sh &&
@@ -442,8 +445,6 @@ make deps &&
 make  && 
 sudo bash install-trusted-setup.sh &&
 
-# Running ipfs daemon
-entryPointIpfs &&
 
 # Installing covalent light-client node
 sudo cp -r bin/light-client /usr/local/bin/light-client && 
