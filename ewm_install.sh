@@ -147,10 +147,10 @@ msgCount=\$(eval \" cat covalent\"\$i\".log | grep -c 'verified'\")
 msgError=\$(eval \" cat covalent\"\$i\".log | grep -E 'FATAL|ERROR'\")
 ipfsError=\$(eval \" cat ipfs\"\$i\".log | grep 'ERROR'\")
 accMsg=\$(eval \"echo ' Account \$i has \$msgCount verified blocks'\")  
-curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$accMsg\"                
-curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$msgError\"                
-# Use the curl command to send the message       
 curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$ipfsError\"
+curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$msgError\"                
+curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$accMsg\"                
+# Use the curl command to send the message       
 done
 done
 }
