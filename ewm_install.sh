@@ -86,23 +86,23 @@ read -p "How many light-node do you want to run  : " loop
 done
 for i in $(seq 1 $loop);
 do
-qnPkey=$(eval "echo -e 'Input your \033[1;33m client $i\033[0m hexadecimal Private Keys ( without 0x ) : '")
+qnPkey=$(eval "echo -e 'Input your \033[1;33m client $i \033[0m hexadecimal Private Keys ( without 0x ) : '")
 myHeader;
 echo "How many light-node do you want to run  : "$loop""
-read -p "$qnPkey" pkey
+read -p '$qnPkey' pkey
 varInputPkey="pkey$i=$pkey"
 eval $varInputPkey
-varPkey="echo \$pkey$i"
+varPkey=$(eval "echo \$pkey$i")
 #echo 'export pkey'$i'='$(eval $varPkey)'' >> ~/.bashrc
 until [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]
 do
   myHeader;
   echo "How many light-node do you want to run  : "$loop""
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
-  read -p "$qnPkey" pkey
+  read -p '$qnPkey' pkey
   varInputPkey="pkey$i=$pkey"
   eval $varInputPkey
-  varPkey="echo \$pkey$i"
+  varPkey=$(eval "echo \$pkey$i")
 done
 done
 }
@@ -164,17 +164,16 @@ tgMsg;
 function runLightClient(){
 for i in $(seq 1 $loop);
 do
-varPkeyLc=$(eval "echo \$pkey$i")
 if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 if [[ "$ipfsAutoQn" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :"$mainPort" --private-key "$varPkeyLc" ;exec bash"
+screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :"$mainPort" --private-key "$varPkey" ;exec bash"
 else
-screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :"$mainPort" --private-key "$varPkeyLc" ;exec bash"
+screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :"$mainPort" --private-key "$varPkey" ;exec bash"
 fi
 else
-screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkeyLc" ;exec bash"
+screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkey" ;exec bash"
 fi
 done
 }
