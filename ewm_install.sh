@@ -74,10 +74,10 @@ unset IFS;
 function entryPointPK(){
 # Check if PK meet requirement 
 read -p "How many light-node do you want to run  : " loop
-until [[ ${loop} =~ ^[0-9]+$ ]]
+until [[ ${loop} =~ ^[0-9]{2}$ ]]
 do
 myHeader;
-echo "Error: Please input in number !";
+echo "Error: Please input in 2 digits number !";
 read -p "How many light-node do you want to run  : " loop
 done
 if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
@@ -403,8 +403,23 @@ screen -dmS ipfs${i} -L -Logfile ipfs${i}.log bash -c "IPFS_PATH=~/.ipfs${i} ipf
 done
 else
 read -p "Set main port eg. 5001 : " mainPort
-read -p "Set seccond port eg. 4001 : " secPort
+until [[ ${mainPort} =~ ^[0-9]{4}$ ]]
+do
+echo "Please input in 4 digits number !"
+read -p "Set main port eg. 5001 : " mainPort
+done
+read -p "Set second port eg. 4001 : " secPort
+until [[ ${secPort} =~ ^[0-9]{4}$ ]]
+do
+echo "Please input in 4 digits number !"
+read -p "Set second port eg. 4001 : " secPort
+done
 read -p "Set third port eg. 8080 : " trdPort
+until [[ ${trdPort} =~ ^[0-9]{4}$ ]]
+do
+echo "Please input in 4 digits number !"
+read -p "Set trd port eg. 8080 : " trdPort
+done
 if [[ "${mainPort}" == "" ]];
 then
 mainPort="500${iLoop}"
