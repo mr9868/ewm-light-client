@@ -463,7 +463,7 @@ if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
      sleep 2;
      else
      sudo rm -rf ~/ewm-das
-     sudo rm -rf ~/ipfs*
+     sudo rm -rf ~/.ipfs*
      sudo pkill -f "covalent*"
      sudo pkill -f "ipfs*"
      checkGo &&
