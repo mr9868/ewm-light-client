@@ -4,7 +4,7 @@
 # Make sure there is nothing complicated
 goLts="1.23.2" &&
 ipfsLts="31" &&
-cfgDir=~/ewm-das/.mr9868/config;
+cfgDir=~/ewm-das/.mr9868;
 
 
 # My Header function
@@ -83,18 +83,18 @@ done
 export iLoop=1
 export jLoop=$loop
 export kLoop=$loop
-echo "\$iLoop=${iLoop}" >> $cfgDir
-echo "\$jLoop=${jLoop}" >> $cfgDir
-echo "\$kLoop=${kLoop}" >> $cfgDir
+echo "\$iLoop=${iLoop}" >> $cfgDir/config
+echo "\$jLoop=${jLoop}" >> $cfgDir/config
+echo "\$kLoop=${kLoop}" >> $cfgDir/config
 
 if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 export iLoop=$kLoop
 export jLoop=$iLoop+$loop
 export kLoop=$jLoop
-sed -r -i.bak "s/iLoop=([[:graph:]]+)/iLoop=${iLoop}/g" $cfgDir
-sed -r -i.bak "s/jLoop=([[:graph:]]+)/jLoop=${jLoop}/g" $cfgDir
-sed -r -i.bak "s/kLoop=([[:graph:]]+)/kLoop=${kLoop}/g" $cfgDir
+sed -r -i.bak "s/iLoop=([[:graph:]]+)/iLoop=${iLoop}/g" $cfgDir/config
+sed -r -i.bak "s/jLoop=([[:graph:]]+)/jLoop=${jLoop}/g" $cfgDir/config
+sed -r -i.bak "s/kLoop=([[:graph:]]+)/kLoop=${kLoop}/g" $cfgDir/config
 fi
 for i in $(seq $iLoop $jLoop);
 do
@@ -146,7 +146,7 @@ for akun in \$(seq ${iLoop} ${jLoop});
 do  
 MESSAGE=\$(eval \" cat ipfs\${akun}.log | grep ready\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
-msgStart=\$(eval \" cat covalent\${akun}.log | awk '{print tolower(\\\$0)}' | grep -ow '\w*0x\w*'\")
+msgStart=\$(eval \" cat ${cfgDir}/covalent\${akun}.log | awk '{print tolower(\\\$0)}' | grep -ow '\w*0x\w*'\")
 accStart=\$(eval \" echo 'Address \${akun} : \\\`\${msgStart}\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
 done
@@ -155,9 +155,9 @@ while sleep 1800;
 do
 for i in \$(seq ${iLoop} ${jLoop});
 do  
-msgCount=\$(eval \" cat covalent\${i}.log | grep -c 'verified'\")
-msgError=\$(eval \" cat covalent\${i}.log | grep -E 'FATAL|ERROR'\")
-ipfsError=\$(eval \" cat ipfs\${i}.log | grep 'ERROR'\")
+msgCount=\$(eval \" cat ${cfgDir}/covalent\${i}.log | grep -c 'verified'\")
+msgError=\$(eval \" cat ${cfgDir}/covalent\${i}.log | grep -E 'FATAL|ERROR'\")
+ipfsError=\$(eval \" cat ${cfgDir}/ipfs\${i}.log | grep 'ERROR'\")
 accMsg=\$(eval \"echo ' Account \${i} has \${msgCount} verified samples'\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsError}\"
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgError}\"                
@@ -167,7 +167,7 @@ done
 done
 }
 tgMsg;
-" > ~/ewm-das/.mr9868/tgConf${iLoop}.sh
+" > ${cfgDir}/tgConf${iLoop}.sh
 }
 
 
@@ -180,12 +180,12 @@ if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-screen -dmS covalent${i} -L -Logfile covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash"
+screen -dmS covalent${i} -L -Logfile ${cfgDir}/covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash"
 else
-screen -dmS covalent${i} -L -Logfile covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash"
+screen -dmS covalent${i} -L -Logfile ${cfgDir}/covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash"
 fi
 else
-screen -dmS covalent${i} -L -Logfile covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key ${varPkey} ;exec bash"
+screen -dmS covalent${i} -L -Logfile ${cfgDir}/covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key ${varPkey} ;exec bash"
 fi
 done
 }
@@ -213,7 +213,7 @@ function tgInit(){
 if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 tgConf;
-screen -dmS ewmLog bash -c "chmod 777 ~/.mr9868/tgConf${iLoop}.sh;bash ~/.mr9868/tgConf${iLoop}.sh;exec bash"
+screen -dmS ewmLog bash -c "chmod 777 ${cfgDir}/tgConf${iLoop}.sh;bash ${cfgDir}/tgConf${iLoop}.sh;exec bash"
 else
 echo "Telegram bot: Not configured, Next ..."
 fi
@@ -380,10 +380,10 @@ echo '
     }
   }
 }
-' > ~/.ipfs${i}/config
+' > ${cfgDir}/.ipfs${i}/config
 
 echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ~/.ipfs${i}/datastore_spec
-echo '16' > ~/.ipfs${i}/version
+echo '16' > ${cfgDir}/.ipfs${i}/version
 }
 
 # ipfs entrypoint
@@ -397,9 +397,9 @@ do
 sudo ufw allow 50${i}
 sudo ufw allow 40${i}
 sudo ufw allow 80${i}
-mkdir ~/.ipfs${i}
+mkdir ${cfgDir}/.ipfs${i}
 ipfsConf
-screen -dmS ipfs${i} -L -Logfile ipfs${i}.log bash -c "IPFS_PATH=~/.ipfs${i} ipfs daemon --init;exec bash;" 
+screen -dmS ipfs${i} -L -Logfile ${cfgDir}/ipfs${i}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${i} ipfs daemon --init;exec bash;" 
 done
 else
 read -p "Set main port eg. 5001 : " mainPort
@@ -435,14 +435,16 @@ fi
 sudo ufw allow ${mainPort}
 sudo ufw allow ${secPort}
 sudo ufw allow ${trdPort}
-mkdir ~/.ipfs${iLoop}
+mkdir ${cfgDir}/.ipfs${iLoop}
 ipfsConf
-screen -dmS ipfs${iLoop} -L -Logfile ipfs${iLoop}.log bash -c "IPFS_PATH=~/.ipfs${iLoop} ipfs daemon --init;exec bash;" 
+screen -dmS ipfs${iLoop} -L -Logfile $cfgDir/ipfs${iLoop}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${iLoop} ipfs daemon --init;exec bash;" 
 fi
 else
-screen -dmS ipfs${iLoop} -L -Logfile ipfs${iLoop}.log bash -c "IPFS_PATH=~/.ipfs${iLoop} ipfs daemon --init;exec bash;" 
+screen -dmS ipfs${iLoop} -L -Logfile ${cfgDir}/ipfs${iLoop}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${iLoop} ipfs daemon --init;exec bash;" 
 fi
 }
+
+
 function startUp(){
 cd;
 myHeader;
