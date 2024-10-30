@@ -478,12 +478,7 @@ else
 fi
 }
 function notInstalled(){
-echo "Installing required dependencies ..."
-   # sudo bash -c ' >/dev/null 2>&1 & disown' &&
-   sudo apt install screen -y && 
-   sudo apt install git -y &&
-   sudo apt install wget -y &&
-   sudo apt install ufw -y  &&
+     
 # Install ewm-das
      git clone https://github.com/covalenthq/ewm-das  &&
      cd ewm-das &&
@@ -498,6 +493,12 @@ echo "Installing required dependencies ..."
 
 function installer(){
 myHeader;
+echo "Installing required dependencies ..."
+   command -v screen >/dev/null 2>&1 || { echo >&2 "Screen is not found on this machine, Installing screen ... "; sleep 5;sudo apt install screen -y;} 
+   command -v git >/dev/null 2>&1 || { echo >&2 "Git is not found on this machine, Installing git ... "; sleep 5;sudo apt install git -y;}
+   command -v wget >/dev/null 2>&1 || { echo >&2 "Wget is not found on this machine, Installing Wget ... "; sleep 5;sudo apt install wget -y;}
+   command -v ufw >/dev/null 2>&1 || { echo >&2 "Ufw is not found on this machine, Installing go ... "; sleep 5;sudo apt install ufw -y;}
+   
 entryPointPK;
 myHeader;
 read -p "Do you want to set client port ? (y/n)  : " ipfsQn
