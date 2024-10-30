@@ -175,6 +175,7 @@ tgMsg;
 function runLightClient(){
 for i in $(seq ${iLoop} ${jLoop});
 do
+varPkey=$(eval "echo \${pkey}${i}")
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
@@ -196,13 +197,13 @@ if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 for i in $(seq ${iLoop} ${jLoop});
 do
-echo "To view node${i} log execute 'screen -r covalent$i}'"
+echo "To view node${i} log execute 'screen -r covalent${i}'"
 echo "To view ipfs${i} log execute 'screen -r ipfs${i}'"
 done
 else
 for i in $(seq ${iLoop} ${jLoop});
 do
-echo "To view node${i}™log execute 'screen -r covalent${i}'"
+echo "To view node${i} log execute 'screen -r covalent${i}'"
 done
 echo "To view ipfs log execute 'screen -r ipfs'"
 fi
