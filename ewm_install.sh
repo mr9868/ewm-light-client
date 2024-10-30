@@ -48,7 +48,7 @@ command -v go >/dev/null 2>&1 || { echo >&2 "Go is not found on this machine, In
 v=`go version | { read _ _ v _; echo ${v#go}; }`
 IFS="." tokens=( ${v} );
 version=${tokens[1]};
-if (($version<23)); then 
+if (("$version"<"23")); then 
 echo "Your go version '${version}' is outdated, Updating your go ...";sleep 5; installGo;
 else 
 echo "Your go version '${version}' is up to date, Next step ...";sleep 5;
@@ -478,17 +478,16 @@ else
 fi
 }
 function notInstalled(){
-     
-# Install ewm-das
-     git clone https://github.com/covalenthq/ewm-das  &&
-     cd ewm-das &&
-     mkdir ~/ewm-das/.mr9868 &&
      sudo rm -rf ~/ewm-das
      sudo rm -rf ~/.ipfs*
      sudo pkill -f "covalent*"
      sudo pkill -f "ipfs*"
      checkGo &&
      checkIpfs 
+# Install ewm-das
+     git clone https://github.com/covalenthq/ewm-das  &&
+     cd ewm-das &&
+     mkdir ~/ewm-das/.mr9868 &&
 }
 
 function installer(){
@@ -497,7 +496,7 @@ echo "Installing required dependencies ..."
    command -v screen >/dev/null 2>&1 || { echo >&2 "Screen is not found on this machine, Installing screen ... "; sleep 5;sudo apt install screen -y;} 
    command -v git >/dev/null 2>&1 || { echo >&2 "Git is not found on this machine, Installing git ... "; sleep 5;sudo apt install git -y;}
    command -v wget >/dev/null 2>&1 || { echo >&2 "Wget is not found on this machine, Installing Wget ... "; sleep 5;sudo apt install wget -y;}
-   command -v ufw >/dev/null 2>&1 || { echo >&2 "Ufw is not found on this machine, Installing go ... "; sleep 5;sudo apt install ufw -y;}
+   command -v ufw >/dev/null 2>&1 || { echo >&2 "Ufw is not found on this machine, Installing ufw ... "; sleep 5;sudo apt install ufw -y;}
    
 entryPointPK;
 myHeader;
