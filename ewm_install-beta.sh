@@ -411,7 +411,6 @@ then
 trdPort=8080
 fi
 lastRow=${#privKey[@]}
-do
 sudo ufw allow ${mainPort}
 sudo ufw allow ${secPort}
 sudo ufw allow ${trdPort}
