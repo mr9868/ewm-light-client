@@ -167,7 +167,7 @@ done
 done
 }
 tgMsg;
-" > tgConf.sh
+" > ~/.mr9868/tgConf${iLoop}.sh
 }
 
 
@@ -212,7 +212,7 @@ function tgInit(){
 if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 tgConf;
-screen -dmS ewmLog bash -c "chmod 777 tgConf.sh;bash tgConf.sh;exec bash"
+screen -dmS ewmLog bash -c "chmod 777 ~/.mr9868/tgConf${iLoop}.sh;bash ~/.mr9868/tgConf${iLoop}.sh;exec bash"
 else
 echo "Telegram bot: Not configured, Next ..."
 fi
