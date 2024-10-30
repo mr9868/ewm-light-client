@@ -469,10 +469,13 @@ fi
 
 function installer(){
 myHeader;
+echo "Installing required dependencies ..."
 sudo bash -c 'sudo apt install screen -y && 
      sudo apt install git -y &&
      sudo apt install wget -y &&
-     sudo apt install ufw -y >/dev/null 2>&1 & disown'
+     sudo apt install ufw -y >/dev/null 2>&1 & disown' &&
+echo "Installed, Next ..."
+
 if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
      then
      echo "Next ..."
