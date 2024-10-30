@@ -74,7 +74,7 @@ unset IFS;
 function entryPointPK(){
 # Check if PK meet requirement 
 read -p "How many light-node do you want to run  : " loop
-until [[ ${loop} =~ ^[0-9]{2}$ ]]
+until [[ ${loop} =~ ^[0-9]+{2}$ ]]
 do
 myHeader;
 echo "Error: Please input in 2 digits number !";
