@@ -447,7 +447,7 @@ ipfsConf
 screen -dmS ipfs${iLoop} -L -Logfile ipfs${iLoop}.log bash -c "IPFS_PATH=~/.ipfs${iLoop} ipfs daemon --init;exec bash;" 
 fi
 else
-screen -dmS ipfs${iLoop} -L -Logfile ipfs${iLoop}.log bash -c "ipfs daemon --init;exec bash;" 
+screen -dmS ipfs${iLoop} -L -Logfile ipfs${iLoop}.log bash -c "IPFS_PATH=~/.ipfs${iLoop} ipfs daemon --init;exec bash;" 
 fi
 }
 function startUp(){
@@ -461,6 +461,7 @@ then
      if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
      then
      source $cfgFir
+     installer
      else
      rm -rf $cfgDir
      notInstalled
@@ -488,7 +489,7 @@ function notInstalled(){
      git clone https://github.com/covalenthq/ewm-das  &&
      cd ewm-das &&
      mkdir ~/ewm-das/.mr9868 
-}
+     }
 
 function installer(){
 myHeader;
