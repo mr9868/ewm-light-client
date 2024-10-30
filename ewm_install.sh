@@ -110,7 +110,7 @@ echo "How many light-node do you want to run  : ${loop}"
 read -p "$(eval 'echo -e "Input your \033[1;33m client $i \033[0m hexadecimal Private Keys ( without 0x ) : "')" pkey
 varInputPkey="pkey${i}=${pkey}"
 eval $varInputPkey
-varPkey=$(eval "echo \${pkey}${i}")
+varPkey=$(eval "echo \$pkey${i}")
 #echo 'export pkey'$i'='$(eval $varPkey)'' >> ~/.bashrc
 until [[ "${pkey}" =~ ^[0-9a-fA-F]{64}$ ]]
 do
@@ -120,7 +120,7 @@ do
   read -p "$(eval 'echo -e "Input your \033[1;33m client $i \033[0m hexadecimal Private Keys ( without 0x ) : "')" pkey
   varInputPkey="pkey${i}=${pkey}"
   eval $varInputPkey
-  varPkey=$(eval "echo \${pkey}${i}")
+  varPkey=$(eval "echo \$pkey${i}")
 done
 done
 }
@@ -182,7 +182,7 @@ tgMsg;
 function runLightClient(){
 for i in $(seq ${iLoop} ${jLoop});
 do
-varPkey=$(eval "echo \${pkey}${i}")
+varPkey=$(eval "echo \$pkey${i}")
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
