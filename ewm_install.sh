@@ -4,7 +4,7 @@
 # Make sure there is nothing complicated
 goLts="1.23.2" &&
 ipfsLts="31" &&
-cfgDir=~/ewm-das/.mr9868/conf.txt;
+cfgDir=~/ewm-das/.mr9868/config;
 
 
 # My Header function
@@ -463,39 +463,40 @@ then
      source $cfgFir
      else
      rm -rf $cfgDir
+     notInstalled
      installer
      fi
    else
    myHeader
+   notInstalled
    installer
    fi
 else
    myHeader
+   notInstalled
    installer
 fi
 }
-
-function installer(){
-myHeader;
+function notInstalled(){
 echo "Installing required dependencies ..."
    # sudo bash -c ' >/dev/null 2>&1 & disown' &&
    sudo apt install screen -y && 
    sudo apt install git -y &&
    sudo apt install wget -y &&
    sudo apt install ufw -y  &&
- 
-if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
-     then
-     echo "Next ..."
-     sleep 2;
-     else
+# Install ewm-das
+     git clone https://github.com/covalenthq/ewm-das  &&
+     cd ewm-das &&
+     mkdir ~/ewm-das/.mr9868 &&
      sudo rm -rf ~/ewm-das
      sudo rm -rf ~/.ipfs*
      sudo pkill -f "covalent*"
      sudo pkill -f "ipfs*"
      checkGo &&
      checkIpfs 
-     fi
+}
+
+function installer(){
 myHeader;
 entryPointPK;
 myHeader;
@@ -517,10 +518,6 @@ if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
      echo "Next ..."
      sleep 2;
      else
-     # Install ewm-das
-     git clone https://github.com/covalenthq/ewm-das  &&
-     cd ewm-das &&
-     mkdir ~/ewm-das/.mr9868 &&
      # Installing required Go packages
      go install honnef.co/go/tools/cmd/staticcheck@latest && 
      make deps &&
