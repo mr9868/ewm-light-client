@@ -92,7 +92,6 @@ do
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
   read -p "$(eval 'echo -e "Input your \033[1;33m client $i \033[0m hexadecimal Private Keys ( without 0x ) : "')" pkey
 done
-declare -a pkey
 privKey+=("$pkey")
 done
 set | grep ^privKey= >> ${cfgDir}/config
