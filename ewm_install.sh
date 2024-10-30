@@ -452,7 +452,8 @@ if [ -d ~/ewm-das ]
 then
    if [ -d $cfgDir ]
    then
-     read -p "ewm-das directories found ! do you want to add light-client or running from stratch ? (y/n) : " dirFound
+     echo "Yes for adding new light-client, No for running from stratch"
+     read -p "Config directories found ! do you want to add light-client ? (y/n) : " dirFound
      if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
      then
      source $cfgFir
