@@ -122,7 +122,7 @@ CHAT_ID=\"${tgIdQn}\"
 MESSAGE=\$(eval \" echo 'Please wait ....'\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 sleep 120;
-for akun in ${#privKey[@]};
+for akun in \$(seq 1 ${#privKey[@]});
 do  
 MESSAGE=\$(eval \" cat ipfs\${akun}.log | grep ready\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
@@ -133,7 +133,7 @@ done
 
 while sleep 1800;
 do
-for i in ${#privKey[@]};
+for i in \$(seq 1 ${#privKey[@]});
 do  
 msgCount=\$(eval \" cat ${cfgDir}/covalent\${i}.log | grep -c 'verified'\")
 msgError=\$(eval \" cat ${cfgDir}/covalent\${i}.log | grep -E 'FATAL|ERROR'\")
@@ -154,7 +154,7 @@ tgMsg;
 # Run light-client node
 function runLightClient(){
 . ${cfgDir}/config
-for i in ${#privKey[@]};
+for i in $(seq 1 ${#privKey[@]});
 do
 varPkey=${privKey[i]}
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
@@ -176,13 +176,13 @@ function covalentLog(){
 
 if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-for i in ${#privKey[@]};
+for i in $(seq 1 ${#privKey[@]});
 do
 echo "To view node${i} log execute 'screen -r covalent${i}'"
 echo "To view ipfs${i} log execute 'screen -r ipfs${i}'"
 done
 else
-for i in ${#privKey[@]};
+for i in $(seq 1 ${#privKey[@]});
 do
 echo "To view node${i} log execute 'screen -r covalent${i}'"
 done
@@ -365,7 +365,7 @@ if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-for i in ${#privKey[@]};
+for i in $(seq 1 ${#privKey[@]});
 do
 mainPort=50${i}
 secPort=40${i}
