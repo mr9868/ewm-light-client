@@ -112,7 +112,6 @@ fi
 }
 
 function tgConf(){
-. $cfgDir/config
 echo "
 # Send tg message
 function tgMsg(){
@@ -153,7 +152,6 @@ tgMsg;
 
 # Run light-client node
 function runLightClient(){
-. ${cfgDir}/config
 for i in $(seq ${lastKey} ${#privKey[@]});
 do
 varPkey=${privKey[i]}
