@@ -9,7 +9,7 @@ cfgDir=~/ewm-das/.mr9868;
 
 # My Header function
 function myHeader(){
-clear;
+clear && printf '\e[3J';
 echo -e "============================================================"
 echo -e "=              EWM light-client auto installer             ="
 echo -e "=                    Created by : Mr9868                   ="
@@ -382,7 +382,7 @@ echo '
 }
 ' > ${cfgDir}/.ipfs${i}/config
 
-echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ~/.ipfs${i}/datastore_spec
+echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ${cfgDir}/.ipfs${i}/datastore_spec
 echo '16' > ${cfgDir}/.ipfs${i}/version
 }
 
