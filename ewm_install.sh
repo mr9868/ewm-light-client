@@ -446,9 +446,9 @@ fi
 function startUp(){
 cd;
 myHeader;
-if [ -f ~/ewm-das ]
+if [ -d ~/ewm-das ]
 then
-   if [ -f $cfgDir ]
+   if [ -d $cfgDir ]
    then
      read -p "ewm-das directories found ! do you want to add light-client or running from stratch ? (y/n) : " dirFound
      if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
