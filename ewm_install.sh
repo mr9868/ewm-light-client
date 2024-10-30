@@ -467,13 +467,10 @@ then
      fi
    else
    myHeader
-   mkdir ~/ewm-das/.mr9868
-   
    installer
    fi
 else
    myHeader
-   mkdir ~/ewm-das/.mr9868
    installer
 fi
 }
@@ -523,6 +520,7 @@ if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
      # Install ewm-das
      git clone https://github.com/covalenthq/ewm-das  &&
      cd ewm-das &&
+     mkdir ~/ewm-das/.mr9868 &&
      # Installing required Go packages
      go install honnef.co/go/tools/cmd/staticcheck@latest && 
      make deps &&
