@@ -142,7 +142,7 @@ CHAT_ID=\"${tgIdQn}\"
 MESSAGE=\$(eval \" echo 'Please wait ....'\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 sleep 120;
-for akun in \$(seq ${iLoop} ${jLoop});
+for akun in \$(seq 1 ${jLoop});
 do  
 MESSAGE=\$(eval \" cat ipfs\${akun}.log | grep ready\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
@@ -153,7 +153,7 @@ done
 
 while sleep 1800;
 do
-for i in \$(seq ${iLoop} ${jLoop});
+for i in \$(seq 1 ${jLoop});
 do  
 msgCount=\$(eval \" cat ${cfgDir}/covalent\${i}.log | grep -c 'verified'\")
 msgError=\$(eval \" cat ${cfgDir}/covalent\${i}.log | grep -E 'FATAL|ERROR'\")
