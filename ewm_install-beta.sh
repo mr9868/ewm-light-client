@@ -434,22 +434,22 @@ then
      if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
      then
      . $cfgDir/config
-     echo "lastKey=$((${#privKey[@]}+1))" >> $cfgDir/config
+     echo "lastKey=\"$((${#privKey[@]}+1))\"" >> $cfgDir/config
      installer
      else
-     lastKey=1
+     lastKey="1"
      notInstalled
      installer
      fi
    else
    myHeader
-   lastKey=1
+   lastKey="1"
    notInstalled
    installer
    fi
 else
    myHeader
-   lastKey=1
+   lastKey="1"
    notInstalled
    installer
 fi
