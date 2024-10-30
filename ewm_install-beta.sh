@@ -80,42 +80,22 @@ myHeader;
 echo "Error: Please input in number !";
 read -p "How many light-node do you want to run  : " loop
 done
-export iLoop=1
-export jLoop=$loop
-export kLoop=$loop
-echo "\$iLoop=${iLoop}" >> $cfgDir/config
-echo "\$jLoop=${jLoop}" >> $cfgDir/config
-echo "\$kLoop=${kLoop}" >> $cfgDir/config
-
-if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
-then
-export iLoop=$kLoop
-export jLoop=$iLoop+$loop
-export kLoop=$jLoop
-sed -r -i.bak "s/iLoop=([[:graph:]]+)/iLoop=${iLoop}/g" $cfgDir/config
-sed -r -i.bak "s/jLoop=([[:graph:]]+)/jLoop=${jLoop}/g" $cfgDir/config
-sed -r -i.bak "s/kLoop=([[:graph:]]+)/kLoop=${kLoop}/g" $cfgDir/config
-fi
-for i in $(seq $iLoop $jLoop);
+for i in $(seq 1 $loop)
 do
 myHeader;
 echo "How many light-node do you want to run  : ${loop}"
 read -p "$(eval 'echo -e "Input your \033[1;33m client $i \033[0m hexadecimal Private Keys ( without 0x ) : "')" pkey
-varInputPkey="pkey${i}=${pkey}"
-eval $varInputPkey
-varPkey=$(eval "echo \$pkey${i}")
-#echo 'export pkey'$i'='$(eval $varPkey)'' >> ~/.bashrc
 until [[ "${pkey}" =~ ^[0-9a-fA-F]{64}$ ]]
 do
   myHeader;
   echo "How many light-node do you want to run  : ${loop}"
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
   read -p "$(eval 'echo -e "Input your \033[1;33m client $i \033[0m hexadecimal Private Keys ( without 0x ) : "')" pkey
-  varInputPkey="pkey${i}=${pkey}"
-  eval $varInputPkey
-  varPkey=$(eval "echo \$pkey${i}")
 done
+declare -a pkey
+privKey+=("$pkey")
 done
+set | grep ^privKey= >> ${cfgDir}/config
 }
 
 # Entrypoint for telegram monitor question
@@ -125,14 +105,15 @@ if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
-# echo "tgId:"$tgIdQn"" >> ~/.bashrc
-# echo "tgApi:"$tgApiQn"" >> ~/.bashrc
+echo "tgApiQn=${tgApiQn}" >> ${cfgDir}/config
+echo "tgIdQn=${tgIdQn}" >> ${cfgDir}/config
 else
 echo "See yaa ..."
 fi
 }
 
 function tgConf(){
+. $cfgDir/config
 echo "
 # Send tg message
 function tgMsg(){
@@ -142,7 +123,7 @@ CHAT_ID=\"${tgIdQn}\"
 MESSAGE=\$(eval \" echo 'Please wait ....'\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 sleep 120;
-for akun in \$(seq 1 ${jLoop});
+for akun in ${#privKey[@]};
 do  
 MESSAGE=\$(eval \" cat ipfs\${akun}.log | grep ready\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
@@ -153,7 +134,7 @@ done
 
 while sleep 1800;
 do
-for i in \$(seq 1 ${jLoop});
+for i in ${#privKey[@]};
 do  
 msgCount=\$(eval \" cat ${cfgDir}/covalent\${i}.log | grep -c 'verified'\")
 msgError=\$(eval \" cat ${cfgDir}/covalent\${i}.log | grep -E 'FATAL|ERROR'\")
@@ -167,15 +148,16 @@ done
 done
 }
 tgMsg;
-" > ${cfgDir}/tgConf${iLoop}.sh
+" > ${cfgDir}/tgConf.sh
 }
 
 
 # Run light-client node
 function runLightClient(){
-for i in $(seq ${iLoop} ${jLoop});
+. ${cfgDir}/config
+for i in ${#privKey[@]};
 do
-varPkey=$(eval "echo \$pkey${i}")
+varPkey=${privKey[i]}
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
@@ -195,13 +177,13 @@ function covalentLog(){
 
 if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-for i in $(seq ${iLoop} ${jLoop});
+for i in ${#privKey[@]};
 do
 echo "To view node${i} log execute 'screen -r covalent${i}'"
 echo "To view ipfs${i} log execute 'screen -r ipfs${i}'"
 done
 else
-for i in $(seq ${iLoop} ${jLoop});
+for i in ${#privKey[@]};
 do
 echo "To view node${i} log execute 'screen -r covalent${i}'"
 done
@@ -213,21 +195,13 @@ function tgInit(){
 if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 tgConf;
-screen -dmS ewmLog bash -c "chmod 777 ${cfgDir}/tgConf${iLoop}.sh;bash ${cfgDir}/tgConf${iLoop}.sh;exec bash"
+screen -dmS ewmLog bash -c "chmod 777 ${cfgDir}/tgConf.sh;bash ${cfgDir}/tgConf.sh;exec bash"
 else
 echo "Telegram bot: Not configured, Next ..."
 fi
 }
 
 function ipfsConf(){
-if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
-then
-mainPort="500${i}"
-secPort="400${i}"
-trdPort="808${i}"
-else
-i=${iLoop}
-fi
 echo '
 {
   "API": {
@@ -392,12 +366,16 @@ if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-for i in $(seq ${iLoop} ${jLoop});
+for i in ${#privKey[@]};
 do
+mainPort=50${i}
+secPort=40${i}
+trdPort=80${i}
 sudo ufw allow 50${i}
 sudo ufw allow 40${i}
 sudo ufw allow 80${i}
-mkdir ${cfgDir}/.ipfs${i}
+ipfsFile="./ipfs${i}"
+mkdir ${cfgDir}/${ipfsFile}
 ipfsConf
 screen -dmS ipfs${i} -L -Logfile ${cfgDir}/ipfs${i}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${i} ipfs daemon --init;exec bash;" 
 done
@@ -422,25 +400,27 @@ read -p "Set trd port eg. 8080 : " trdPort
 done
 if [[ "${mainPort}" == "" ]];
 then
-mainPort="500${iLoop}"
+mainPort=5001
 fi
 if [[ "${secPort}" == "" ]];
 then
-secPort="4001${iLoop}"
+secPort=4001
 fi
 if [[ "${trdPort}" == "" ]];
 then
-trdPort="8080${iLoop}"
+trdPort=8080
 fi
+lastRow=${#privKey[@]}
+do
 sudo ufw allow ${mainPort}
 sudo ufw allow ${secPort}
 sudo ufw allow ${trdPort}
-mkdir ${cfgDir}/.ipfs${iLoop}
+mkdir ${cfgDir}/.ipfs${lastRow}
 ipfsConf
-screen -dmS ipfs${iLoop} -L -Logfile $cfgDir/ipfs${iLoop}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${iLoop} ipfs daemon --init;exec bash;" 
+screen -dmS ipfs${lastRow} -L -Logfile $cfgDir/ipfs${lastRow}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastRow} ipfs daemon --init;exec bash;" 
 fi
 else
-screen -dmS ipfs${iLoop} -L -Logfile ${cfgDir}/ipfs${iLoop}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${iLoop} ipfs daemon --init;exec bash;" 
+screen -dmS ipfs${lastRow} -L -Logfile ${cfgDir}/ipfs${lastRow}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastRow} ipfs daemon --init;exec bash;" 
 fi
 }
 
