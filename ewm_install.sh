@@ -83,25 +83,18 @@ done
 export iLoop=1
 export jLoop=$loop
 export kLoop=$loop
-echo $iLoop > $cfgDir
-echo $jLoop > $cfgDir
-echo $kLoop > $cfgDir
+echo "\$iLoop=${iLoop}" >> $cfgDir
+echo "\$jLoop=${jLoop}" > $cfgDir
+echo "\$kLoop=${kLoop}" > $cfgDir
 
 if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 export iLoop=$kLoop
 export jLoop=$iLoop+$loop
 export kLoop=$jLoop
-sed -i -e "s/iLoop/${iLoop}/g" $cfgDir
-sed -i -e "s/jLoop/${jLoop}/g" $cfgDir
-sed -i -e "s/kLoop/${kLoop}/g" $cfgDir
-else
-export iLoop=1
-export jLoop=$loop
-export kLoop=$loop
-echo $iLoop > $cfgDir
-echo $jLoop > $cfgDir
-echo $kLoop > $cfgDir
+sed -r -i.bak "s/iLoop=([[:graph:]]+)/iLoop=${iLoop}/g" $cfgDir
+sed -r -i.bak "s/jLoop=([[:graph:]]+)/jLoop=${jLoop}/g" $cfgDir
+sed -r -i.bak "s/kLoop=([[:graph:]]+)/kLoop=${kLoop}/g" $cfgDir
 fi
 for i in $(seq $iLoop $jLoop);
 do
