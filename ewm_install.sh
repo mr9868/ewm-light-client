@@ -485,7 +485,7 @@ echo
 echo "==================== INSTALLATION START ===================="
 echo
 
-if [[ "$dirFound" =~ ^([yY][eE][sS]|[yY])$ ]];
+if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
      then
      echo "Next ..."
      sleep 2;
