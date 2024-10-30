@@ -154,7 +154,7 @@ tgMsg;
 # Run light-client node
 function runLightClient(){
 . ${cfgDir}/config
-for i in $(seq 1 ${#privKey[@]});
+for i in $(seq ${lastKey} ${#privKey[@]});
 do
 varPkey=${privKey[i]}
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
@@ -173,16 +173,15 @@ done
 
 # Covalent log
 function covalentLog(){
-
 if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-for i in $(seq 1 ${#privKey[@]});
+for i in $(seq ${lastKey} ${#privKey[@]});
 do
 echo "To view node${i} log execute 'screen -r covalent${i}'"
 echo "To view ipfs${i} log execute 'screen -r ipfs${i}'"
 done
 else
-for i in $(seq 1 ${#privKey[@]});
+for i in $(seq ${lastKey} ${#privKey[@]});
 do
 echo "To view node${i} log execute 'screen -r covalent${i}'"
 done
@@ -365,7 +364,7 @@ if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-for i in $(seq 1 ${#privKey[@]});
+for i in $(seq ${lastKey} ${#privKey[@]});
 do
 mainPort=50${i}
 secPort=40${i}
@@ -409,7 +408,7 @@ if [[ "${trdPort}" == "" ]];
 then
 trdPort=8080
 fi
-lastRow=${#privKey[@]}
+lastRow=${lastKey}
 sudo ufw allow ${mainPort}
 sudo ufw allow ${secPort}
 sudo ufw allow ${trdPort}
@@ -434,20 +433,23 @@ then
      read -p "Config directories found ! do you want to add light-client ? (y/n) : " dirFound
      if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
      then
-     source $cfgFir
+     . $cfgDir/config
+     echo "lastKey=$((${#privKey[@]}+1))" >> $cfgDir/config
      installer
      else
-     rm -rf $cfgDir
+     lastKey=1
      notInstalled
      installer
      fi
    else
    myHeader
+   lastKey=1
    notInstalled
    installer
    fi
 else
    myHeader
+   lastKey=1
    notInstalled
    installer
 fi
@@ -481,7 +483,13 @@ read -p "Do you want to set automatic port ? (y/n)  : " ipfsAutoQn
 
 # Running ipfs daemon
 entryPointIpfs &&
+if [ -f ${cfgDir}/tgConf.sh ]
+then
+echo "Telegram is configured !"; sleep 2
+else
 entryPointTg;
+tgInit
+fi
 myHeader;
 echo
 echo "==================== INSTALLATION START ===================="
@@ -502,7 +510,7 @@ if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
  fi
 
 runLightClient &&
-tgInit &&
+
 
 # Welldone ! 
 myHeader;
