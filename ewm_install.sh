@@ -499,8 +499,8 @@ if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
      make  && 
      sudo bash install-trusted-setup.sh &&
      # Installing covalent light-client node
-     sudo cp -r bin/light-client /usr/local/bin/light-client && 
-     fi
+     sudo cp -r bin/light-client /usr/local/bin/light-client 
+ fi
 
 runLightClient &&
 tgInit &&
