@@ -498,7 +498,7 @@ echo "Installing required dependencies ..."
    command -v git >/dev/null 2>&1 || { echo >&2 "Git is not found on this machine, Installing git ... "; sleep 5;sudo apt install git -y;}
    command -v wget >/dev/null 2>&1 || { echo >&2 "Wget is not found on this machine, Installing Wget ... "; sleep 5;sudo apt install wget -y;}
    command -v ufw >/dev/null 2>&1 || { echo >&2 "Ufw is not found on this machine, Installing ufw ... "; sleep 5;sudo apt install ufw -y;}
-   
+myHeader;  
 entryPointPK;
 myHeader;
 read -p "Do you want to set client port ? (y/n)  : " ipfsQn
