@@ -2,14 +2,10 @@
 
 
 # Make sure there is nothing complicated
-cd;
-sudo rm -rf ewm-das;
-sudo pkill -f "covalent*" &&
-sudo pkill -f "ipfs*" &&
-sudo pkill -f "ewmLog" &&
-sudo rm -rf ~/.ipfs* &&
 goLts="1.23.2" &&
-ipfsLts="31"
+ipfsLts="31" &&
+cfgDir=~/ewm-das/.mr9868/config;
+
 
 # My Header function
 function myHeader(){
@@ -23,7 +19,7 @@ echo -e "============================================================\n"
 
 # Go install function
 function installGo(){
-bash -c "wget -O go-latest.tar.gz https://go.dev/dl/go"$goLts".linux-amd64.tar.gz" &&
+bash -c "wget -O go-latest.tar.gz https://go.dev/dl/go${goLts}.linux-amd64.tar.gz" &&
 sudo tar -C /usr/local -xzf go-latest.tar.gz && 
 echo "" >> ~/.bashrc
 echo 'export GOPATH=$HOME/go' >> ~/.bashrc
@@ -36,7 +32,7 @@ rm -rf go-latest.tar.gz;
 
 # Installing IPFS function
 function installIpfs(){
-bash -c "wget -O ipfs-latest.tar.gz https://dist.ipfs.tech/kubo/v0."$ipfsLts".0/kubo_v0."$ipfsLts".0_linux-amd64.tar.gz" &&
+bash -c "wget -O ipfs-latest.tar.gz https://dist.ipfs.tech/kubo/v0.${ipfsLts}.0/kubo_v0.${ipfsLts}.0_linux-amd64.tar.gz" &&
 rm -rf kubo &&
 tar -xvzf ipfs-latest.tar.gz &&
 sudo rm -rf /usr/local/bin/ipfs &&
@@ -52,10 +48,10 @@ command -v go >/dev/null 2>&1 || { echo >&2 "Go is not found on this machine, In
 v=`go version | { read _ _ v _; echo ${v#go}; }`
 IFS="." tokens=( ${v} );
 version=${tokens[1]};
-if (($version<23)); then 
-echo "Your go version '"$version"' is outdated, Updating your go ...";sleep 5; installGo;
+if ((${version}<23)); then 
+echo "Your go version '${version}' is outdated, Updating your go ...";sleep 5; installGo;
 else 
-echo "Your go version '"$version"' is up to date, Next step ...";sleep 5;
+echo "Your go version '${version}' is up to date, Next step ...";sleep 5;
 fi
 unset IFS;
 }
@@ -66,10 +62,10 @@ command -v ipfs >/dev/null 2>&1 || { echo >&2 "IPFS is not found on this machine
 v=`ipfs version | { read _ _ v _; echo ${v#gipfs}; }`
 IFS="." tokens=( ${v} );
 version=${tokens[1]};
-if (($version<$ipfsLts)); then 
-echo "Your IPFS version '"$version"' is outdated, Updating your IPFS ...";sleep 5; installIpfs;
+if ((${version}<${ipfsLts})); then 
+echo "Your IPFS version '${version}' is outdated, Updating your IPFS ...";sleep 5; installIpfs;
 else 
-echo "Your IPFS version '"$version"' is up to date, Next step ...";sleep 5;
+echo "Your IPFS version '${version}' is up to date, Next step ...";sleep 5;
 fi
 unset IFS;
 }
@@ -78,30 +74,46 @@ unset IFS;
 function entryPointPK(){
 # Check if PK meet requirement 
 read -p "How many light-node do you want to run  : " loop
-until [[ $loop =~ ^[0-9]+$ ]]
+until [[ ${loop} =~ ^[0-9]+$ ]]
 do
 myHeader;
 echo "Error: Please input in number !";
 read -p "How many light-node do you want to run  : " loop
 done
-for i in $(seq 1 $loop);
+if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
+then
+export iLoop=${kLoop}
+export jLoop=${iLoop}+${loop}
+export kLoop=${jLoop}
+sed -i -e "s/iLoop/${iLoop}/g" $cfgDir
+sed -i -e "s/jLoop/${jLoop}/g" $cfgDir
+sed -i -e "s/kLoop/${kLoop}/g" $cfgDir
+else
+export iLoop=1
+export jLoop=${loop}
+export kLoop=${loop}
+echo $iLoop > $cfgDir
+echo $jLoop > $cfgDir
+echo $kLoop > $cfgDir
+fi
+for i in $(seq $iLoop $jLoop);
 do
 myHeader;
-echo "How many light-node do you want to run  : "$loop""
+echo "How many light-node do you want to run  : ${loop}"
 read -p "$(eval 'echo -e "Input your \033[1;33m client $i \033[0m hexadecimal Private Keys ( without 0x ) : "')" pkey
-varInputPkey="pkey$i=$pkey"
+varInputPkey="pkey${i}=${pkey}"
 eval $varInputPkey
-varPkey=$(eval "echo \$pkey$i")
+varPkey=$(eval "echo \${pkey}${i}")
 #echo 'export pkey'$i'='$(eval $varPkey)'' >> ~/.bashrc
-until [[ "$pkey" =~ ^[0-9a-fA-F]{64}$ ]]
+until [[ "${pkey}" =~ ^[0-9a-fA-F]{64}$ ]]
 do
   myHeader;
-  echo "How many light-node do you want to run  : "$loop""
+  echo "How many light-node do you want to run  : ${loop}"
   echo "Error: PRIVATE_KEY is not a valid 64-character hexadecimal number."
   read -p "$(eval 'echo -e "Input your \033[1;33m client $i \033[0m hexadecimal Private Keys ( without 0x ) : "')" pkey
-  varInputPkey="pkey$i=$pkey"
+  varInputPkey="pkey${i}=${pkey}"
   eval $varInputPkey
-  varPkey=$(eval "echo \$pkey$i")
+  varPkey=$(eval "echo \${pkey}${i}")
 done
 done
 }
@@ -109,7 +121,7 @@ done
 # Entrypoint for telegram monitor question
 function entryPointTg(){
 read -p "Do you want to add telegram monitor ? (y/n)  : " tgQn
-if [[ "$tgQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
@@ -125,31 +137,31 @@ echo "
 # Send tg message
 function tgMsg(){
 # Set the API token and chat ID
-API_TOKEN=\"$tgApiQn\"
-CHAT_ID=\"$tgIdQn\"
+API_TOKEN=\"${tgApiQn}\"
+CHAT_ID=\"${tgIdQn}\"
 MESSAGE=\$(eval \" echo 'Please wait ....'\"); 
-curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$MESSAGE\"
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 sleep 120;
-for akun in \$(seq 1 $loop);
+for akun in \$(seq ${iLoop} ${jLoop});
 do  
-MESSAGE=\$(eval \" cat ipfs\"\$akun\".log | grep ready\"); 
-curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$MESSAGE\"
-msgStart=\$(eval \" cat covalent\"\$akun\".log | awk '{print tolower(\\\$0)}' | grep -ow '\w*0x\w*'\")
-accStart=\$(eval \" echo 'Address \$akun : \\\`\$msgStart\\\`'\")
-curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$accStart\" -d parse_mode='MarkdownV2'
+MESSAGE=\$(eval \" cat ipfs\${akun}.log | grep ready\"); 
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
+msgStart=\$(eval \" cat covalent\${akun}.log | awk '{print tolower(\\\$0)}' | grep -ow '\w*0x\w*'\")
+accStart=\$(eval \" echo 'Address \${akun} : \\\`\${msgStart}\\\`'\")
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
 done
 
 while sleep 1800;
 do
-for i in \$(seq 1 $loop);
+for i in \$(seq ${iLoop} ${jLoop});
 do  
-msgCount=\$(eval \" cat covalent\"\$i\".log | grep -c 'verified'\")
-msgError=\$(eval \" cat covalent\"\$i\".log | grep -E 'FATAL|ERROR'\")
-ipfsError=\$(eval \" cat ipfs\"\$i\".log | grep 'ERROR'\")
-accMsg=\$(eval \"echo ' Account \$i has \$msgCount verified samples'\")  
-curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$ipfsError\"
-curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$msgError\"                
-curl -s -X POST https://api.telegram.org/bot\$API_TOKEN/sendMessage -d chat_id=\$CHAT_ID -d text=\"\$accMsg\"                
+msgCount=\$(eval \" cat covalent\${i}.log | grep -c 'verified'\")
+msgError=\$(eval \" cat covalent\${i}.log | grep -E 'FATAL|ERROR'\")
+ipfsError=\$(eval \" cat ipfs\${i}.log | grep 'ERROR'\")
+accMsg=\$(eval \"echo ' Account \${i} has \${msgCount} verified samples'\")  
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsError}\"
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgError}\"                
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg}\"                
 # Use the curl command to send the message       
 done
 done
@@ -161,18 +173,18 @@ tgMsg;
 
 # Run light-client node
 function runLightClient(){
-for i in $(seq 1 $loop);
+for i in $(seq ${iLoop} ${jLoop});
 do
-if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-if [[ "$ipfsAutoQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :"$mainPort" --private-key "$varPkey" ;exec bash"
+screen -dmS covalent${i} -L -Logfile covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash"
 else
-screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :"$mainPort" --private-key "$varPkey" ;exec bash"
+screen -dmS covalent${i} -L -Logfile covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash"
 fi
 else
-screen -dmS covalent$i -L -Logfile covalent$i.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key "$varPkey" ;exec bash"
+screen -dmS covalent${i} -L -Logfile covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key ${varPkey} ;exec bash"
 fi
 done
 }
@@ -180,24 +192,24 @@ done
 # Covalent log
 function covalentLog(){
 
-if [[ "$ipfsAutoQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-for i in $(seq 1 $loop);
+for i in $(seq ${iLoop} ${jLoop});
 do
-echo "To view node"$i" log execute 'screen -r covalent"$i"'"
-echo "To view ipfs"$i" log execute 'screen -r ipfs"$i"'"
+echo "To view node${i} log execute 'screen -r covalent$i}'"
+echo "To view ipfs${i} log execute 'screen -r ipfs${i}'"
 done
 else
-for i in $(seq 1 $loop);
+for i in $(seq ${iLoop} ${jLoop});
 do
-echo "To view node"$i" log execute 'screen -r covalent"$i"'"
+echo "To view node${i}™log execute 'screen -r covalent${i}'"
 done
 echo "To view ipfs log execute 'screen -r ipfs'"
 fi
 }
 
 function tgInit(){
-if [[ "$tgQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 tgConf;
 screen -dmS ewmLog bash -c "chmod 777 tgConf.sh;bash tgConf.sh;exec bash"
@@ -207,13 +219,13 @@ fi
 }
 
 function ipfsConf(){
-if [[ "$ipfsAutoQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-mainPort="500"$i""
-secPort="400"$i""
-trdPort="808"$i""
+mainPort="500${i}"
+secPort="400${i}"
+trdPort="808${i}"
 else
-i=1
+i=${iLoop}
 fi
 echo '
 {
@@ -221,20 +233,20 @@ echo '
     "HTTPHeaders": {}
   },
   "Addresses": {
-    "API": "/ip4/127.0.0.1/tcp/'$mainPort'",
+    "API": "/ip4/127.0.0.1/tcp/'${mainPort}'",
     "Announce": null,
     "AppendAnnounce": null,
-    "Gateway": "/ip4/127.0.0.1/tcp/'$trdPort'",
+    "Gateway": "/ip4/127.0.0.1/tcp/'${trdPort}'",
     "NoAnnounce": null,
     "Swarm": [
-      "/ip4/0.0.0.0/tcp/'$secPort'",
-      "/ip6/::/tcp/'$secPort'",
-      "/ip4/0.0.0.0/udp/'$secPort'/webrtc-direct",
-      "/ip4/0.0.0.0/udp/'$secPort'/quic-v1",
-      "/ip4/0.0.0.0/udp/'$secPort'/quic-v1/webtransport",
-      "/ip6/::/udp/'$secPort'/webrtc-direct",
-      "/ip6/::/udp/'$secPort'/quic-v1",
-      "/ip6/::/udp/'$secPort'/quic-v1/webtransport"
+      "/ip4/0.0.0.0/tcp/'${secPort}'",
+      "/ip6/::/tcp/'${secPort}'",
+      "/ip4/0.0.0.0/udp/'${secPort}'/webrtc-direct",
+      "/ip4/0.0.0.0/udp/'${secPort}'/quic-v1",
+      "/ip4/0.0.0.0/udp/'${secPort}'/quic-v1/webtransport",
+      "/ip6/::/udp/'${secPort}'/webrtc-direct",
+      "/ip6/::/udp/'${secPort}'/quic-v1",
+      "/ip6/::/udp/'${secPort}'/quic-v1/webtransport"
     ]
   },
   "AutoNAT": {},
@@ -367,64 +379,98 @@ echo '
     }
   }
 }
-' > ~/.ipfs$i/config
+' > ~/.ipfs${i}/config
 
-echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ~/.ipfs$i/datastore_spec
-echo '16' > ~/.ipfs$i/version
+echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ~/.ipfs${i}/datastore_spec
+echo '16' > ~/.ipfs${i}/version
 }
 
 # ipfs entrypoint
 function entryPointIpfs(){
-if [[ "$ipfsQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-if [[ "$ipfsAutoQn" =~ ^([yY][eE][sS]|[yY])$ ]];
+if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-for i in $(seq 1 $loop);
+for i in $(seq ${iLoop} ${jLoop});
 do
-sudo ufw allow 50$1
-sudo ufw allow 40$1
-sudo ufw allow 80$i
-mkdir ~/.ipfs$i
+sudo ufw allow 50${i}
+sudo ufw allow 40${i}
+sudo ufw allow 80${i}
+mkdir ~/.ipfs${i}
 ipfsConf
-screen -dmS ipfs$i -L -Logfile ipfs$i.log bash -c "IPFS_PATH=~/.ipfs"$i" ipfs daemon --init;exec bash;" 
+screen -dmS ipfs${i} -L -Logfile ipfs${i}.log bash -c "IPFS_PATH=~/.ipfs${i} ipfs daemon --init;exec bash;" 
 done
 else
 read -p "Set main port eg. 5001 : " mainPort
 read -p "Set seccond port eg. 4001 : " secPort
 read -p "Set third port eg. 8080 : " trdPort
-if [[ "$mainPort" == "" ]];
+if [[ "${mainPort}" == "" ]];
 then
-mainPort="5001"
+mainPort="500${iLoop}"
 fi
-if [[ "$secPort" == "" ]];
+if [[ "${secPort}" == "" ]];
 then
-secPort="4001"
+secPort="4001${iLoop}"
 fi
-if [[ "$trdPort" == "" ]];
+if [[ "${trdPort}" == "" ]];
 then
-trdPort="8080"
+trdPort="8080${iLoop}"
 fi
-sudo ufw allow $mainPort
-sudo ufw allow $secPort
-sudo ufw allow $trdPort
-mkdir ~/.ipfs1
+sudo ufw allow ${mainPort}
+sudo ufw allow ${secPort}
+sudo ufw allow ${trdPort}
+mkdir ~/.ipfs${iLoop}
 ipfsConf
-screen -dmS ipfs1 -L -Logfile ipfs1.log bash -c "IPFS_PATH=~/.ipfs1 ipfs daemon --init;exec bash;" 
+screen -dmS ipfs${iLoop} -L -Logfile ipfs${iLoop}.log bash -c "IPFS_PATH=~/.ipfs${iLoop} ipfs daemon --init;exec bash;" 
 fi
 else
-screen -dmS ipfs -L -Logfile ipfs1.log bash -c "ipfs daemon --init;exec bash;" 
+screen -dmS ipfs${iLoop} -L -Logfile ipfs${iLoop}.log bash -c "ipfs daemon --init;exec bash;" 
+fi
+}
+function startUp(){
+cd;
+myHeader;
+if [ -f ~/ewm-das ]
+then
+   if [ -f ${cfgDir} ]
+   then
+     read -p "ewm-das directories found ! do you want to add light-client or running from stratch ? (y/n) : " dirFound
+     if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
+     then
+     source ${cfgFir}
+     else
+     rm -rf ${cfgDir}
+     installer
+     fi
+   else
+   installer
+   fi
+else
+   rm -rf ${cfgDir}
+   installer
 fi
 }
 
+function installer(){
 myHeader;
-sudo bash -c 'sudo apt install screen -y && 
-sudo apt install git -y &&
-sudo apt install wget -y &&
-sudo apt install ufw -y && >/dev/null 2>&1 & disown'
+if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
+     then
+     echo "Next ..."
+     sleep 2;
+     else
+     sudo rm -rf ~/ewm-das
+     sudo rm -rf ~/ipfs*
+     sudo pkill -f "covalent*"
+     sudo pkill -f "ipfs*"
+     sudo bash -c 'sudo apt install screen -y && 
+     sudo apt install git -y &&
+     sudo apt install wget -y &&
+     sudo apt install ufw -y >/dev/null 2>&1 & disown'
+     checkGo &&
+     checkIpfs 
+     fi
+myHeader;
 entryPointPK;
-myHeader;
-checkGo &&
-checkIpfs &&
 myHeader;
 read -p "Do you want to set client port ? (y/n)  : " ipfsQn
 echo "Note: If you choose automatic port, light client and IPFS will run different port on each account"
@@ -439,20 +485,23 @@ echo
 echo "==================== INSTALLATION START ===================="
 echo
 
-# Installing required package
-git clone https://github.com/covalenthq/ewm-das && 
-cd ewm-das && 
-sudo bash install-trusted-setup.sh &&
+if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
+     then
+     echo "Next ..."
+     sleep 2;
+     else
+     # Install ewm-das
+     git clone https://github.com/covalenthq/ewm-das  &&
+     cd ewm-das &&
+     # Installing required Go packages
+     go install honnef.co/go/tools/cmd/staticcheck@latest && 
+     make deps &&
+     make  && 
+     sudo bash install-trusted-setup.sh &&
+     # Installing covalent light-client node
+     sudo cp -r bin/light-client /usr/local/bin/light-client && 
+     fi
 
-# Installing required Go packages
-go install honnef.co/go/tools/cmd/staticcheck@latest && 
-make deps &&
-make  && 
-sudo bash install-trusted-setup.sh &&
-
-
-# Installing covalent light-client node
-sudo cp -r bin/light-client /usr/local/bin/light-client && 
 runLightClient &&
 tgInit &&
 
@@ -468,3 +517,7 @@ echo
 echo "=================== INSTALLATION SUCCESS ==================="
 echo
 unset $loop;
+}
+
+startUp
+
