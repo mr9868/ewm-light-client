@@ -80,6 +80,13 @@ myHeader;
 echo "Error: Please input in number !";
 read -p "How many light-node do you want to run  : " loop
 done
+export iLoop=1
+export jLoop=${loop}
+export kLoop=${loop}
+echo $iLoop > $cfgDir
+echo $jLoop > $cfgDir
+echo $kLoop > $cfgDir
+
 if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 export iLoop=${kLoop}
