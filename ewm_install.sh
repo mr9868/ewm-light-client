@@ -77,7 +77,7 @@ read -p "How many light-node do you want to run  : " loop
 until [[ ${loop} =~ ^[0-9]+$ ]]
 do
 myHeader;
-echo "Error: Please input in 2 digits number !";
+echo "Error: Please input in number !";
 read -p "How many light-node do you want to run  : " loop
 done
 if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
