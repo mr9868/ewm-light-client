@@ -4,7 +4,7 @@
 # Make sure there is nothing complicated
 goLts="1.23.2" &&
 ipfsLts="31" &&
-cfgDir=~/ewm-das/.mr9868/config;
+cfgDir=~/ewm-das/.mr9868/conf.txt;
 
 
 # My Header function
@@ -87,7 +87,7 @@ echo $iLoop > $cfgDir
 echo $jLoop > $cfgDir
 echo $kLoop > $cfgDir
 
-if [[ "$dirFound" =~ ^([yY][eE][sS]|[yY])$ ]];
+if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 export iLoop=$kLoop
 export jLoop=$iLoop+$loop
@@ -174,7 +174,7 @@ done
 done
 }
 tgMsg;
-" > ~/.mr9868/tgConf${iLoop}.sh
+" > ~/ewm-das/.mr9868/tgConf${iLoop}.sh
 }
 
 
@@ -455,14 +455,14 @@ cd;
 myHeader;
 if [ -f ~/ewm-das ]
 then
-   if [ -f ${cfgDir} ]
+   if [ -f $cfgDir ]
    then
      read -p "ewm-das directories found ! do you want to add light-client or running from stratch ? (y/n) : " dirFound
      if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
      then
-     source ${cfgFir}
+     source $cfgFir
      else
-     rm -rf ${cfgDir}
+     rm -rf $cfgDir
      installer
      fi
    else
