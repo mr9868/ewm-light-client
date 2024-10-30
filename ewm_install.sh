@@ -453,6 +453,10 @@ fi
 
 function installer(){
 myHeader;
+sudo bash -c 'sudo apt install screen -y && 
+     sudo apt install git -y &&
+     sudo apt install wget -y &&
+     sudo apt install ufw -y >/dev/null 2>&1 & disown'
 if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
      then
      echo "Next ..."
@@ -462,10 +466,6 @@ if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
      sudo rm -rf ~/ipfs*
      sudo pkill -f "covalent*"
      sudo pkill -f "ipfs*"
-     sudo bash -c 'sudo apt install screen -y && 
-     sudo apt install git -y &&
-     sudo apt install wget -y &&
-     sudo apt install ufw -y >/dev/null 2>&1 & disown'
      checkGo &&
      checkIpfs 
      fi
