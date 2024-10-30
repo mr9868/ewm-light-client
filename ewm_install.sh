@@ -84,8 +84,8 @@ export iLoop=1
 export jLoop=$loop
 export kLoop=$loop
 echo "\$iLoop=${iLoop}" >> $cfgDir
-echo "\$jLoop=${jLoop}" > $cfgDir
-echo "\$kLoop=${kLoop}" > $cfgDir
+echo "\$jLoop=${jLoop}" >> $cfgDir
+echo "\$kLoop=${kLoop}" >> $cfgDir
 
 if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
