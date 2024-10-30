@@ -48,7 +48,7 @@ command -v go >/dev/null 2>&1 || { echo >&2 "Go is not found on this machine, In
 v=`go version | { read _ _ v _; echo ${v#go}; }`
 IFS="." tokens=( ${v} );
 version=${tokens[1]};
-if ((${version}<23)); then 
+if (($version<23)); then 
 echo "Your go version '${version}' is outdated, Updating your go ...";sleep 5; installGo;
 else 
 echo "Your go version '${version}' is up to date, Next step ...";sleep 5;
@@ -62,7 +62,7 @@ command -v ipfs >/dev/null 2>&1 || { echo >&2 "IPFS is not found on this machine
 v=`ipfs version | { read _ _ v _; echo ${v#gipfs}; }`
 IFS="." tokens=( ${v} );
 version=${tokens[1]};
-if ((${version}<${ipfsLts})); then 
+if (($version<${ipfsLts})); then 
 echo "Your IPFS version '${version}' is outdated, Updating your IPFS ...";sleep 5; installIpfs;
 else 
 echo "Your IPFS version '${version}' is up to date, Next step ...";sleep 5;
@@ -74,31 +74,31 @@ unset IFS;
 function entryPointPK(){
 # Check if PK meet requirement 
 read -p "How many light-node do you want to run  : " loop
-until [[ ${loop} =~ ^[0-9]+$ ]]
+until [[ $loop =~ ^[0-9]+$ ]]
 do
 myHeader;
 echo "Error: Please input in number !";
 read -p "How many light-node do you want to run  : " loop
 done
 export iLoop=1
-export jLoop=${loop}
-export kLoop=${loop}
+export jLoop=$loop
+export kLoop=$loop
 echo $iLoop > $cfgDir
 echo $jLoop > $cfgDir
 echo $kLoop > $cfgDir
 
-if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
+if [[ "$dirFound" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-export iLoop=${kLoop}
-export jLoop=${iLoop}+${loop}
-export kLoop=${jLoop}
+export iLoop=$kLoop
+export jLoop=$iLoop+$loop
+export kLoop=$jLoop
 sed -i -e "s/iLoop/${iLoop}/g" $cfgDir
 sed -i -e "s/jLoop/${jLoop}/g" $cfgDir
 sed -i -e "s/kLoop/${kLoop}/g" $cfgDir
 else
 export iLoop=1
-export jLoop=${loop}
-export kLoop=${loop}
+export jLoop=$loop
+export kLoop=$loop
 echo $iLoop > $cfgDir
 echo $jLoop > $cfgDir
 echo $kLoop > $cfgDir
