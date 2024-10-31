@@ -485,7 +485,7 @@ then
      echo -e "4. Exit setup\n"
      read -p "Choose your option : " dirFound
      done
-     if [[ "${dirFound}"=="1" ]];
+     if [ ${dirFound} == "1" ];
      then
      . $cfgDir/config
      lastKey="$((${#privKey[@]}+1))"
@@ -493,19 +493,19 @@ then
      sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" $cfgDir/config
      installer
      fi
-     if [[ "${dirFound}"=="2" ]];
+     if [ ${dirFound} == "2" ];
      then
      notInstalled
      installer
      fi
-     if [[ "${dirFound}"=="3" ]];
+     if [ ${dirFound} == "3" ];
      then
      rm -rf ewm*
      pkill -f "ipfs*"
      pkill -f "covalent*"
      exit 1
      fi
-     if [[ "${dirFound}"=="4" ]];
+     if [ ${dirFound} == "4" ];
      then
      exit 1
      fi
