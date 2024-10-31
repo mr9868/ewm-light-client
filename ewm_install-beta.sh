@@ -387,35 +387,35 @@ cekPort=$(eval "lsof -Pi :${mainPort} -sTCP:LISTEN -t")
 done
 
 # Cek sec Port
-read -p "Set main port eg. 5001 : " secPort
+read -p "Set second port eg. 4001 : " secPort
 cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
 until [[ ${secPort} =~ ^[0-9]{4}$ ]]
 do
 echo "Please input in 4 digits number !"
-read -p "Set main port eg. 5001 : " secPort
+read -p "Set second port eg. 4001 : " secPort
 cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
 done
 until [[ -z "$cekPort" ]]
 do
 echo "Port ${secPort} is already in use !"
-read -p "Set main port eg. 5001 : " secPort
+read -p "Set second port eg. 4001 : " secPort
 cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
 done
 
 
 # Cek third Port
-read -p "Set main port eg. 5001 : " trdPort
+read -p "Set third port eg. 8080 : " trdPort
 cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
 until [[ ${trdPort} =~ ^[0-9]{4}$ ]]
 do
 echo "Please input in 4 digits number !"
-read -p "Set main port eg. 5001 : " trdPort
+read -p "Set third port eg. 8080 : " trdPort
 cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
 done
 until [[ -z "$cekPort" ]]
 do
 echo "Port ${trdPort} is already in use !"
-read -p "Set main port eg. 5001 : " trdPort
+read -p "Set third port eg. 8080 : " trdPort
 cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
 done
 
