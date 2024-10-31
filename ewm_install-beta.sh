@@ -191,7 +191,7 @@ for i in $(seq ${lastKey} ${#privKey[@]});
 do
 echo "To view node${i} log execute 'screen -r covalent${i}'"
 done
-echo "To view ipfs${lastKey} log execute 'screen -r ipfs${lastKey}'"
+echo "To view ipfs${ipfsCount} log execute 'screen -r ipfs${ipfsCount}'"
 }
 
 function tgInit(){
@@ -356,10 +356,10 @@ echo '
     }
   }
 }
-' > ${cfgDir}/.ipfs${lastKey}/config
+' > ${cfgDir}/.ipfs${ipfsCount}/config
 
-echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ${cfgDir}/.ipfs${lastKey}/datastore_spec
-echo '16' > ${cfgDir}/.ipfs${lastKey}/version
+echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ${cfgDir}/.ipfs${ipfsCount}/datastore_spec
+echo '16' > ${cfgDir}/.ipfs${ipfsCount}/version
 }
 
 
@@ -422,9 +422,9 @@ done
 sudo ufw allow ${mainPort}
 sudo ufw allow ${secPort}
 sudo ufw allow ${trdPort}
-mkdir ${cfgDir}/.ipfs${lastKey} &&
+mkdir ${cfgDir}/.ipfs${ipfsCount} &&
 ipfsConf
-screen -dmS ipfs${lastKey} -L -Logfile $cfgDir/ipfs${lastKey}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastKey} ipfs daemon --init;exec bash;" 
+screen -dmS ipfs${ipfsCount} -L -Logfile $cfgDir/ipfs${ipfsCount}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;" 
 else
 mainPort=5001
 cekPort=$(eval "lsof -Pi :${mainPort} -sTCP:LISTEN -t")
@@ -453,9 +453,9 @@ done
 sudo ufw allow ${mainPort}
 sudo ufw allow ${secPort}
 sudo ufw allow ${trdPort}
-mkdir ${cfgDir}/.ipfs${lastKey} &&
+mkdir ${cfgDir}/.ipfs${ipfsCount} &&
 ipfsConf
-screen -dmS ipfs${lastKey} -L -Logfile ${cfgDir}/ipfs${lastKey}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastKey} ipfs daemon --init;exec bash;" 
+screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/ipfs${ipfsCount}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;" 
 fi
 }
 
@@ -487,7 +487,8 @@ then
      then
      . $cfgDir/config
      lastKey="$((${#privKey[@]}+1))"
-     sed -r -i.bak "s/lastKey=([[:graph:]]+)/lastKey=${lastKey}/g" $cfgDir/config
+     ipfsCount="$((${ipfsCount}+1))"
+     sed -r -i.bak "s/ipfsCount=([[:graph:]]+)/ipfsCount=${ipfsCount}/g" $cfgDir/config
      installer
      elif [[ "${dirFound}"="2" ]];
      then
@@ -504,13 +505,11 @@ then
      fi
    else
    myHeader
-   
    notInstalled
    installer
    fi
 else
-   myHeader
-   
+   myHeader  
    notInstalled
    installer
 fi
@@ -527,6 +526,8 @@ function notInstalled(){
      cd ewm-das &&
      mkdir $cfgDir
      lastKey=1
+     ipfsCount=1
+     echo $ipfsCount >> $cfgDir/config
      }
 
 function installer(){
