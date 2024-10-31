@@ -468,21 +468,26 @@ if [ -d ~/ewm-das ]
 then
    if [ -d $cfgDir ]
    then
+   
      myHeader
      echo -e "Config directories found !\n"
      echo -e "1. Add Light Client\n"
-     echo -e "2. Reinstall Light Client\n"
-     echo -e "3. Uninstall Light Client\n"
-     echo -e "4. Exit setup\n"
+     echo -e "2. Configure monitor bot\n"
+     echo -e "3. Reinstall Light Client\n"
+     echo -e "4. Uninstall Light Client\n"
+     echo -e "5. Exit setup\n"
      read -p "Choose your option : " dirFound
      until [[ "${dirFound}" =~ ^[0-4]+$ ]];
      do
      myHeader
      echo -e "Config directories found !\n"
      echo -e "1. Add Light Client\n"
-     echo -e "2. Reinstall Light Client\n"
-     echo -e "3. Uninstall Light Client\n"
-     echo -e "4. Exit setup\n"
+     echo -e "2. Configure monitor bot\n"
+     echo -e "3. Reinstall Light Client\n"
+     echo -e "4. Uninstall Light Client\n"
+     echo -e "5. Exit setup\n"
+     echo
+     echo -e "Please select 1-5 !\n"
      read -p "Choose your option : " dirFound
      done
      if [ ${dirFound} == "1" ];
@@ -495,17 +500,22 @@ then
      fi
      if [ ${dirFound} == "2" ];
      then
+     entryPointTg;
+     tgInit
+     fi
+     if [ ${dirFound} == "3" ];
+     then
      notInstalled
      installer
      fi
-     if [ ${dirFound} == "3" ];
+     if [ ${dirFound} == "4" ];
      then
      rm -rf ewm*
      pkill -f "ipfs*"
      pkill -f "covalent*"
      :
      fi
-     if [ ${dirFound} == "4" ];
+     if [ ${dirFound} == "5" ];
      then
      :
      fi
