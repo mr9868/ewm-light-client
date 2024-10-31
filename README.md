@@ -26,6 +26,8 @@ ipfs daemon --init
 ```
 then close again the screen by pressing ctrl + a +d
 
+To add light-client, just rerun the ewm_install.sh
+
 ### How to setting up telegram bot and get your bot API KEY
 1. Go to [https://t.me/botfather]
 2. Start the bot
