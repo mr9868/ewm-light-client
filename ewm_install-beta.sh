@@ -339,7 +339,7 @@ echo '
 }
 ' > ${cfgDir}/.ipfs${lastRow}/config
 
-echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ~/.ipfs${lastRow}/datastore_spec
+echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ${cfgDir}/.ipfs${lastRow}/datastore_spec
 echo '16' > ${cfgDir}/.ipfs${lastRow}/version
 }
 
@@ -369,7 +369,7 @@ done
 sudo ufw allow ${mainPort}
 sudo ufw allow ${secPort}
 sudo ufw allow ${trdPort}
-mkdir ${cfgDir}/.ipfs${lastRow}
+mkdir ${cfgDir}/.ipfs${lastRow} &&
 ipfsConf
 screen -dmS ipfs${lastRow} -L -Logfile $cfgDir/ipfs${lastRow}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastRow} ipfs daemon --init;exec bash;" 
 else
