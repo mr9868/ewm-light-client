@@ -97,6 +97,8 @@ done
 if ! [ -f $cfgDir/config ]; 
 then
 set | grep ^privKey= >> ${cfgDir}/config
+else
+sed -r -i "s/privKey=.*/$(set | grep ^privKey= )/g" $cfgDir/config
 fi
 }
 
@@ -415,22 +417,23 @@ then
      if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
      then
      . $cfgDir/config
-     echo "lastKey=\"$((${#privKey[@]}+1))\"" >> $cfgDir/config
+     lastKey="$((${#privKey[@]}+1))"
+     sed -r -i.bak "s/lastKey=([[:graph:]]+)/lastKey=${lastKey}/g" $cfgDir/config
      installer
      else
-     lastKey="1"
+     
      notInstalled
      installer
      fi
    else
    myHeader
-   lastKey="1"
+   
    notInstalled
    installer
    fi
 else
    myHeader
-   lastKey="1"
+   
    notInstalled
    installer
 fi
@@ -445,7 +448,9 @@ function notInstalled(){
 # Install ewm-das
      git clone https://github.com/covalenthq/ewm-das  &&
      cd ewm-das &&
-     mkdir ~/ewm-das/.mr9868 
+     mkdir $cfgDir
+     lastKey=1
+     echo "lastKey=${lastKey" >> $cfgDir/config
      }
 
 function installer(){
