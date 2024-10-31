@@ -171,7 +171,7 @@ for i in $(seq ${lastKey} ${#privKey[@]});
 do
 echo "To view node${i} log execute 'screen -r covalent${i}'"
 done
-echo "To view ipfs log execute 'screen -r ipfs${lastKey}'"
+echo "To view ipfs${lastKey} log execute 'screen -r ipfs${lastKey}'"
 }
 
 function tgInit(){
@@ -373,6 +373,14 @@ mkdir ${cfgDir}/.ipfs${lastRow} &&
 ipfsConf
 screen -dmS ipfs${lastRow} -L -Logfile $cfgDir/ipfs${lastRow}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastRow} ipfs daemon --init;exec bash;" 
 else
+mainPort="50${lastRow}"
+secPort="40${lastRow}"
+trdPort="80${lastRow}"
+sudo ufw allow ${mainPort}
+sudo ufw allow ${secPort}
+sudo ufw allow ${trdPort}
+mkdir ${cfgDir}/.ipfs${lastRow} &&
+ipfsConf
 screen -dmS ipfs${lastRow} -L -Logfile ${cfgDir}/ipfs${lastRow}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastRow} ipfs daemon --init;exec bash;" 
 fi
 }
