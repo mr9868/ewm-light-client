@@ -134,15 +134,13 @@ CHAT_ID=\"\${tgIdQn}\"
 MESSAGE=\$(eval \" echo 'Please wait ....'\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 sleep 120;
-for ipfsD in \$(seq 1 \${#privKey[@]});
+for akun in \$(seq 1 \${#privKey[@]});
 do  
-MESSAGE=\$(eval \" cat \${cfgDir}/ipfs\${ipfsD}.log | grep ready\"); 
+MESSAGE=\$(eval \" cat \${cfgDir}/ipfs\${akun}.log | grep ready\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
-done
-for cov in \$(seq 1 \${#privKey[@]});
-do  
-msgStart=\$(eval \" cat \${cfgDir}/covalent\${cov}.log | awk '{print tolower(\\\$0)}' | grep -ow '\w*0x\w*'\")
-accStart=\$(eval \" echo 'Address \${cov} : \\\`\${msgStart}\\\`'\")
+
+msgStart=\$(eval \" cat \${cfgDir}/covalent\${akun}.log | awk '{print tolower(\\\$0)}' | grep -ow '\w*0x\w*'\")
+accStart=\$(eval \" echo 'Address \${akun} : \\\`\${msgStart}\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
 done
 
