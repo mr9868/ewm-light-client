@@ -19,7 +19,7 @@ echo -e "============================================================\n"
 
 # Go install function
 function installGo(){
-bash -c "wget -O go-latest.tar.gz https://go.dev/dl/go${goLts}.linux-amd64.tar.gz" &&
+BASH -c "wget -O go-latest.tar.gz https://go.dev/dl/go${goLts}.linux-amd64.tar.gz" &&
 sudo tar -C /usr/local -xzf go-latest.tar.gz && 
 echo "" >> ~/.bashrc
 echo 'export GOPATH=$HOME/go' >> ~/.bashrc
@@ -154,7 +154,7 @@ tgMsg;
 function runLightClient(){
 for i in $(seq ${lastKey} ${#privKey[@]});
 do
-varPkey=${privKey[i]}
+varPkey=${privKey[$(((0-1)+${i}))]}
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
