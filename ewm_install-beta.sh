@@ -412,18 +412,40 @@ if [ -d ~/ewm-das ]
 then
    if [ -d $cfgDir ]
    then
-     echo "Yes for adding new light-client, No for running from stratch"
-     read -p "Config directories found ! do you want to add light-client ? (y/n) : " dirFound
-     if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
+     myHeader
+     echo -e "Config directories found !\n"
+     echo -e "1. Add Light Client\n"
+     echo -e "2. Reinstall Light Client\n"
+     echo -e "3. Uninstall Light Client\n"
+     echo -e "Submit any key to exit\n"
+     read -p "Config directories found ! do you want to add light-client ? : " dirFound
+     until [[ "${dirFound}" =~ ^[0-3]+$ ]];
+     do
+     myHeader
+     echo -e "Config directories found !\n"
+     echo -e "1. Add Light Client\n"
+     echo -e "2. Reinstall Light Client\n"
+     echo -e "3. Uninstall Light Client\n"
+     read -p "Config directories found ! do you want to add light-client ? : " dirFound
+     done
+     if [[ "${dirFound}"="1" ]];
      then
      . $cfgDir/config
      lastKey="$((${#privKey[@]}+1))"
      sed -r -i.bak "s/lastKey=([[:graph:]]+)/lastKey=${lastKey}/g" $cfgDir/config
      installer
-     else
-     
+     elif [[ "${dirFound}"="2" ]];
+     then
      notInstalled
      installer
+     elif [[ "${dirFound}"="3" ]];
+     then
+     rm -rf ewm*
+     pkill -f "ipfs*"
+     pkill -f "covalent*"
+     exit 1
+     else
+     exit 1
      fi
    else
    myHeader
@@ -462,7 +484,6 @@ myHeader;
 entryPointPK;
 myHeader;
 read -p "Do you want to set client port ? (y/n)  : " ipfsQn
-echo "Note: If you choose automatic port, light client and IPFS will run different port on each account"
 
 # Running ipfs daemon
 entryPointIpfs &&
