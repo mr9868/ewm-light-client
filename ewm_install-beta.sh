@@ -450,7 +450,6 @@ function notInstalled(){
      cd ewm-das &&
      mkdir $cfgDir
      lastKey=1
-     echo "lastKey=${lastKey}" >> $cfgDir/config
      }
 
 function installer(){
