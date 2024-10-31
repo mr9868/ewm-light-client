@@ -142,15 +142,14 @@ do
 for i in \$(seq 1 \${#privKey[@]});
 do  
 msgCount=\$(eval \" cat \${cfgDir}/covalent\${i}.log | grep -c 'verified'\")
-start=\$(date -d \"-30 minutes\" +'%Y-%m-%d %H:%M:%S')
-msgError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/covalent\${i}.log | grep -E 'FATAL|ERROR')
-ipfsError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/ipfs\${i}.log | grep -E 'FATAL|ERROR')
-
-#msgError=\$(eval \" cat \${cfgDir}/covalent\${i}.log | grep -E 'FATAL|ERROR'\")
-#ipfsError=\$(eval \" cat \${cfgDir}/ipfs\${i}.log | grep 'ERROR'\")
+msgError=\$(eval \" cat \${cfgDir}/covalent\${i}.log | grep -E 'FATAL|ERROR' | tail -1\")
+covError=\$(eval \"echo 'There is an error on your covalent\${i}.log! : \${msgError}'\")
+msgIpfsError=\$(eval \" cat \${cfgDir}/ipfs\${i}.log | grep 'ERROR' | tail -1\")
+ipfsError=\$(eval \"echo 'There is an error on your ipfs\${i}.log daemon ! : \${msgIpfsError}'\")
 accMsg=\$(eval \"echo ' Account \${i} has \${msgCount} verified samples'\")  
+
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsError}\"
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgError}\"                
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covError}\"                
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg}\"                
 # Use the curl command to send the message       
 done
