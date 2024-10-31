@@ -503,11 +503,11 @@ then
      rm -rf ewm*
      pkill -f "ipfs*"
      pkill -f "covalent*"
-     exit 1
+     :
      fi
      if [ ${dirFound} == "4" ];
      then
-     exit 1
+     :
      fi
    else
    myHeader
@@ -539,6 +539,7 @@ function notInstalled(){
 function installer(){
 myHeader;
    command -v lsof >/dev/null 2>&1 || { echo >&2 "lsof is not found on this machine, Installing lsof ... "; sleep 2;sudo apt install lsof -y;} 
+   command -v sed >/dev/null 2>&1 || { echo >&2 "sed is not found on this machine, Installing sed ... "; sleep 2;sudo apt install sed -y;} 
    command -v screen >/dev/null 2>&1 || { echo >&2 "Screen is not found on this machine, Installing screen ... "; sleep 2;sudo apt install screen -y;} 
    command -v git >/dev/null 2>&1 || { echo >&2 "Git is not found on this machine, Installing git ... "; sleep 2;sudo apt install git -y;}
    command -v wget >/dev/null 2>&1 || { echo >&2 "Wget is not found on this machine, Installing Wget ... "; sleep 2;sudo apt install wget -y;}
