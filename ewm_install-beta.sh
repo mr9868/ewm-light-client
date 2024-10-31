@@ -96,8 +96,11 @@ privKey+=("$pkey")
 done
 if ! [ -f $cfgDir/config ]; 
 then
+echo ${ipfsCount} >> $cfgDir/config
 set | grep ^privKey= >> ${cfgDir}/config
 else
+ipfsCount="$((${ipfsCount}+1))"
+sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" $cfgDir/config
 sed -r -i "s/privKey=.*/$(set | grep ^privKey= )/g" $cfgDir/config
 fi
 }
@@ -473,7 +476,7 @@ then
      echo -e "2. Reinstall Light Client\n"
      echo -e "3. Uninstall Light Client\n"
      echo -e "4. Exit setup\n"
-     read -p "Config directories found ! do you want to add light-client ? : " dirFound
+     read -p "Choose your option : " dirFound
      until [[ "${dirFound}" =~ ^[0-4]+$ ]];
      do
      myHeader
@@ -482,14 +485,12 @@ then
      echo -e "2. Reinstall Light Client\n"
      echo -e "3. Uninstall Light Client\n"
      echo -e "4. Exit setup\n"
-     read -p "Config directories found ! do you want to add light-client ? : " dirFound
+     read -p "Choose your option : " dirFound
      done
      if [[ "${dirFound}"="1" ]];
      then
      . $cfgDir/config
      lastKey="$((${#privKey[@]}+1))"
-     ipfsCount="$((${ipfsCount}+1))"
-     sed -r -i.bak "s/ipfsCount=([[:graph:]]+)/ipfsCount=${ipfsCount}/g" $cfgDir/config
      installer
      elif [[ "${dirFound}"="2" ]];
      then
@@ -529,7 +530,6 @@ function notInstalled(){
      mkdir $cfgDir
      lastKey=1
      ipfsCount=1
-     echo $ipfsCount >> $cfgDir/config
      }
 
 function installer(){
