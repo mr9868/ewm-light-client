@@ -94,7 +94,10 @@ do
 done
 privKey+=("$pkey")
 done
+if ! [ -f $cfgDir/config ]; 
+then
 set | grep ^privKey= >> ${cfgDir}/config
+fi
 }
 
 # Entrypoint for telegram monitor question
