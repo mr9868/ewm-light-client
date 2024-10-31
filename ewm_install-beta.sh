@@ -518,6 +518,7 @@ fi
 function notInstalled(){
      sudo rm -rf ~/ewm-das
      sudo rm -rf ~/.ipfs*
+     sudo rm -rf /usr/local/bin/ipfs
      sudo pkill -f "covalent*"
      sudo pkill -f "ipfs*"
      checkGo &&
