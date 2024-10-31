@@ -157,34 +157,22 @@ do
 varPkey=${privKey[$(((0-1)+${i}))]}
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
-then
-screen -dmS covalent${i} -L -Logfile ${cfgDir}/covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash"
-else
 screen -dmS covalent${i} -L -Logfile ${cfgDir}/covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash"
 fi
 else
-screen -dmS covalent${i} -L -Logfile ${cfgDir}/covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --private-key ${varPkey} ;exec bash"
+screen -dmS covalent${i} -L -Logfile ${cfgDir}/covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash"
 fi
 done
 }
 
 # Covalent log
 function covalentLog(){
-if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
-then
-for i in $(seq ${lastKey} ${#privKey[@]});
-do
-echo "To view node${i} log execute 'screen -r covalent${i}'"
-echo "To view ipfs${i} log execute 'screen -r ipfs${i}'"
-done
-else
+
 for i in $(seq ${lastKey} ${#privKey[@]});
 do
 echo "To view node${i} log execute 'screen -r covalent${i}'"
 done
-echo "To view ipfs log execute 'screen -r ipfs'"
-fi
+echo "To view ipfs log execute 'screen -r ipfs${lastKey}'"
 }
 
 function tgInit(){
@@ -198,12 +186,6 @@ fi
 }
 
 function ipfsConf(){
-if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
-then
-i=${i}
-else
-i=${lastRow}
-fi
 echo '
 {
   "API": {
@@ -356,10 +338,10 @@ echo '
     }
   }
 }
-' > ${cfgDir}/.ipfs${i}/config
+' > ${cfgDir}/.ipfs${lastRow}/config
 
-echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ~/.ipfs${i}/datastore_spec
-echo '16' > ${cfgDir}/.ipfs${i}/version
+echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ~/.ipfs${lastRow}/datastore_spec
+echo '16' > ${cfgDir}/.ipfs${lastRow}/version
 }
 
 # ipfs entrypoint
@@ -367,22 +349,6 @@ function entryPointIpfs(){
 lastRow=${lastKey}
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
-then
-for i in $(seq ${lastKey} ${#privKey[@]});
-do
-mainPort=50${i}
-secPort=40${i}
-trdPort=80${i}
-sudo ufw allow 50${i}
-sudo ufw allow 40${i}
-sudo ufw allow 80${i}
-mkdir ${cfgDir}/.ipfs${i}
-ipfsConf
-screen -dmS ipfs${i} -L -Logfile ${cfgDir}/ipfs${i}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${i} ipfs daemon --init;exec bash;" 
- 
-done
-else
 read -p "Set main port eg. 5001 : " mainPort
 until [[ ${mainPort} =~ ^[0-9]{4}$ ]]
 do
@@ -407,8 +373,6 @@ sudo ufw allow ${trdPort}
 mkdir ${cfgDir}/.ipfs${lastRow}
 ipfsConf
 screen -dmS ipfs${lastRow} -L -Logfile $cfgDir/ipfs${lastRow}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastRow} ipfs daemon --init;exec bash;" 
- 
-fi
 else
 screen -dmS ipfs${lastRow} -L -Logfile ${cfgDir}/ipfs${lastRow}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastRow} ipfs daemon --init;exec bash;" 
 fi
@@ -471,8 +435,6 @@ entryPointPK;
 myHeader;
 read -p "Do you want to set client port ? (y/n)  : " ipfsQn
 echo "Note: If you choose automatic port, light client and IPFS will run different port on each account"
-read -p "Do you want to set automatic port ? (y/n)  : " ipfsAutoQn
-
 
 # Running ipfs daemon
 entryPointIpfs &&
