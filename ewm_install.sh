@@ -484,7 +484,7 @@ then
      echo -e "4. Uninstall Light Client\n"
      echo -e "5. Exit setup\n"
      read -p "Choose your option : " dirFound
-     until [[ "${dirFound}" =~ ^[0-4]+$ ]];
+     until [[ "${dirFound}" =~ ^[0-5]+$ ]];
      do
      myHeader
      echo -e "Config directories found !\n"
