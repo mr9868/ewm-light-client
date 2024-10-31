@@ -96,11 +96,9 @@ privKey+=("$pkey")
 done
 if ! [ -f $cfgDir/config ]; 
 then
-echo ${ipfsCount} >> $cfgDir/config
+echo "ipfsCount=${ipfsCount}" >> $cfgDir/config
 set | grep ^privKey= >> ${cfgDir}/config
 else
-ipfsCount="$((${ipfsCount}+1))"
-sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" $cfgDir/config
 sed -r -i "s/privKey=.*/$(set | grep ^privKey= )/g" $cfgDir/config
 fi
 }
@@ -491,6 +489,8 @@ then
      then
      . $cfgDir/config
      lastKey="$((${#privKey[@]}+1))"
+     ipfsCount="$((${ipfsCount}+1))"
+     sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" $cfgDir/config
      installer
      elif [[ "${dirFound}"="2" ]];
      then
