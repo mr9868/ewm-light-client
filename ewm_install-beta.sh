@@ -372,9 +372,9 @@ mkdir ${cfgDir}/.ipfs${lastKey} &&
 ipfsConf
 screen -dmS ipfs${lastKey} -L -Logfile $cfgDir/ipfs${lastKey}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastKey} ipfs daemon --init;exec bash;" 
 else
-mainPort="50${lastKey}"
-secPort="40${lastKey}"
-trdPort="80${lastKey}"
+mainPort=50$((${lastKey}))
+secPort=40$((${lastKey}))
+trdPort=80$((${lastKey}))
 sudo ufw allow ${mainPort}
 sudo ufw allow ${secPort}
 sudo ufw allow ${trdPort}
