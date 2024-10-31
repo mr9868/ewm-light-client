@@ -28,6 +28,8 @@ then close again the screen by pressing ctrl + a +d
 
 To add light-client, just rerun the ewm_install.sh
 
+## The script will checking for verified samples every 30 minutes
+
 ### How to setting up telegram bot and get your bot API KEY
 1. Go to [https://t.me/botfather]
 2. Start the bot
