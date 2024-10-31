@@ -374,7 +374,7 @@ ipfsFile="./ipfs${i}"
 mkdir ${cfgDir}/${ipfsFile}
 ipfsConf
 screen -dmS ipfs${i} -L -Logfile ${cfgDir}/ipfs${i}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${i} ipfs daemon --init;exec bash;" 
-runLightClient 
+ 
 done
 else
 read -p "Set main port eg. 5001 : " mainPort
@@ -414,11 +414,11 @@ sudo ufw allow ${trdPort}
 mkdir ${cfgDir}/.ipfs${lastRow}
 ipfsConf
 screen -dmS ipfs${lastRow} -L -Logfile $cfgDir/ipfs${lastRow}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastRow} ipfs daemon --init;exec bash;" 
-runLightClient 
+ 
 fi
 else
 screen -dmS ipfs${lastRow} -L -Logfile ${cfgDir}/ipfs${lastRow}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastRow} ipfs daemon --init;exec bash;" 
-runLightClient 
+ 
 fi
 }
 
@@ -511,7 +511,7 @@ if [[ "${dirFound}" =~ ^([yY][eE][sS]|[yY])$ ]];
  fi
 
 
-
+runLightClient &&
 
 # Welldone ! 
 myHeader;
