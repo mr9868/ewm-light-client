@@ -116,30 +116,32 @@ fi
 
 function tgConf(){
 echo "
+cfgDir=${cfgDir};
+. \${cfgDir}/config
 # Send tg message
 function tgMsg(){
 # Set the API token and chat ID
-API_TOKEN=\"${tgApiQn}\"
-CHAT_ID=\"${tgIdQn}\"
+API_TOKEN=\"\${tgApiQn}\"
+CHAT_ID=\"\${tgIdQn}\"
 MESSAGE=\$(eval \" echo 'Please wait ....'\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 sleep 120;
-for akun in \$(seq 1 ${#privKey[@]});
+for akun in \$(seq 1 \${#privKey[@]});
 do  
 MESSAGE=\$(eval \" cat ipfs\${akun}.log | grep ready\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
-msgStart=\$(eval \" cat ${cfgDir}/covalent\${akun}.log | awk '{print tolower(\\\$0)}' | grep -ow '\w*0x\w*'\")
+msgStart=\$(eval \" cat \${cfgDir}/covalent\${akun}.log | awk '{print tolower(\\\$0)}' | grep -ow '\w*0x\w*'\")
 accStart=\$(eval \" echo 'Address \${akun} : \\\`\${msgStart}\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
 done
 
 while sleep 1800;
 do
-for i in \$(seq 1 ${#privKey[@]});
+for i in \$(seq 1 \${#privKey[@]});
 do  
-msgCount=\$(eval \" cat ${cfgDir}/covalent\${i}.log | grep -c 'verified'\")
-msgError=\$(eval \" cat ${cfgDir}/covalent\${i}.log | grep -E 'FATAL|ERROR'\")
-ipfsError=\$(eval \" cat ${cfgDir}/ipfs\${i}.log | grep 'ERROR'\")
+msgCount=\$(eval \" cat \${cfgDir}/covalent\${i}.log | grep -c 'verified'\")
+msgError=\$(eval \" cat \${cfgDir}/covalent\${i}.log | grep -E 'FATAL|ERROR'\")
+ipfsError=\$(eval \" cat \${cfgDir}/ipfs\${i}.log | grep 'ERROR'\")
 accMsg=\$(eval \"echo ' Account \${i} has \${msgCount} verified samples'\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsError}\"
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgError}\"                
