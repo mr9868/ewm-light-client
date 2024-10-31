@@ -492,18 +492,22 @@ then
      ipfsCount="$((${ipfsCount}+1))"
      sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" $cfgDir/config
      installer
-     elif [[ "${dirFound}"="2" ]];
+     fi
+     if [[ "${dirFound}"="2" ]];
      then
      notInstalled
      installer
-     elif [[ "${dirFound}"="3" ]];
+     fi
+     if [[ "${dirFound}"="3" ]];
      then
      rm -rf ewm*
      pkill -f "ipfs*"
      pkill -f "covalent*"
      exit 1
-     else
-     exit 1
+     fi
+     if [[ "${dirFound}"="4" ]];
+     then
+     exit1
      fi
    else
    myHeader
