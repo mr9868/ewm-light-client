@@ -337,15 +337,14 @@ echo '
     }
   }
 }
-' > ${cfgDir}/.ipfs${lastRow}/config
+' > ${cfgDir}/.ipfs${lastKey}/config
 
-echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ${cfgDir}/.ipfs${lastRow}/datastore_spec
-echo '16' > ${cfgDir}/.ipfs${lastRow}/version
+echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ${cfgDir}/.ipfs${lastKey}/datastore_spec
+echo '16' > ${cfgDir}/.ipfs${lastKey}/version
 }
 
 # ipfs entrypoint
 function entryPointIpfs(){
-lastRow=${lastKey}
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 read -p "Set main port eg. 5001 : " mainPort
@@ -369,19 +368,19 @@ done
 sudo ufw allow ${mainPort}
 sudo ufw allow ${secPort}
 sudo ufw allow ${trdPort}
-mkdir ${cfgDir}/.ipfs${lastRow} &&
+mkdir ${cfgDir}/.ipfs${lastKey} &&
 ipfsConf
-screen -dmS ipfs${lastRow} -L -Logfile $cfgDir/ipfs${lastRow}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastRow} ipfs daemon --init;exec bash;" 
+screen -dmS ipfs${lastKey} -L -Logfile $cfgDir/ipfs${lastKey}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastKey} ipfs daemon --init;exec bash;" 
 else
-mainPort="50${lastRow}"
-secPort="40${lastRow}"
-trdPort="80${lastRow}"
+mainPort="50${lastKey}"
+secPort="40${lastKey}"
+trdPort="80${lastKey}"
 sudo ufw allow ${mainPort}
 sudo ufw allow ${secPort}
 sudo ufw allow ${trdPort}
-mkdir ${cfgDir}/.ipfs${lastRow} &&
+mkdir ${cfgDir}/.ipfs${lastKey} &&
 ipfsConf
-screen -dmS ipfs${lastRow} -L -Logfile ${cfgDir}/ipfs${lastRow}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastRow} ipfs daemon --init;exec bash;" 
+screen -dmS ipfs${lastKey} -L -Logfile ${cfgDir}/ipfs${lastKey}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastKey} ipfs daemon --init;exec bash;" 
 fi
 }
 
