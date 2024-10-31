@@ -168,6 +168,7 @@ runTg
 " > ${cfgDir}/tgInit.sh
 chmod 777 ${cfgDir}/tgInit.sh && bash ${cfgDir}/tgInit.sh &&
 echo "Telegram Bot initialized"
+echo "Check the logs 'screen -r ewmLogs'"
 }
 
 
