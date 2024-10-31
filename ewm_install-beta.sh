@@ -363,28 +363,63 @@ echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flat
 echo '16' > ${cfgDir}/.ipfs${lastKey}/version
 }
 
+
+
 # ipfs entrypoint
 function entryPointIpfs(){
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
+
+# Cek main Port
 read -p "Set main port eg. 5001 : " mainPort
+cekPort=$(eval "lsof -Pi :${mainPort} -sTCP:LISTEN -t")
 until [[ ${mainPort} =~ ^[0-9]{4}$ ]]
 do
 echo "Please input in 4 digits number !"
 read -p "Set main port eg. 5001 : " mainPort
+cekPort=$(eval "lsof -Pi :${mainPort} -sTCP:LISTEN -t")
 done
-read -p "Set second port eg. 4001 : " secPort
+until [[ -z "$cekPort" ]]
+do
+echo "Port ${mainPort} is already in use !"
+read -p "Set main port eg. 5001 : " mainPort
+cekPort=$(eval "lsof -Pi :${mainPort} -sTCP:LISTEN -t")
+done
+
+# Cek sec Port
+read -p "Set main port eg. 5001 : " secPort
+cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
 until [[ ${secPort} =~ ^[0-9]{4}$ ]]
 do
 echo "Please input in 4 digits number !"
-read -p "Set second port eg. 4001 : " secPort
+read -p "Set main port eg. 5001 : " secPort
+cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
 done
-read -p "Set third port eg. 8080 : " trdPort
+until [[ -z "$cekPort" ]]
+do
+echo "Port ${secPort} is already in use !"
+read -p "Set main port eg. 5001 : " secPort
+cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
+done
+
+
+# Cek third Port
+read -p "Set main port eg. 5001 : " trdPort
+cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
 until [[ ${trdPort} =~ ^[0-9]{4}$ ]]
 do
 echo "Please input in 4 digits number !"
-read -p "Set trd port eg. 8080 : " trdPort
+read -p "Set main port eg. 5001 : " trdPort
+cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
 done
+until [[ -z "$cekPort" ]]
+do
+echo "Port ${trdPort} is already in use !"
+read -p "Set main port eg. 5001 : " trdPort
+cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
+done
+
+
 sudo ufw allow ${mainPort}
 sudo ufw allow ${secPort}
 sudo ufw allow ${trdPort}
@@ -392,9 +427,30 @@ mkdir ${cfgDir}/.ipfs${lastKey} &&
 ipfsConf
 screen -dmS ipfs${lastKey} -L -Logfile $cfgDir/ipfs${lastKey}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastKey} ipfs daemon --init;exec bash;" 
 else
-mainPort=50$((${lastKey}))
-secPort=40$((${lastKey}))
-trdPort=80$((${lastKey}))
+mainPort=5001
+cekPort=$(eval "lsof -Pi :${mainPort} -sTCP:LISTEN -t")
+until [[ -z "$cekPort" ]]
+do
+mainPort=$((${mainPort}+1))
+cekPort=$(eval "lsof -Pi :${mainPort} -sTCP:LISTEN -t")
+done
+
+secPort=4001
+cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
+until [[ -z "$cekPort" ]]
+do
+secPort=$((${secPort}+1))
+cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
+done
+
+trdPort=8080
+cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
+until [[ -z "$cekPort" ]]
+do
+trdPort=$((${trdPort}+1))
+cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
+done
+
 sudo ufw allow ${mainPort}
 sudo ufw allow ${secPort}
 sudo ufw allow ${trdPort}
@@ -476,6 +532,7 @@ function notInstalled(){
 
 function installer(){
 myHeader;
+   command -v lsof >/dev/null 2>&1 || { echo >&2 "lsof is not found on this machine, Installing lsof ... "; sleep 5;sudo apt install lsof -y;} 
    command -v screen >/dev/null 2>&1 || { echo >&2 "Screen is not found on this machine, Installing screen ... "; sleep 5;sudo apt install screen -y;} 
    command -v git >/dev/null 2>&1 || { echo >&2 "Git is not found on this machine, Installing git ... "; sleep 5;sudo apt install git -y;}
    command -v wget >/dev/null 2>&1 || { echo >&2 "Wget is not found on this machine, Installing Wget ... "; sleep 5;sudo apt install wget -y;}
