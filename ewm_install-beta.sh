@@ -472,15 +472,16 @@ then
      echo -e "1. Add Light Client\n"
      echo -e "2. Reinstall Light Client\n"
      echo -e "3. Uninstall Light Client\n"
-     echo -e "Submit any key to exit\n"
+     echo -e "4. Exit setup\n"
      read -p "Config directories found ! do you want to add light-client ? : " dirFound
-     until [[ "${dirFound}" =~ ^[0-3]+$ ]];
+     until [[ "${dirFound}" =~ ^[0-4]+$ ]];
      do
      myHeader
      echo -e "Config directories found !\n"
      echo -e "1. Add Light Client\n"
      echo -e "2. Reinstall Light Client\n"
      echo -e "3. Uninstall Light Client\n"
+     echo -e "4. Exit setup\n"
      read -p "Config directories found ! do you want to add light-client ? : " dirFound
      done
      if [[ "${dirFound}"="1" ]];
