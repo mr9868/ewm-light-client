@@ -110,7 +110,8 @@ if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
-if grep -wq "tgApiQn" ${cfgDir}/config; then      
+if grep -wq "tgApiQn" ${cfgDir}/config; then    
+sudo pkill -f "ewmLog"
 sed -r -i "s/tgApiQn=.*/tgApiQn=${tgApiQn}/g" ${cfgDir}/config
 sed -r -i "s/tgIdQn=.*/tgIdQn=${tgIdQn}/g" ${cfgDir}/config
 else         
@@ -134,11 +135,13 @@ CHAT_ID=\"\${tgIdQn}\"
 MESSAGE=\$(eval \" echo 'Please wait ....'\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 sleep 120;
+for ipfsDaemon in \$(seq 1 \${#privKey[@]});
+do  
+MESSAGE=\$(eval \" cat \${cfgDir}/ipfs\${ipfsDaemon}.log | grep ready\"); 
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
+done
 for akun in \$(seq 1 \${#privKey[@]});
 do  
-MESSAGE=\$(eval \" cat \${cfgDir}/ipfs\${akun}.log | grep ready\"); 
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
-
 msgStart=\$(eval \" cat \${cfgDir}/covalent\${akun}.log | awk '{print tolower(\\\$0)}' | grep -ow '\w*0x\w*'\")
 accStart=\$(eval \" echo 'Address \${akun} : \\\`\${msgStart}\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
