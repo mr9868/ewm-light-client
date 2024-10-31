@@ -198,6 +198,12 @@ fi
 }
 
 function ipfsConf(){
+if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
+then
+i=${i}
+else
+i=${lastRow}
+fi
 echo '
 {
   "API": {
@@ -395,18 +401,6 @@ do
 echo "Please input in 4 digits number !"
 read -p "Set trd port eg. 8080 : " trdPort
 done
-if [[ "${mainPort}" == "" ]];
-then
-mainPort=5001
-fi
-if [[ "${secPort}" == "" ]];
-then
-secPort=4001
-fi
-if [[ "${trdPort}" == "" ]];
-then
-trdPort=8080
-fi
 sudo ufw allow ${mainPort}
 sudo ufw allow ${secPort}
 sudo ufw allow ${trdPort}
