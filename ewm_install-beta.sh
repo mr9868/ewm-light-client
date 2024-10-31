@@ -507,7 +507,7 @@ then
      fi
      if [[ "${dirFound}"="4" ]];
      then
-     exit1
+     exit 1
      fi
    else
    myHeader
