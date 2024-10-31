@@ -140,8 +140,10 @@ do
 MESSAGE=\$(eval \" cat \${cfgDir}/ipfs\${ipfsDaemon}.log | grep ready\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 done
+sleep 2
 for akun in \$(seq 1 \${#privKey[@]});
 do  
+sleep 2
 msgStart=\$(eval \" cat \${cfgDir}/covalent\${akun}.log | awk '{print tolower(\\\$0)}' | grep -ow '\w*0x\w*'\")
 accStart=\$(eval \" echo 'Address \${akun} : \\\`\${msgStart}\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
