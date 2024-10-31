@@ -358,6 +358,7 @@ echo '16' > ${cfgDir}/.ipfs${i}/version
 
 # ipfs entrypoint
 function entryPointIpfs(){
+lastRow=${lastKey}
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 if [[ "${ipfsAutoQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
@@ -370,8 +371,7 @@ trdPort=80${i}
 sudo ufw allow 50${i}
 sudo ufw allow 40${i}
 sudo ufw allow 80${i}
-ipfsFile="./ipfs${i}"
-mkdir ${cfgDir}/${ipfsFile}
+mkdir ${cfgDir}/.ipfs${i}
 ipfsConf
 screen -dmS ipfs${i} -L -Logfile ${cfgDir}/ipfs${i}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${i} ipfs daemon --init;exec bash;" 
  
@@ -407,7 +407,6 @@ if [[ "${trdPort}" == "" ]];
 then
 trdPort=8080
 fi
-lastRow=${lastKey}
 sudo ufw allow ${mainPort}
 sudo ufw allow ${secPort}
 sudo ufw allow ${trdPort}
@@ -418,7 +417,6 @@ screen -dmS ipfs${lastRow} -L -Logfile $cfgDir/ipfs${lastRow}.log bash -c "IPFS_
 fi
 else
 screen -dmS ipfs${lastRow} -L -Logfile ${cfgDir}/ipfs${lastRow}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${lastRow} ipfs daemon --init;exec bash;" 
- 
 fi
 }
 
