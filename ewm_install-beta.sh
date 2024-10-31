@@ -140,8 +140,12 @@ do
 for i in \$(seq 1 \${#privKey[@]});
 do  
 msgCount=\$(eval \" cat \${cfgDir}/covalent\${i}.log | grep -c 'verified'\")
-msgError=\$(eval \" cat \${cfgDir}/covalent\${i}.log | grep -E 'FATAL|ERROR'\")
-ipfsError=\$(eval \" cat \${cfgDir}/ipfs\${i}.log | grep 'ERROR'\")
+start=\$(date -d \"-30 minutes\" +'%Y-%m-%d %H:%M:%S')
+msgError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/covalent\${i}.log | grep -E 'FATAL|ERROR')
+ipfsError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/ipfs\${i}.log | grep -E 'FATAL|ERROR')
+
+#msgError=\$(eval \" cat \${cfgDir}/covalent\${i}.log | grep -E 'FATAL|ERROR'\")
+#ipfsError=\$(eval \" cat \${cfgDir}/ipfs\${i}.log | grep 'ERROR'\")
 accMsg=\$(eval \"echo ' Account \${i} has \${msgCount} verified samples'\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsError}\"
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgError}\"                
@@ -152,6 +156,16 @@ done
 }
 tgMsg;
 " > ${cfgDir}/tgConf.sh
+echo "
+cfgDir=${cfgDir};
+. \${cfgDir}/config
+function runTg(){
+screen -dmS ewmLog bash -c \"chmod 777 \${cfgDir}/tgConf.sh;bash \${cfgDir}/tgConf.sh;exec bash\"
+}
+runTg
+" > ${cfgDir}/tgInit.sh
+chmod 777 ${cfgDir}/tgInit.sh && bash ${cfgDir}/tgInit.sh &&
+echo "Telegram Bot initialized"
 }
 
 
@@ -183,7 +197,6 @@ function tgInit(){
 if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 tgConf;
-screen -dmS ewmLog bash -c "chmod 777 ${cfgDir}/tgConf.sh;bash ${cfgDir}/tgConf.sh;exec bash"
 else
 echo "Telegram bot: Not configured, Next ..."
 fi
