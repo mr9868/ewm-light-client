@@ -110,8 +110,13 @@ if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
+if grep -wq "tgApiQn" ${cfgDir}/config; then      
+sed -r -i "s/tgApiQn=.*/tgApiQn=${tgApiQn}/g" ${cfgDir}/config
+sed -r -i "s/tgIdQn=.*/tgIdQn=${tgIdQn}/g" ${cfgDir}/config
+else         
 echo "tgApiQn=${tgApiQn}" >> ${cfgDir}/config
 echo "tgIdQn=${tgIdQn}" >> ${cfgDir}/config
+fi
 else
 echo "See yaa ..."
 fi
