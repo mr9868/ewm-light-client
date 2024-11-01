@@ -582,6 +582,7 @@ function notInstalled(){
      sudo rm -rf /usr/local/bin/ipfs
      sudo pkill -f "covalent*"
      sudo pkill -f "ipfs*"
+     sudo pkill -f "ewmLog"
      checkGo &&
      checkIpfs 
 # Install ewm-das
