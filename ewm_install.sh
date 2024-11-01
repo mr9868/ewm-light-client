@@ -594,6 +594,11 @@ function notInstalled(){
      }
 
 function installer(){
+if [ ${dirFound} == "1" ];
+     then
+     echo "Next ..."
+     sleep 2;
+     else
 myHeader;
    command -v lsof >/dev/null 2>&1 || { echo >&2 "lsof is not found on this machine, Installing lsof ... "; sleep 2;sudo apt install lsof -y;} 
    command -v sed >/dev/null 2>&1 || { echo >&2 "sed is not found on this machine, Installing sed ... "; sleep 2;sudo apt install sed -y;} 
@@ -601,6 +606,7 @@ myHeader;
    command -v git >/dev/null 2>&1 || { echo >&2 "Git is not found on this machine, Installing git ... "; sleep 2;sudo apt install git -y;}
    command -v wget >/dev/null 2>&1 || { echo >&2 "Wget is not found on this machine, Installing Wget ... "; sleep 2;sudo apt install wget -y;}
    command -v ufw >/dev/null 2>&1 || { echo >&2 "Ufw is not found on this machine, Installing ufw ... "; sleep 2;sudo apt install ufw -y;}
+     fi
 myHeader;  
 entryPointPK;
 myHeader;
