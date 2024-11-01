@@ -229,9 +229,9 @@ function covalentLog(){
 
 for i in $(seq ${lastKey} ${#privKey[@]});
 do
-echo "To view node${i} log execute 'screen -r covalent${i}'"
+echo "To view covalent${i} log execute 'screen -r covalent${i}'"
 done
-echo "To view ipfs${ipfsCount} log execute 'screen -r ipfs${ipfsCount}'"
+echo "To view ipfs${ipfsCount} daemon log execute 'screen -r ipfs${ipfsCount}'"
 }
 
 function tgInit(){
@@ -659,6 +659,18 @@ runLightClient &&
 # Welldone ! 
 myHeader;
 covalentLog;
+echo 
+echo
+echo "====================== INSTRUCTIONS ========================"
+echo
+echo -e "
+Instructions if there is an error : \n
+1. Close ipfs screen that contain an error (Remember the screen name)
+2. Go to config folder, or type this 'cd \$cfgDir'
+3. Execute the ipfs daemon files, for example 'bash ipfs1' (ipfs1 is the screen name)
+4. Holla ! monitor your bot if there is an error again !
+"
+
 echo
 echo "================== INSTALLED DEPENDENCIES =================="
 echo
