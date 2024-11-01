@@ -135,7 +135,7 @@ API_TOKEN=\"\${tgApiQn}\"
 CHAT_ID=\"\${tgIdQn}\"
 MESSAGE=\$(eval \" echo 'Please wait ....'\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
-sleep 120;
+sleep 20;
 for ipfsDaemon in \$(seq 1 \${#privKey[@]});
 do  
 MESSAGE=\$(eval \" cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep ready\"); 
