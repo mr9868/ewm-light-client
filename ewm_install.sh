@@ -5,8 +5,12 @@
 goLts="1.23.2" &&
 ipfsLts="31" &&
 cfgDir=~/ewm-das/.mr9868;
+if grep -wq "cfgDir" ~/.bashrc; then
+sed -r -i "s/cfgDir=.*/cfgDir=${cfgDir}/g" ~/.bashrc
+else
 echo "cfgDir=${cfgDir}" >> ~/.bashrc
 source .bashrc
+fi
 
 # My Header function
 function myHeader(){
