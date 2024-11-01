@@ -587,6 +587,7 @@ function notInstalled(){
 # Install ewm-das
      git clone https://github.com/covalenthq/ewm-das  &&
      cd ewm-das &&
+     mkdir $cfgDir
      mkdir $cfgDir/logs
      lastKey=1
      ipfsCount=1
