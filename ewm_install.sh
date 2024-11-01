@@ -107,6 +107,18 @@ else
 sed -r -i "s/privKey=.*/$(set | grep ^privKey= )/g" $cfgDir/config
 fi
 }
+function errInstruct(){
+echo 
+echo "====================== INSTRUCTIONS ========================"
+echo
+echo -e "
+Instructions if there is an error : \n
+1. Close ipfs screen that contain an error (Remember the screen name)
+2. Go to config folder, or type this 'cd \$cfgDir'
+3. Execute the ipfs daemon files, for example 'bash ipfs1' (ipfs1 is the screen name)
+4. Holla ! monitor your bot if there is an error again !
+"
+}
 
 # Entrypoint for telegram monitor question
 function entryPointTg(){
@@ -191,6 +203,7 @@ screen -dmS ewmLog bash -c \"chmod 777 \${cfgDir}/tgConf.sh;bash \${cfgDir}/tgCo
 runTg
 " > ${cfgDir}/tgInit.sh
 chmod 777 ${cfgDir}/tgInit.sh && bash ${cfgDir}/tgInit.sh &&
+errInstruct;
 echo "Telegram Bot initialized"
 echo "Check the logs 'screen -r ewmLogs'"
 }
@@ -659,17 +672,7 @@ runLightClient &&
 # Welldone ! 
 myHeader;
 covalentLog;
-echo 
-echo
-echo "====================== INSTRUCTIONS ========================"
-echo
-echo -e "
-Instructions if there is an error : \n
-1. Close ipfs screen that contain an error (Remember the screen name)
-2. Go to config folder, or type this 'cd \$cfgDir'
-3. Execute the ipfs daemon files, for example 'bash ipfs1' (ipfs1 is the screen name)
-4. Holla ! monitor your bot if there is an error again !
-"
+errInstruct;
 
 echo
 echo "================== INSTALLED DEPENDENCIES =================="
