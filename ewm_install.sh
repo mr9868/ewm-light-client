@@ -201,8 +201,8 @@ rm -rf ${cfgDir}/covalent${i}.log
 screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash\"
 }
 covalent${i}
-" >  ${cfgDir}/log/covalent${i}.sh
-chmod 777 ${cfgDir}/log/covalent${i}.sh && bash ${cfgDir}/log/covalent${i}.sh
+" >  ${cfgDir}/covalent${i}.sh
+chmod 777 ${cfgDir}/covalent${i}.sh && bash ${cfgDir}/covalent${i}.sh
 else
 echo "
 function covalent${i}(){
@@ -210,8 +210,8 @@ rm -rf ${cfgDir}/covalent${i}.log
 screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash\"
 }
 covalent${i}
-" >  ${cfgDir}/log/covalent${i}.sh
-chmod 777 ${cfgDir}/log/covalent${i}.sh && bash ${cfgDir}/log/covalent${i}.sh
+" >  ${cfgDir}/covalent${i}.sh
+chmod 777 ${cfgDir}/covalent${i}.sh && bash ${cfgDir}/covalent${i}.sh
 fi
 done
 }
