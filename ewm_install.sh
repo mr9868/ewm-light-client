@@ -5,7 +5,8 @@
 goLts="1.23.2" &&
 ipfsLts="31" &&
 cfgDir=~/ewm-das/.mr9868;
-
+echo "cfgDir=${cfgDir}" >> ~/.bashrc
+source .bashrc
 
 # My Header function
 function myHeader(){
@@ -556,9 +557,13 @@ then
      fi
      if [ ${dirFound} == "4" ];
      then
-     rm -rf ewm*
-     pkill -f "ipfs*"
-     pkill -f "covalent*"
+     sudo rm -rf ~/ewm-das
+     sudo rm -rf ~/.ipfs*
+     sudo rm -rf /usr/local/bin/ipfs
+     sudo pkill -f "covalent*"
+     sudo pkill -f "ipfs*"
+     sudo pkill -f "ewmLog"
+     sed -r -i "s/cfgDir=.*/ /g" ~/.bashrc
      :
      fi
      if [ ${dirFound} == "5" ];
@@ -574,12 +579,12 @@ else
    myHeader  
    notInstalled
    installer
+   
 fi
 }
 function notInstalled(){
      sudo rm -rf ~/ewm-das
      sudo rm -rf ~/.ipfs*
-     sudo rm -rf /usr/local/bin/ipfs
      sudo pkill -f "covalent*"
      sudo pkill -f "ipfs*"
      sudo pkill -f "ewmLog"
