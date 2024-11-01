@@ -137,14 +137,14 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 sleep 120;
 for ipfsDaemon in \$(seq 1 \${#privKey[@]});
 do  
-MESSAGE=\$(eval \" cat \${cfgDir}/ipfs\${ipfsDaemon}.log | grep ready\"); 
+MESSAGE=\$(eval \" cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep ready\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 done
 sleep 2
 for akun in \$(seq 1 \${#privKey[@]});
 do  
 sleep 2
-msgStart=\$(eval \" cat \${cfgDir}/covalent\${akun}.log | awk '{print tolower(\\\$0)}' | grep -ow '\w*0x\w*'\")
+msgStart=\$(eval \" cat \${cfgDir}/logs/covalent\${akun}.log | awk '{print tolower(\\\$0)}' | grep -ow '\w*0x\w*'\")
 accStart=\$(eval \" echo 'Address \${akun} : \\\`\${msgStart}\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
 done
@@ -153,9 +153,9 @@ while sleep 1800;
 do
 for i in \$(seq 1 \${#privKey[@]});
 do  
-msgCount=\$(eval \" cat \${cfgDir}/covalent\${i}.log | grep -c 'verified'\")
-covError=\$(eval \" cat \${cfgDir}/covalent\${i}.log | grep -E 'FATAL|ERROR' | tail -1\")
-ipfsError=\$(eval \" cat \${cfgDir}/ipfs\${i}.log | grep 'ERROR' | tail -1\")
+msgCount=\$(eval \" cat \${cfgDir}/logs/covalent\${i}.log | grep -c 'verified'\")
+covError=\$(eval \" cat \${cfgDir}/logs/covalent\${i}.log | grep -E 'FATAL|ERROR' | tail -1\")
+ipfsError=\$(eval \" cat \${cfgDir}/logs/ipfs\${i}.log | grep 'ERROR' | tail -1\")
 accMsg=\$(eval \"echo ' Account \${i} has \${msgCount} verified samples'\")  
 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsError}\"
@@ -188,9 +188,23 @@ do
 varPkey=${privKey[$((${i}-1))]}
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-screen -dmS covalent${i} -L -Logfile ${cfgDir}/covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash"
+echo "
+function covalent${i}(){
+rm -rf ${cfgDir}/covalent${i}.log
+screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash\"
+}
+covalent${i}
+" >  ${cfgDir}/log/covalent${i}.sh
+chmod 777 ${cfgDir}/log/covalent${i}.sh && bash ${cfgDir}/log/covalent${i}.sh
 else
-screen -dmS covalent${i} -L -Logfile ${cfgDir}/covalent${i}.log bash -c "sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash"
+echo "
+function covalent${i}(){
+rm -rf ${cfgDir}/covalent${i}.log
+screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash\"
+}
+covalent${i}
+" >  ${cfgDir}/log/covalent${i}.sh
+chmod 777 ${cfgDir}/log/covalent${i}.sh && bash ${cfgDir}/log/covalent${i}.sh
 fi
 done
 }
@@ -438,7 +452,7 @@ ipfsConf
 echo "
 function ipfs${ipfsCount}(){
 rm -rf ${cfgDir}/ipfs${ipfsCount}.log
-screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;\" 
+screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;\" 
 }
 ipfs${ipfsCount}
 " > ${cfgDir}/ipfs${ipfsCount}.sh;
@@ -477,7 +491,7 @@ ipfsConf
 echo "
 function ipfs${ipfsCount}(){
 rm -rf ${cfgDir}/ipfs${ipfsCount}.log
-screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash\" 
+screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash\" 
 }
 ipfs${ipfsCount}
 " > ${cfgDir}/ipfs${ipfsCount}.sh;
@@ -566,7 +580,7 @@ function notInstalled(){
 # Install ewm-das
      git clone https://github.com/covalenthq/ewm-das  &&
      cd ewm-das &&
-     mkdir $cfgDir
+     mkdir $cfgDir/logs
      lastKey=1
      ipfsCount=1
      }
