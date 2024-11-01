@@ -154,20 +154,22 @@ while sleep 1800;
 do
 for i in \$(seq 1 \${#privKey[@]});
 do  
-msgCount=\$(eval \" cat \${cfgDir}/logs/covalent\${i}.log | grep -c 'verified'\")
-covError=\$(eval \" cat \${cfgDir}/logs/covalent\${i}.log | grep -c 'FATAL|ERROR' \")
-ipfsError=\$(eval \" cat \${cfgDir}/logs/ipfs\${i}.log | grep -c 'ERROR' \")
-if cat \${cfgDir}/logs/ipfs\${i}.log | grep 'ERROR' ; then
+covError=\$(eval \" cat \${cfgDir}/logs/covalent\${i}.log | grep -c 'FATAL|ERROR'\")
+ipfsError=\$(eval \" cat \${cfgDir}/logs/ipfs\${i}.log | grep -c 'ERROR'\")
+if cat \${cfgDir}/logs/ipfs\${i}.log | grep -q 'ERROR' ; then
 ipfsMsg=\$(eval \"echo 'IPFS daemon \${i}has \${ipfsError} Errors. Please check and restart IPFS daemon'\")  
 fi
-if cat \${cfgDir}/logs/covalent\${i}.log | grep 'ERROR' ; then
-covMsg=\$(eval \"echo 'light-client \${i}has \${covError} Errors. Please check your light-client'\")  
+if cat \${cfgDir}/logs/covalent\${i}.log | grep -q 'ERROR' ; then
+covMsg=\$(eval \"echo 'light-client \${i} has \${covError} Errors. Please check your light-client'\")  
 fi
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\"
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${coMsg}\"                
 
+done
+for i in \$(seq 1 \${#privKey[@]});
+do  
+msgCount=\$(eval \" cat \${cfgDir}/logs/covalent\${i}.log | grep -c 'verified'\")
 accMsg=\$(eval \"echo ' Account \${i}: \${msgCount} verified samples'\")  
-
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsError}\"
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covError}\"                
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg}\"                
 # Use the curl command to send the message       
 done
