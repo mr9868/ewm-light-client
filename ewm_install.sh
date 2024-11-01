@@ -437,13 +437,12 @@ mkdir ${cfgDir}/.ipfs${ipfsCount} &&
 ipfsConf
 echo "
 function ipfs${ipfsCount}(){
-pkill -f 'ipfs${ipfsCount}'
 rm -rf ${cfgDir}/ipfs${ipfsCount}.log
 screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;\" 
 }
 ipfs${ipfsCount}
-" >> ${cfgDir}/ipfs${ipfsCount}.sh
-chmod 777  ${cfgDir}/ipfs${ipfsCount}.sh &&  ./${cfgDir}/ipfs${ipfsCount}.sh
+" > ${cfgDir}/ipfs${ipfsCount}.sh;
+chmod 777 ${cfgDir}/ipfs${ipfsCount}.sh && bash ${cfgDir}/ipfs${ipfsCount}.sh
 # screen -dmS ipfs${ipfsCount} -L -Logfile $cfgDir/ipfs${ipfsCount}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;" 
 else
 mainPort=5001
@@ -477,13 +476,12 @@ mkdir ${cfgDir}/.ipfs${ipfsCount} &&
 ipfsConf
 echo "
 function ipfs${ipfsCount}(){
-pkill -f 'ipfs${ipfsCount}'
 rm -rf ${cfgDir}/ipfs${ipfsCount}.log
-screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;\" 
+screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash\" 
 }
 ipfs${ipfsCount}
-" >> ${cfgDir}/ipfs${ipfsCount}.sh 
-chmod 777 ${cfgDir}/ipfs${ipfsCount}.sh && ./${cfgDir}/ipfs${ipfsCount}.sh
+" > ${cfgDir}/ipfs${ipfsCount}.sh;
+chmod 777 ${cfgDir}/ipfs${ipfsCount}.sh && bash ${cfgDir}/ipfs${ipfsCount}.sh
 fi
 }
 
