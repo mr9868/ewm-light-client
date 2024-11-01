@@ -140,15 +140,13 @@ CHAT_ID=\"\${tgIdQn}\"
 MESSAGE=\$(eval \" echo 'Please wait ....'\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 sleep 20;
-for ipfsDaemon in \$(seq 1 \${#privKey[@]});
+for ipfsDaemon in \$(seq 1 \${ipfsCount});
 do  
 MESSAGE=\$(eval \" cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep ready\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 done
-sleep 2
 for akun in \$(seq 1 \${#privKey[@]});
 do  
-sleep 2
 msgStart=\$(eval \" cat \${cfgDir}/logs/covalent\${akun}.log | awk '{print tolower(\\\$0)}' | grep -ow '\w*0x\w*'\")
 accStart=\$(eval \" echo 'Address \${akun} : \\\`\${msgStart}\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
@@ -156,7 +154,7 @@ done
 
 while sleep 1800;
 do
-for i in \$(seq 1 \${#privKey[@]});
+for i in \$(seq 1 \${ipfsCount});
 do  
 covError=\$(eval \" cat \${cfgDir}/logs/covalent\${i}.log | grep -c 'FATAL|ERROR'\")
 ipfsError=\$(eval \" cat \${cfgDir}/logs/ipfs\${i}.log | grep -c 'ERROR'\")
@@ -168,7 +166,6 @@ covMsg=\$(eval \"echo 'light-client \${i} has \${covError} Errors. Please check 
 fi
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\"
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${coMsg}\"                
-
 done
 for i in \$(seq 1 \${#privKey[@]});
 do  
