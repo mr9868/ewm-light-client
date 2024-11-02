@@ -75,15 +75,6 @@ fi
 unset IFS;
 }
 
-function covalent(){
-covFunc="function covalent(){ sudo rm -rf ewm_install.sh && wget https://raw.githubusercontent.com/mr9868/ewm-light-client/refs/heads/main/ewm_install.sh && sudo chmod 777 ewm_install.sh && ./ewm_install.sh && sudo rm ewm_install.sh;}" 
-covFunc=$(echo ${covFunc})
-if grep -wq ${covFunc} ~/.bashrc; then    
-echo ${covFunc} >> ~/.bashrc
-else
-sed -r -i "s/${covFunc}/${covFunc}/g" ~/.bashrc
-fi
-}
 
 # Entrypoint Private Key input function
 function entryPointPK(){
@@ -744,7 +735,6 @@ echo
 echo "=================== INSTALLATION SUCCESS ==================="
 echo
 runAll
-covalent
 unset $loop;
 }
 
