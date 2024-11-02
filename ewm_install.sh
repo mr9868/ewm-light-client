@@ -631,7 +631,6 @@ then
      if [ ${dirFound} == "2" ];
      then
      entryPointTg;
-     tgInit
      fi
      if [ ${dirFound} == "3" ];
      then
