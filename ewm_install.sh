@@ -127,14 +127,7 @@ if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
-MESSAGE='Please wait ....';
-testTg=$(curl -s -X POST https://api.telegram.org/bot${API_TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d text="${MESSAGE}" | grep "error_code")
-until [[ ${testTg} ]];
-do 
-echo "Error: Unauthorized, please recheck your API Key and telegram Id"
-read -p "Please provide your bot API Key from @botFather : " tgApiQn
-read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
-done
+
 
 if grep -wq "tgApiQn" ${cfgDir}/config; then    
 sudo pkill -f "ewmLog"
