@@ -124,11 +124,36 @@ Instructions if there is an error : \n
 function entryPointTg(){
 read -p "Do you want to add telegram monitor ? (y/n)  : " tgQn
 if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
-then
+then                                                                       b.sh
+read -p "Please provide your bot API Key from @botFather : " tgApiQn
+until [ -n "${tgApiQn}" ];
+do
+echo "Please input the API ! "
+read -p "Please provide your bot API Key from @botFather : " tgApiQn
+done
+
+read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
+until [ -n "${tgIdQn}" ];
+do
+echo "Please input chat id !"
+read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
+done
+API_TOKEN=${tgApiQn}
+CHAT_ID=${tgIdQn}
+msgTg=$(echo -e "Authorized !\nPlease wait for up to 1 minute ... ")
+tgTest=$(curl -s -X POST https://api.telegram.org/bot${API_TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d text="${msgTg}" | grep 'error_code')
+tgTest=$(echo ${tgTest})
+until [ -z "${tgTest}" ];
+do
+echo -e "Unauthorized !\nPlease recheck your API and CHAT ID"
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
-
-
+API_TOKEN=${tgApiQn}
+CHAT_ID=${tgIdQn}
+tgTest=$(curl -s -X POST https://api.telegram.org/bot${API_TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d text="${msgTg}" | grep 'error_code')
+tgTest=$(echo ${tgTest})
+done
+echo -e ${msgTg}
 if grep -wq "tgApiQn" ${cfgDir}/config; then    
 sudo pkill -f "ewmLog"
 sed -r -i "s/tgApiQn=.*/tgApiQn=${tgApiQn}/g" ${cfgDir}/config
