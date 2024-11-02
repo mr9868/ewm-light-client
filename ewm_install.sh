@@ -167,7 +167,7 @@ unset i
 for i in \$(seq 1 \${#privKey[@]});
 do  
 msgStart=\$(cat \${cfgDir}/logs/covalent\${i}.log | awk '{print tolower(\\\$0)}' | grep 'client' | grep -ow '\w*0x\w*')
-accStart=\$(eval \"echo 'Covalent\${i} : \\\\`\${msgStart}\\\\`'\")
+accStart=\$(eval \"echo 'Covalent\${i} : \\\`\${msgStart}\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
 done
 unset i
