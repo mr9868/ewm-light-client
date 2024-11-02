@@ -178,7 +178,7 @@ do
 lastIpfsError1=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/ipfs\${ipfsError}.log | grep -E 'ERROR|FATAL' | tail -1)
 lastIpfsError=\$(cat \${lastIpfsError1})
 if \${lastIpfsError} ; then
-ipfsMsg=\$(eval \"echo -e 'ipfs\${ipfsError} daemon : \n \${lastIpfsError} \n There is an error. Restart ipfs\${ipfsError} daemon for better performance'\")  
+ipfsMsg=\$(eval \"echo -e 'ipfs\${ipfsError} daemon : \n \${lastIpfsError1} \n There is an error. Restart ipfs\${ipfsError} daemon for better performance'\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\"
 fi
 done
@@ -194,11 +194,9 @@ fi
 done
 
 msgCount=\$(cat \${cfgDir}/logs/covalent\${i}.log | grep -c 'verified')
-accMsg=\$(echo ' Covalent\${i}: \${msgCount} verified samples')  
+accMsg=\$(eval \" echo ' Covalent\${i}: \${msgCount} verified samples' \")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg}\"                
 # Use the curl command to send the message       
-done
-unset i
 done
 }
 tgMsg;
