@@ -149,7 +149,7 @@ function tgMsg(){
 # Set the API token and chat ID
 API_TOKEN=\"\${tgApiQn}\"
 CHAT_ID=\"\${tgIdQn}\"
-MESSAGE=\$(eval \" echo 'Please wait ....'\"); 
+MESSAGE=\$(echo 'Please wait ....'); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 gitVer=\$(git describe --abbrev=0)
 gitCommit=\$(git log -1 | grep commit)
@@ -157,25 +157,28 @@ msgGit=\$(echo 'You are using git version = \$gitVer' with commit id \$gitCommit
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgGit}\"
 
 sleep 20;
-for ipfsDaemon in \$(seq 1 \${ipfsCount});
+for i in \$(seq 1 \${ipfsCount});
 do  
-MESSAGE=\$(eval \" cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep ready\"); 
+MESSAGE=\$(cat \${cfgDir}/logs/ipfs\${i}.log | grep ready); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 done
-for akun in \$(seq 1 \${#privKey[@]});
+
+for i in \$(seq 1 \${#privKey[@]});
 do  
-msgStart=\$(eval \" cat \${cfgDir}/logs/covalent\${akun}.log | awk '{print tolower(\\\$0)}' | grep 'client' | grep -ow '\w*0x\w*'\")
-accStart=\$(eval \" echo 'Address \${akun} : \\\`\${msgStart}\\\`'\")
+msgStart=\$(cat \${cfgDir}/logs/covalent\${i}.log | awk '{print tolower(\\\$0)}' | grep 'client' | grep -ow '\w*0x\w*')
+accStart=\$(echo 'Covalent\${i} : \\\`\${msgStart}\\\`')
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
 done
 
 while sleep 1800;
 do
+start=\$(date -d \"-30 minutes\" +'%Y-%m-%d %H:%M:%S')
+
 for i in \$(seq 1 \${ipfsCount});
 do  
-ipfsError=\$(eval \" cat \${cfgDir}/logs/ipfs\${i}.log | grep 'ERROR' | tail -1 \")
-if cat \${cfgDir}/logs/ipfs\${i}.log | grep -q 'ERROR' | tail -1 ; then
-ipfsMsg=\$(eval \"echo -e 'ipfs\${i} daemon : \n \${ipfsError} \n There is an error. Restart ipfs\${i} daemon for better performance'\")  
+lastIpfsError=\$(awk -v s=\"\$start\" 's<\$0') \$cfgDir/logs/ipfs\${i}.log | grep -E 'ERROR|FATAL' | tail -1)
+if \${lastIpfsError} ; then
+ipfsMsg=\$(echo -e 'ipfs\${i} daemon : \n \${lastIpfsError} \n There is an error. Restart ipfs\${i} daemon for better performance')  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\"
 fi
 done
@@ -183,14 +186,15 @@ done
 
 for i in \$(seq 1 \${#privKey[@]});
 do  
-covError=\$(eval \" cat \${cfgDir}/logs/covalent\${i}.log | grep 'FATAL|ERROR' | tail -1\")
-if cat \${cfgDir}/logs/covalent\${i}.log | grep -q 'ERROR' | tail -1 ; then
-covMsg=\$(eval \"echo -e 'covalent\${i} light-client : \n \${covError} \n There is an error. Restart ipfs daemon that contain error inside for better performance'\")  
+lastCovError=\$(awk -v s=\"\$start\" 's<\$0') \$cfgDir/logs/covalent\${i}.log | grep -E 'ERROR|FATAL' | tail -1)
+
+if \${lastCovError} ; then
+covMsg=\$(echo -e 'Covalent\${i} light-client : \n \${lastCovError} \n There is an error. Restart ipfs daemon that contain error inside for better performance')  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg}\"                
 fi
 
-msgCount=\$(eval \" cat \${cfgDir}/logs/covalent\${i}.log | grep -c 'verified'\")
-accMsg=\$(eval \"echo ' Account \${i}: \${msgCount} verified samples'\")  
+msgCount=\$(cat \${cfgDir}/logs/covalent\${i}.log | grep -c 'verified')
+accMsg=\$(echo ' Covalent\${i}: \${msgCount} verified samples')  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg}\"                
 # Use the curl command to send the message       
 done
