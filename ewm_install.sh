@@ -314,6 +314,10 @@ done
 function covalentLog(){
 sumCov=$(cd /run/screen/S-root && ls -dq *covalent* | wc -l)
 sumIpfs=$(cd /run/screen/S-root && ls -dq *ipfs* | wc -l)
+ipfsCount="$((${sumIpfs}+1))"
+lastKey="$((${#privKey[@]}+1))"
+sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" $cfgDir/config
+     
 for i in $(seq 1 ${sumCov});
 do
 echo "To view covalent${i} log execute 'screen -r covalent${i}'"
@@ -637,9 +641,6 @@ then
      if [[ "${dirFound}" == "1" ]];
      then
      . $cfgDir/config
-     lastKey="$((${#privKey[@]}+1))"
-     ipfsCount="$((${ipfsCount}+1))"
-     sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" $cfgDir/config
      installer
      fi
      if [[ "${dirFound}" == "2" ]];
