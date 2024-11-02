@@ -224,10 +224,13 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 fi
 done
 
-msgCount=\$(cat \${cfgDir}/logs/covalent\${i}.log | grep -c 'verified')
-accMsg=\$(eval \" echo ' Covalent\${i}: \${msgCount} verified samples' \")  
+for accCov in \$(seq 1 \${#privKey[@]};
+do
+msgCount=\$(cat \${cfgDir}/logs/covalent\${accCov}.log | grep -c 'verified')
+accMsg=\$(eval \" echo ' Covalent\${accCov}: \${msgCount} verified samples' \")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg}\"                
-# Use the curl command to send the message       
+# Use the curl command to send the message 
+done
 done
 }
 tgMsg;
