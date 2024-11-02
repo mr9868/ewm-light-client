@@ -106,6 +106,11 @@ echo "ipfsCount=${ipfsCount}" >> $cfgDir/config
 set | grep ^privKey= >> ${cfgDir}/config
 else
 sed -r -i "s/privKey=.*/$(set | grep ^privKey= )/g" $cfgDir/config
+. ${cfgDir}/config
+ipfsCount="$((${ipfsCount}+1))"
+lastKey="$((${#privKey[@]}+1))"
+sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" $cfgDir/config
+
 fi
 }
 
@@ -314,16 +319,13 @@ done
 function covalentLog(){
 sumCov=$(cd /run/screen/S-root && ls -dq *covalent* | wc -l)
 sumIpfs=$(cd /run/screen/S-root && ls -dq *ipfs* | wc -l)
-ipfsCount="$((${sumIpfs}+1))"
-lastKey="$((${#privKey[@]}+1))"
-sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" $cfgDir/config
-     
-for i in $(seq 1 ${lastKey});
+ 
+for i in $(seq 1 ${sumCov});
 do
 echo "To view covalent${i} log execute 'screen -r covalent${i}'"
 done
 
-for i in $(seq 1 ${ipfsCount});
+for i in $(seq 1 ${sumIpfs});
 do
 echo "To view ipfs${i} log execute 'screen -r ipfs${i}'"
 done
