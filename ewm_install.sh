@@ -242,8 +242,9 @@ done
 }
 
 function stopAll(){
-function stopAll(){
 echo "
+cfgDir=${cfgDir}
+. \${cfgDir}/config
 sudo rm -rf \${cfgDir}/logs/ipfs*
 sudo rm -rf \${cfgDir}/logs/covalent*
 sudo pkill -f 'ipfs*'
@@ -251,7 +252,6 @@ sudo pkill -f 'covalent*'
 echo 'Successfull to stop all ipfs daemon ✅'
 echo 'Successfull to stop covalent node ✅'
 " > ${cfgDir}/runAll.sh
-}
 }
 
 # Run light-client node
