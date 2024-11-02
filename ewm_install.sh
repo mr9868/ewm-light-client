@@ -127,6 +127,15 @@ if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
+MESSAGE='Please wait ....';
+testTg=$(curl -s -X POST https://api.telegram.org/bot${API_TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d text="${MESSAGE}" | grep "error_code")
+until [[ ${testTg} ]];
+do 
+echo "Error: Unauthorized, please recheck your API Key and telegram Id"
+read -p "Please provide your bot API Key from @botFather : " tgApiQn
+read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
+done
+
 if grep -wq "tgApiQn" ${cfgDir}/config; then    
 sudo pkill -f "ewmLog"
 sed -r -i "s/tgApiQn=.*/tgApiQn=${tgApiQn}/g" ${cfgDir}/config
@@ -149,11 +158,9 @@ function tgMsg(){
 # Set the API token and chat ID
 API_TOKEN=\"\${tgApiQn}\"
 CHAT_ID=\"\${tgIdQn}\"
-MESSAGE=\$(echo 'Please wait ....'); 
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
-gitVer=\$(git describe --abbrev=0)
-gitCommit=\$(git log -1 | grep commit)
-msgGit=\$(echo 'You are using git version = \$gitVer' with commit id \$gitCommit)
+gitVer=\$(eval 'git describe --abbrev=0')
+gitCommit=\$(eval 'git log -1 | grep commit')
+msgGit=\$(eval \"echo 'You are using git version = \$gitVer' with commit id \$gitCommit \")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgGit}\"
 
 sleep 20;
