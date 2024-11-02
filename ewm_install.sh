@@ -318,12 +318,12 @@ ipfsCount="$((${sumIpfs}+1))"
 lastKey="$((${#privKey[@]}+1))"
 sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" $cfgDir/config
      
-for i in $(seq 1 ${sumCov});
+for i in $(seq 1 ${lastKey});
 do
 echo "To view covalent${i} log execute 'screen -r covalent${i}'"
 done
 
-for i in $(seq 1 ${sumIpfs});
+for i in $(seq 1 ${ipfsCount});
 do
 echo "To view ipfs${i} log execute 'screen -r ipfs${i}'"
 done
@@ -715,9 +715,9 @@ myHeader
      sudo cp -r bin/light-client /usr/local/bin/light-client 
      cp -r ~/.mr9868 ~/ewm-das
      cd ${cfgDir}
+     myHeader
      chmod 777 *
      bash ${cfgDir}/runAll
-     myHeader
      covalentLog
      
      echo
