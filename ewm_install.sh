@@ -151,6 +151,11 @@ API_TOKEN=\"\${tgApiQn}\"
 CHAT_ID=\"\${tgIdQn}\"
 MESSAGE=\$(eval \" echo 'Please wait ....'\"); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
+gitVer=\$(git describe --abbrev=0)
+gitCommit=\$(git log -1 | grep commit)
+msgGit=\$(echo 'You are using git version = \$gitVer' with commit id \$gitCommit)
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgGit}\"
+
 sleep 20;
 for ipfsDaemon in \$(seq 1 \${ipfsCount});
 do  
@@ -179,7 +184,6 @@ done
 for i in \$(seq 1 \${#privKey[@]});
 do  
 covError=\$(eval \" cat \${cfgDir}/logs/covalent\${i}.log | grep 'FATAL|ERROR' | tail -1\")
-
 if cat \${cfgDir}/logs/covalent\${i}.log | grep -q 'ERROR' | tail -1 ; then
 covMsg=\$(eval \"echo -e 'covalent\${i} light-client : \n \${covError} \n There is an error. Restart ipfs daemon that contain error inside for better performance'\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg}\"                
@@ -250,6 +254,7 @@ echo "To view ipfs${ipfsCount} daemon log execute 'screen -r ipfs${ipfsCount}'"
 function tgInit(){
 if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
+cd ${cfgDir};
 tgConf;
 else
 echo "Telegram bot: Not configured, Next ..."
