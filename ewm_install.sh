@@ -606,7 +606,7 @@ backup;
 fi
 if [ -d ~/ewm-das ]
 then
-   if [ -d $cfgDir ]
+   if [ -d ${cfgDir} -a -f ${cfgDir}/config ]
    then
    
      myHeader
