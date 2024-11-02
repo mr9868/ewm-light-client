@@ -124,7 +124,7 @@ Instructions if there is an error : \n
 function entryPointTg(){
 read -p "Do you want to add telegram monitor ? (y/n)  : " tgQn
 if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
-then                                                                       b.sh
+then                                                                       
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 until [ -n "${tgApiQn}" ];
 do
