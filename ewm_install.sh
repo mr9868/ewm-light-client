@@ -179,7 +179,7 @@ lastIpfsError1=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/ipfs\${ipfsError}
 lastIpfsError=\$(cat \${lastIpfsError1})
 if \${lastIpfsError} ; then
 ipfsMsg=\$(eval \"echo -e 'ipfs\${ipfsError} daemon : \n\\\`\\\`\\\`\n\${lastIpfsError1}\n\\\`\\\`\\\`\nThere is an error. Restart ipfs\${ipfsError} daemon for better performance'\")  
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\"
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\" -d parse_mode='MarkdownV2'
 fi
 done
 
@@ -189,7 +189,7 @@ lastCovError1=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/covalent\${covErro
 lastCovError=\$(cat \${lastCovError1})
 if \${lastCovError} ; then
 covMsg=\$(eval \"echo -e 'Covalent\${covError} daemon : \n\\\`\\\`\\\`\n\${lastCovError1}\n\\\`\\\`\\\`\nError: Restart ipfs daemon that contain error for better performance'\")  
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg}\"
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg}\" -d parse_mode='MarkdownV2'
 fi
 done
 
