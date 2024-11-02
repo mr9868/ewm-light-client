@@ -606,7 +606,7 @@ fi
 function startUp(){
 cd;
 myHeader;
-if [ -d ~/.mr9868 ] 
+if [ -d ~/.mr9868 -a ! -d ${cfgDir} ] 
 then
 backup;
 fi
