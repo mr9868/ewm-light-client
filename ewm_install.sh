@@ -159,7 +159,7 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 sleep 20;
 for ipfsDaemon in \$(seq 1 \${ipfsCount});
 do  
-MESSAGE=\$(cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep 'ready'); 
+MESSAGE=\$(cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep 'ready' | tail -1); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 done
 
