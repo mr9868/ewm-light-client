@@ -42,7 +42,7 @@ rm -rf kubo &&
 tar -xvzf ipfs-latest.tar.gz &&
 sudo rm -rf /usr/local/bin/ipfs &&
 sudo pkill -f "ipfs" &&
-sudo bash kubo/install && 
+sudo bash kubo/install.sh && 
 source ~/.bashrc 
 rm -rf ipfs-latest.tar.gz;
 }
