@@ -259,10 +259,10 @@ bash \${cfgDir}/covalent\${i}
 echo 'Successfull to run covalent\${i} node ✅'
 done
 
-if [ -f \${cfgDir}/tgInit.sh -a -f \${cfgDir}/tgConf.sh -a  -f \${cfgDir}/config ];
+if [ -f \${cfgDir}/tgInit -a -f \${cfgDir}/tgConf -a  -f \${cfgDir}/config ];
 then
 chmod 777 *
-bash tgInit.sh
+bash tgInit
 fi
 
 
