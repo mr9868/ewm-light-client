@@ -715,7 +715,7 @@ myHeader
      bash ${cfgDir}/runAll
      myHeader
      covalentLog
-     done
+     
      echo
      echo "=================== INSTALLATION SUCCESS ==================="
      echo
