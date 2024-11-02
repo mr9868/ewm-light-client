@@ -178,7 +178,7 @@ do
 lastIpfsError1=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/ipfs\${ipfsError}.log | grep -E 'ERROR|FATAL' | tail -1)
 lastIpfsError=\$(cat \${lastIpfsError1})
 if \${lastIpfsError} ; then
-ipfsMsg=\$(eval \"echo -e 'There is an error on ipfs\${ipfsError} daemon, please execute this to your server : \n \\\`\\\`\\\` pkill -f \"ipfs\${ipfsError}\" && bash \\\${cfgDir}/ipfs\${ipfsError} \\\`\\\`\\\``\")  
+ipfsMsg=\$(eval \"echo -e 'There is an error on ipfs\${ipfsError} daemon, please execute this to your server : \n \\\`\\\`\\\` pkill -f \"ipfs\${ipfsError}\" && bash \\\${cfgDir}/ipfs\${ipfsError} \\\`\\\`\\\`\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\" -d parse_mode='MarkdownV2'
 fi
 done
