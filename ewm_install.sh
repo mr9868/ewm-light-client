@@ -173,6 +173,7 @@ cfgDir=${cfgDir};
 . \${cfgDir}/config
 # Send tg message
 function tgMsg(){
+cd \${cfgDir}
 # Set the API token and chat ID
 API_TOKEN=\"\${tgApiQn}\"
 CHAT_ID=\"\${tgIdQn}\"
