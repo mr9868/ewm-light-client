@@ -11,6 +11,10 @@ else
 echo "cfgDir=${cfgDir}" >> ~/.bashrc
 source .bashrc
 fi
+sumIpfs=$(cd ${cfgDir} && ls -dq *ipfs* | wc -l)
+ipfsCount="$((${sumIpfs}+1))"
+lastKey="$((${#privKey[@]}+1))"
+sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" ${cfgDir}/config
 
 # My Header function
 function myHeader(){
@@ -106,10 +110,6 @@ echo "ipfsCount=${ipfsCount}" >> $cfgDir/config
 set | grep ^privKey= >> ${cfgDir}/config
 else
 sed -r -i "s/privKey=.*/$(set | grep ^privKey= )/g" $cfgDir/config
-. ${cfgDir}/config
-ipfsCount="$((${ipfsCount}+1))"
-lastKey="$((${#privKey[@]}+1))"
-sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" $cfgDir/config
 
 fi
 }
