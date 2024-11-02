@@ -231,11 +231,12 @@ echo "
 cfgDir=${cfgDir};
 . \${cfgDir}/config
 function runTg(){
+sudo pkill -f 'ewmLog'
 screen -dmS ewmLog bash -c \"cd \${cfgDir}; chmod 777 \${cfgDir}/tgConf;bash \${cfgDir}/tgConf;exec bash\"
 }
 runTg
 " > ${cfgDir}/tgInit
-chmod 777 ${cfgDir}/tgInit && bash ${cfgDir}/tgInit &&
+chmod 777 ${cfgDir}/tgInit && bash ${cfgDir}/tgInit 
 echo "Telegram Bot initialized"
 echo "Check the logs 'screen -r ewmLog'"
 }
@@ -257,6 +258,14 @@ sudo rm -rf \${cfgDir}/logs/covalent*
 bash \${cfgDir}/covalent\${i}
 echo 'Successfull to run covalent\${i} node ✅'
 done
+
+if [ -f \${cfgDir}/tgInit.sh -a -f \${cfgDir}/tgConf.sh -a  -f \${cfgDir}/config ];
+then
+chmod 777 *
+bash tgInit.sh
+fi
+
+
 " > ${cfgDir}/runAll
 }
 
@@ -303,12 +312,17 @@ done
 
 # Covalent log
 function covalentLog(){
-
-for i in $(seq ${lastKey} ${#privKey[@]});
+sumCov=$(cd /run/screen/S-root && ls -dq *covalent* | wc -l)
+sumIpfs=$(cd /run/screen/S-root && ls -dq *ipfs* | wc -l)
+for i in $(seq 1 ${sumCov});
 do
 echo "To view covalent${i} log execute 'screen -r covalent${i}'"
 done
-echo "To view ipfs${ipfsCount} daemon log execute 'screen -r ipfs${ipfsCount}'"
+
+for i in $(seq 1 ${sumIpfs});
+do
+echo "To view ipfs${i} log execute 'screen -r ipfs${i}'"
+done
 }
 
 function ipfsConf(){
@@ -586,6 +600,10 @@ fi
 function startUp(){
 cd;
 myHeader;
+if [ -d ~/.mr9868 ] 
+then
+backup;
+fi
 if [ -d ~/ewm-das ]
 then
    if [ -d $cfgDir ]
@@ -599,15 +617,16 @@ then
      echo -e "4. Uninstall Light Client\n"
      echo -e "5. Exit setup\n"
      read -p "Choose your option : " dirFound
-     until [[ "${dirFound}" =~ ^[0-5]+$ ]];
+     until [[ "${dirFound}" =~ ^[0-6]+$ ]];
      do
      myHeader
      echo -e "Config directories found !\n"
      echo -e "1. Add Light Client\n"
      echo -e "2. Configure monitor bot\n"
-     echo -e "3. Reinstall Light Client\n"
-     echo -e "4. Uninstall Light Client\n"
-     echo -e "5. Exit setup\n"
+     echo -r "3. Upgrade git version / Migration\n"
+     echo -e "4. Reinstall Light Client\n"
+     echo -e "5. Uninstall Light Client\n"
+     echo -e "6. Exit setup\n"
      echo
      echo -e "Please select 1-5 !\n"
      read -p "Choose your option : " dirFound
@@ -626,10 +645,14 @@ then
      fi
      if [ ${dirFound} == "3" ];
      then
+     backup
+     fi
+     if [ ${dirFound} == "4" ];
+     then
      notInstalled
      installer
      fi
-     if [ ${dirFound} == "4" ];
+     if [ ${dirFound} == "5" ];
      then
      sudo rm -rf ~/ewm-das
      sudo rm -rf ~/.ipfs*
@@ -640,9 +663,10 @@ then
      sed -r -i "s/cfgDir=.*/ /g" ~/.bashrc
      :
      fi
-     if [ ${dirFound} == "5" ];
+     if [ ${dirFound} == "6" ];
      then
      :
+     echo "good bye..."
      fi
    else
    myHeader
@@ -656,6 +680,55 @@ else
    
 fi
 }
+
+function backup(){
+myHeader
+     read -p "For migration, please copy your backup first (y/n) : " backupQn
+     if [[ "${backupQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
+     then
+     sudo cp -r ${cfgDir} ~/.mr9868
+     sudo rm -rf ~/ewm-das
+     sudo pkill -f "covalent*"
+     sudo pkill -f "ipfs*"
+     sudo pkill -f "ewmLog"
+     checkGo &&
+     checkIpfs 
+     cd; git clone https://github.com/covalenthq/ewm-das  &&
+     cd ewm-das &&
+     myHeader;
+   command -v lsof >/dev/null 2>&1 || { echo >&2 "lsof is not found on this machine, Installing lsof ... "; sleep 2;sudo apt install lsof -y;} 
+   command -v sed >/dev/null 2>&1 || { echo >&2 "sed is not found on this machine, Installing sed ... "; sleep 2;sudo apt install sed -y;} 
+   command -v screen >/dev/null 2>&1 || { echo >&2 "Screen is not found on this machine, Installing screen ... "; sleep 2;sudo apt install screen -y;} 
+   command -v git >/dev/null 2>&1 || { echo >&2 "Git is not found on this machine, Installing git ... "; sleep 2;sudo apt install git -y;}
+   command -v wget >/dev/null 2>&1 || { echo >&2 "Wget is not found on this machine, Installing Wget ... "; sleep 2;sudo apt install wget -y;}
+   command -v ufw >/dev/null 2>&1 || { echo >&2 "Ufw is not found on this machine, Installing ufw ... "; sleep 2;sudo apt install ufw -y;}
+   # Installing required Go packages
+     go install honnef.co/go/tools/cmd/staticcheck@latest && 
+     make deps &&
+     make  && 
+     sudo bash install-trusted-setup &&
+     # Installing covalent light-client node
+     sudo cp -r bin/light-client /usr/local/bin/light-client 
+     cp -r ~/.mr9868 ~/ewm-das
+     cd ${cfgDir}
+     chmod 777 *
+     bash ${cfgDir}/runAll
+     myHeader
+     covalentLog
+     done
+     echo
+     echo "=================== INSTALLATION SUCCESS ==================="
+     echo
+     git log -1
+     git --version
+     go --version
+     ipfs --version
+     else
+     :
+     echo "Good Bye ..."
+     fi
+}
+
 function notInstalled(){
      sudo rm -rf ~/ewm-das
      sudo rm -rf ~/.ipfs*
@@ -696,7 +769,8 @@ read -p "Do you want to set client port ? (y/n)  : " ipfsQn
 entryPointIpfs &&
 if [ -f ${cfgDir}/tgConf ]
 then
-echo "Telegram is configured !"; sleep 2
+chmod 777 ${cfgDir}/tgInit && bash ${cfgDir}/tgInit 
+echo "Telegram bot is restarted !"; sleep 2
 else
 entryPointTg;
 fi
