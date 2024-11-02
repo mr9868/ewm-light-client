@@ -613,9 +613,12 @@ then
      echo -e "Config directories found !\n"
      echo -e "1. Add Light Client\n"
      echo -e "2. Configure monitor bot\n"
-     echo -e "3. Reinstall Light Client\n"
-     echo -e "4. Uninstall Light Client\n"
-     echo -e "5. Exit setup\n"
+     echo -r "3. Upgrade git version / Migration\n"
+     echo -e "4. Reinstall Light Client\n"
+     echo -e "5. Uninstall Light Client\n"
+     echo -e "6. Exit setup\n"
+     echo
+     echo -e "Please select 1-5 !\n"
      read -p "Choose your option : " dirFound
      until [[ "${dirFound}" =~ ^[0-6]+$ ]];
      do
