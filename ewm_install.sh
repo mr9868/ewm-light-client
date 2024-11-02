@@ -11,6 +11,7 @@ else
 echo "cfgDir=${cfgDir}" >> ~/.bashrc
 source .bashrc
 fi
+. ${cfgDir}/config
 sumIpfs=$(cd ${cfgDir} && ls -dq *ipfs* | wc -l)
 ipfsCount="$((${sumIpfs}+1))"
 lastKey="$((${#privKey[@]}+1))"
@@ -643,7 +644,7 @@ then
      done
      if [[ "${dirFound}" == "1" ]];
      then
-     . $cfgDir/config
+     
      installer
      fi
      if [[ "${dirFound}" == "2" ]];
