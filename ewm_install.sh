@@ -618,7 +618,7 @@ then
      echo -e "5. Uninstall Light Client\n"
      echo -e "6. Exit setup\n"
      echo
-     echo -e "Please select 1-5 !\n"
+     echo -e "Please select 1-6 !\n"
      read -p "Choose your option : " dirFound
      until [[ "${dirFound}" =~ ^[0-6]+$ ]];
      do
@@ -631,7 +631,7 @@ then
      echo -e "5. Uninstall Light Client\n"
      echo -e "6. Exit setup\n"
      echo
-     echo -e "Please select 1-5 !\n"
+     echo -e "Please select 1-6 !\n"
      read -p "Choose your option : " dirFound
      done
      if [ ${dirFound} == "1" ];
