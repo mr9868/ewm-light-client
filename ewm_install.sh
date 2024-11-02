@@ -219,24 +219,38 @@ errInstruct;
 echo "Telegram Bot initialized"
 echo "Check the logs 'screen -r ewmLogs'"
 }
+
 function runAll(){
 echo "
 cfgDir=${cfgDir};
 . \${cfgDir}/config
 for i in \$(seq 1 \${ipfsCount});
 do
-rm -rf \${cfgDir}/logs/ipfs*
+sudo rm -rf \${cfgDir}/logs/ipfs*
 bash \${cfgDir}/ipfs\${i}.sh
-echo 'Successfull to run all ipfs daemon ✅'
+echo 'Successfull to run  ipfs\${i} daemon ✅'
 done
 
 for i in \$(seq 1 \${#privKey[@]});
 do
-rm -rf \${cfgDir}/logs/covalent*
+sudo rm -rf \${cfgDir}/logs/covalent*
 bash \${cfgDir}/covalent\${i}.sh
-echo 'Successfull to run all covalent node ✅'
+echo 'Successfull to run covalent\${i} node ✅'
 done
 " > ${cfgDir}/runAll.sh
+}
+
+function stopAll(){
+function stopAll(){
+echo "
+sudo rm -rf \${cfgDir}/logs/ipfs*
+sudo rm -rf \${cfgDir}/logs/covalent*
+sudo pkill -f 'ipfs*'
+sudo pkill -f 'covalent*'
+echo 'Successfull to stop all ipfs daemon ✅'
+echo 'Successfull to stop covalent node ✅'
+" > ${cfgDir}/runAll.sh
+}
 }
 
 # Run light-client node
