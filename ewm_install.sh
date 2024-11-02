@@ -42,7 +42,7 @@ rm -rf kubo &&
 tar -xvzf ipfs-latest.tar.gz &&
 sudo rm -rf /usr/local/bin/ipfs &&
 sudo pkill -f "ipfs" &&
-sudo bash kubo/install.sh && 
+sudo bash kubo/install && 
 source ~/.bashrc 
 rm -rf ipfs-latest.tar.gz;
 }
@@ -198,7 +198,7 @@ lastIpfsError=\$(echo \${lastIpfsError})
 if [ -z \"\${lastIpfsError}\" ] ; then
 ipfsMsg=\$(echo 'There is an error on ipfs\${ipfsError} daemon, auto restarting your ipfs\${ipfsError}')  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\" -d parse_mode='MarkdownV2'
-sudo pkill -f 'ipfs\${ipfsError}' && sudo rm -rf \${cfgDir}/logs/ipfs\${ipfsError}.log && bash \${cfgDir}/ipfs\${ipfsError}.sh
+sudo pkill -f 'ipfs\${ipfsError}' && sudo rm -rf \${cfgDir}/logs/ipfs\${ipfsError}.log && bash \${cfgDir}/ipfs\${ipfsError}
 ipfsMsg2=\$(echo 'Auto restart complete on ipfs\${ipfsError} daemon ✅')  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg2}\" -d parse_mode='MarkdownV2'
 fi
@@ -226,16 +226,16 @@ done
 done
 }
 tgMsg;
-" > ${cfgDir}/tgConf.sh
+" > ${cfgDir}/tgConf
 echo "
 cfgDir=${cfgDir};
 . \${cfgDir}/config
 function runTg(){
-screen -dmS ewmLog bash -c \"cd \${cfgDir}; chmod 777 \${cfgDir}/tgConf.sh;bash \${cfgDir}/tgConf.sh;exec bash\"
+screen -dmS ewmLog bash -c \"cd \${cfgDir}; chmod 777 \${cfgDir}/tgConf;bash \${cfgDir}/tgConf;exec bash\"
 }
 runTg
-" > ${cfgDir}/tgInit.sh
-chmod 777 ${cfgDir}/tgInit.sh && bash ${cfgDir}/tgInit.sh &&
+" > ${cfgDir}/tgInit
+chmod 777 ${cfgDir}/tgInit && bash ${cfgDir}/tgInit &&
 echo "Telegram Bot initialized"
 echo "Check the logs 'screen -r ewmLog'"
 }
@@ -247,17 +247,17 @@ cfgDir=${cfgDir};
 for i in \$(seq 1 \${ipfsCount});
 do
 sudo rm -rf \${cfgDir}/logs/ipfs*
-bash \${cfgDir}/ipfs\${i}.sh
+bash \${cfgDir}/ipfs\${i}
 echo 'Successfull to run  ipfs\${i} daemon ✅'
 done
 
 for i in \$(seq 1 \${#privKey[@]});
 do
 sudo rm -rf \${cfgDir}/logs/covalent*
-bash \${cfgDir}/covalent\${i}.sh
+bash \${cfgDir}/covalent\${i}
 echo 'Successfull to run covalent\${i} node ✅'
 done
-" > ${cfgDir}/runAll.sh
+" > ${cfgDir}/runAll
 }
 
 function stopAll(){
@@ -270,7 +270,7 @@ sudo pkill -f 'ipfs*'
 sudo pkill -f 'covalent*'
 echo 'Successfull to stop all ipfs daemon ✅'
 echo 'Successfull to stop covalent node ✅'
-" > ${cfgDir}/runAll.sh
+" > ${cfgDir}/runAll
 }
 
 # Run light-client node
@@ -286,8 +286,8 @@ rm -rf ${cfgDir}/covalent${i}.log
 screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash\"
 }
 covalent${i}
-" >  ${cfgDir}/covalent${i}.sh
-chmod 777 ${cfgDir}/covalent${i}.sh && bash ${cfgDir}/covalent${i}.sh
+" >  ${cfgDir}/covalent${i}
+chmod 777 ${cfgDir}/covalent${i} && bash ${cfgDir}/covalent${i}
 else
 echo "
 function covalent${i}(){
@@ -295,8 +295,8 @@ rm -rf ${cfgDir}/covalent${i}.log
 screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash\"
 }
 covalent${i}
-" >  ${cfgDir}/covalent${i}.sh
-chmod 777 ${cfgDir}/covalent${i}.sh && bash ${cfgDir}/covalent${i}.sh
+" >  ${cfgDir}/covalent${i}
+chmod 777 ${cfgDir}/covalent${i} && bash ${cfgDir}/covalent${i}
 fi
 done
 }
@@ -538,8 +538,8 @@ rm -rf ${cfgDir}/ipfs${ipfsCount}.log
 screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;\" 
 }
 ipfs${ipfsCount}
-" > ${cfgDir}/ipfs${ipfsCount}.sh;
-chmod 777 ${cfgDir}/ipfs${ipfsCount}.sh && bash ${cfgDir}/ipfs${ipfsCount}.sh
+" > ${cfgDir}/ipfs${ipfsCount};
+chmod 777 ${cfgDir}/ipfs${ipfsCount} && bash ${cfgDir}/ipfs${ipfsCount}
 # screen -dmS ipfs${ipfsCount} -L -Logfile $cfgDir/ipfs${ipfsCount}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;" 
 else
 mainPort=5001
@@ -577,8 +577,8 @@ rm -rf ${cfgDir}/ipfs${ipfsCount}.log
 screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash\" 
 }
 ipfs${ipfsCount}
-" > ${cfgDir}/ipfs${ipfsCount}.sh;
-chmod 777 ${cfgDir}/ipfs${ipfsCount}.sh && bash ${cfgDir}/ipfs${ipfsCount}.sh
+" > ${cfgDir}/ipfs${ipfsCount};
+chmod 777 ${cfgDir}/ipfs${ipfsCount} && bash ${cfgDir}/ipfs${ipfsCount}
 fi
 }
 
@@ -694,7 +694,7 @@ read -p "Do you want to set client port ? (y/n)  : " ipfsQn
 
 # Running ipfs daemon
 entryPointIpfs &&
-if [ -f ${cfgDir}/tgConf.sh ]
+if [ -f ${cfgDir}/tgConf ]
 then
 echo "Telegram is configured !"; sleep 2
 else
@@ -714,7 +714,7 @@ if [ ${dirFound} == "1" ];
      go install honnef.co/go/tools/cmd/staticcheck@latest && 
      make deps &&
      make  && 
-     sudo bash install-trusted-setup.sh &&
+     sudo bash install-trusted-setup &&
      # Installing covalent light-client node
      sudo cp -r bin/light-client /usr/local/bin/light-client 
  fi
