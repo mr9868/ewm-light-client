@@ -171,14 +171,14 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 done
 while sleep 1800;
 do
-start=\$(date -d \"-30 minutes\" +'%Y-%m-%d %H:%M:%S')
+start=\$(date -d \"-10 minutes\" +'%Y-%m-%d %H:%M:%S')
 
 for ipfsError in \$(seq 1 \${ipfsCount});
 do  
 lastIpfsError1=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/ipfs\${ipfsError}.log | grep -E 'ERROR|FATAL' | tail -1)
 lastIpfsError=\$(cat \${lastIpfsError1})
 if \${lastIpfsError} ; then
-ipfsMsg=\$(eval \"echo -e 'ipfs\${ipfsError} daemon : \n\\\`\\\`\\\`\n\${lastIpfsError1}\n\\\`\\\`\\\`\nThere is an error. Restart ipfs\${ipfsError} daemon for better performance'\")  
+ipfsMsg=\$(eval \"echo -e 'There is an error on ipfs\${ipfsError} daemon, please execute this to your server : \n \\\`\\\`\\\` pkill -f \"ipfs\${ipfsError}\" && bash \\\${cfgDir}/ipfs\${ipfsError} \\\`\\\`\\\``\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\" -d parse_mode='MarkdownV2'
 fi
 done
@@ -188,7 +188,7 @@ do
 lastCovError1=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/covalent\${covError}.log | grep -E 'ERROR|FATAL' | tail -1)
 lastCovError=\$(cat \${lastCovError1})
 if \${lastCovError} ; then
-covMsg=\$(eval \"echo -e 'Covalent\${covError} daemon : \n\\\`\\\`\\\`\n\${lastCovError1}\n\\\`\\\`\\\`\nError: Restart ipfs daemon that contain error for better performance'\")  
+covMsg=\$(eval \"echo -e 'Covalent\${covError} daemon : Restart ipfs daemon that contain error for better performance'\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg}\" -d parse_mode='MarkdownV2'
 fi
 done
