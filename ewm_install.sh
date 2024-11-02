@@ -239,7 +239,7 @@ echo "
 cfgDir=${cfgDir};
 . \${cfgDir}/config
 function runTg(){
-screen -dmS ewmLog bash -c \"cd \${cfgDir} && chmod 777 \${cfgDir}/tgConf.sh;bash \${cfgDir}/tgConf.sh;exec bash\"
+screen -dmS ewmLog bash -c \"cd \${cfgDir}; chmod 777 \${cfgDir}/tgConf.sh;bash \${cfgDir}/tgConf.sh;exec bash\"
 }
 runTg
 " > ${cfgDir}/tgInit.sh
