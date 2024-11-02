@@ -175,21 +175,27 @@ start=\$(date -d \"-10 minutes\" +'%Y-%m-%d %H:%M:%S')
 
 for ipfsError in \$(seq 1 \${ipfsCount});
 do  
-lastIpfsError1=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/ipfs\${ipfsError}.log | grep -E 'ERROR|FATAL' | tail -1)
-lastIpfsError=\$(cat \${lastIpfsError1})
+lastIpfsError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/ipfs\${ipfsError}.log | grep -E 'ERROR|FATAL' | tail -1)
+lastIpfsError=\$(cat \${lastIpfsError})
 if \${lastIpfsError} ; then
-ipfsMsg=\$(echo 'There is an error on ipfs\${ipfsError} daemon, please execute this to your server : \\\`\\\`\\\`bash sudo pkill \-f \"ipfs\${ipfsError}\" %26%26 sudo rm -rf \\\$\\\\{cfgDir\\\\}\\\\.sh %26%26 bash \\\$\\\\{cfgDir\\\\}/ipfs\${ipfsError}\\\\.sh \\\`\\\`\\\`')  
+ipfsMsg=\$(echo 'There is an error on ipfs\${ipfsError} daemon, auto restarting your ipfs\${ipfsError}')  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\" -d parse_mode='MarkdownV2'
+sudo pkill -f 'ipfs\${ipfsError}' && sudo rm -rf \${cfgDir}/logs/ipfs\${ipfsError}.log && bash \${cfgDir}/ipfs\${ipfsError}.sh
+ipfsMsg2=\$(echo 'Auto restart complete on ipfs\${ipfsError} daemon ✅')  
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg2}\" -d parse_mode='MarkdownV2'
 fi
 done
 
 for covError in \$(seq 1 \${#privKey[@]});
 do  
-lastCovError1=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/covalent\${covError}.log | grep -E 'ERROR|FATAL' | tail -1)
-lastCovError=\$(cat \${lastCovError1})
+lastCovError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/cov\${covError}.log | grep -E 'ERROR|FATAL' | tail -1)
+lastCovError=\$(cat \${lastCovError})
 if \${lastCovError} ; then
-covMsg=\$(eval \"echo -e 'Covalent\${covError} daemon : Restart ipfs daemon that contain error for better performance'\")  
+covMsg=\$(echo 'There is an error on covalent\${covError} node, auto restarting your covalent\${covError} node')  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg}\" -d parse_mode='MarkdownV2'
+sudo pkill -f 'covalent\${covError}' && sudo rm -rf \${cfgDir}/logs/covalent\${covError}.log && bash \${cfgDir}/covalent\${covError}.sh
+covMsg2=\$(echo 'Auto restart complete on covalent\${covError} node ✅')  
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg2}\" -d parse_mode='MarkdownV2'
 fi
 done
 
