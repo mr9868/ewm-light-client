@@ -724,9 +724,9 @@ myHeader
      echo "=================== INSTALLATION SUCCESS ==================="
      echo
      git log -1
-     git --version
-     go --version
-     ipfs --version
+     git version
+     go version
+     ipfs version
      else
      :
      echo "Good Bye ..."
