@@ -176,7 +176,7 @@ start=\$(date -d \"-30 minutes\" +'%Y-%m-%d %H:%M:%S')
 
 for i in \$(seq 1 \${ipfsCount});
 do  
-lastIpfsError=\$(awk -v s=\"\$start\" 's<\$0') \$cfgDir/logs/ipfs\${i}.log | grep -E 'ERROR|FATAL' | tail -1)
+lastIpfsError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/ipfs\${i}.log | grep -E 'ERROR|FATAL' | tail -1)
 if \${lastIpfsError} ; then
 ipfsMsg=\$(echo -e 'ipfs\${i} daemon : \n \${lastIpfsError} \n There is an error. Restart ipfs\${i} daemon for better performance')  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\"
@@ -186,7 +186,7 @@ done
 
 for i in \$(seq 1 \${#privKey[@]});
 do  
-lastCovError=\$(awk -v s=\"\$start\" 's<\$0') \$cfgDir/logs/covalent\${i}.log | grep -E 'ERROR|FATAL' | tail -1)
+lastCovError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/covalent\${i}.log | grep -E 'ERROR|FATAL' | tail -1)
 
 if \${lastCovError} ; then
 covMsg=\$(echo -e 'Covalent\${i} light-client : \n \${lastCovError} \n There is an error. Restart ipfs daemon that contain error inside for better performance')  
