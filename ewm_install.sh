@@ -221,6 +221,8 @@ echo "Check the logs 'screen -r ewmLogs'"
 }
 function runAll(){
 echo "
+cfgDir=${cfgDir};
+. \${cfgDir}/config
 for i in \$(seq 1 \${ipfsCount});
 do
 rm -rf \${cfgDir}/logs/ipfs*
