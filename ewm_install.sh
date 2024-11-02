@@ -75,6 +75,15 @@ fi
 unset IFS;
 }
 
+function covalent(){
+covFunc="function covalent(){ sudo rm -rf ewm_install.sh && wget https://raw.githubusercontent.com/mr9868/ewm-light-client/refs/heads/main/ewm_install.sh && sudo chmod 777 ewm_install.sh && ./ewm_install.sh && sudo rm ewm_install.sh;}" 
+if grep -wq $covFunc ~/.bashrc; then    
+echo $covFunc >> ~/.bashrc
+else
+sed -r -i "s/${covFunc}/${covFunc}/g" ~/.bashrc
+fi
+}
+
 # Entrypoint Private Key input function
 function entryPointPK(){
 # Check if PK meet requirement 
@@ -107,18 +116,7 @@ else
 sed -r -i "s/privKey=.*/$(set | grep ^privKey= )/g" $cfgDir/config
 fi
 }
-function errInstruct(){
-echo 
-echo "====================== INSTRUCTIONS ========================"
-echo
-echo -e "
-Instructions if there is an error : \n
-1. Close ipfs screen that contain an error (Remember the screen name)
-2. Go to config folder, or type this 'cd \$cfgDir'
-3. Execute the ipfs daemon files, for example 'bash ipfs1' (ipfs1 is the screen name)
-4. Holla ! monitor your bot if there is an error again !
-"
-}
+
 
 # Entrypoint for telegram monitor question
 function entryPointTg(){
@@ -158,9 +156,11 @@ if grep -wq "tgApiQn" ${cfgDir}/config; then
 sudo pkill -f "ewmLog"
 sed -r -i "s/tgApiQn=.*/tgApiQn=${tgApiQn}/g" ${cfgDir}/config
 sed -r -i "s/tgIdQn=.*/tgIdQn=${tgIdQn}/g" ${cfgDir}/config
+tgConf;
 else         
 echo "tgApiQn=${tgApiQn}" >> ${cfgDir}/config
 echo "tgIdQn=${tgIdQn}" >> ${cfgDir}/config
+tgConf;
 fi
 else
 echo "See yaa ..."
@@ -244,7 +244,6 @@ screen -dmS ewmLog bash -c \"chmod 777 \${cfgDir}/tgConf.sh;bash \${cfgDir}/tgCo
 runTg
 " > ${cfgDir}/tgInit.sh
 chmod 777 ${cfgDir}/tgInit.sh && bash ${cfgDir}/tgInit.sh &&
-errInstruct;
 echo "Telegram Bot initialized"
 echo "Check the logs 'screen -r ewmLogs'"
 }
@@ -318,16 +317,6 @@ do
 echo "To view covalent${i} log execute 'screen -r covalent${i}'"
 done
 echo "To view ipfs${ipfsCount} daemon log execute 'screen -r ipfs${ipfsCount}'"
-}
-
-function tgInit(){
-if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
-then
-cd ${cfgDir};
-tgConf;
-else
-echo "Telegram bot: Not configured, Next ..."
-fi
 }
 
 function ipfsConf(){
@@ -719,7 +708,6 @@ then
 echo "Telegram is configured !"; sleep 2
 else
 entryPointTg;
-tgInit
 fi
 myHeader;
 echo
@@ -746,7 +734,6 @@ runLightClient &&
 # Welldone ! 
 myHeader;
 covalentLog;
-errInstruct;
 
 echo
 echo "================== INSTALLED DEPENDENCIES =================="
@@ -757,6 +744,7 @@ echo
 echo "=================== INSTALLATION SUCCESS ==================="
 echo
 runAll
+covalent
 unset $loop;
 }
 
