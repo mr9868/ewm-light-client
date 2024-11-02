@@ -151,8 +151,8 @@ function tgMsg(){
 # Set the API token and chat ID
 API_TOKEN=\"\${tgApiQn}\"
 CHAT_ID=\"\${tgIdQn}\"
-gitVer=\$(eval 'git describe --abbrev=0')
-gitCommit=\$(eval 'git log -1 | grep commit')
+gitVer=\$(git describe --abbrev=0)
+gitCommit=\$(git log -1 | grep commit)
 msgGit=\$(echo 'You are using git version = \$gitVer with commit id \$gitCommit')
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgGit}\"
 
