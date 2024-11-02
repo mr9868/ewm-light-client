@@ -153,21 +153,21 @@ API_TOKEN=\"\${tgApiQn}\"
 CHAT_ID=\"\${tgIdQn}\"
 gitVer=\$(git describe --abbrev=0)
 gitCommit=\$(git log -1 | grep commit)
-msgGit=\$(echo 'You are using git version = \$gitVer with commit id \$gitCommit')
+msgGit=\$(eval \" echo 'You are using git version = \${gitVer} with commit id \${gitCommit}'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgGit}\"
 
 sleep 20;
 for i in \$(seq 1 \${ipfsCount});
 do  
-MESSAGE=\$(eval 'cat \${cfgDir}/logs/ipfs\${i}.log | grep ready'); 
+MESSAGE=\$(cat \${cfgDir}/logs/ipfs\${i}.log | grep 'ready'); 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 done
 unset i
 
 for i in \$(seq 1 \${#privKey[@]});
 do  
-msgStart=\$(eval \"cat \${cfgDir}/logs/covalent\${i}.log | awk '{print tolower(\\\$0)}' | grep 'client' | grep -ow '\w*0x\w*'\")
-accStart=\$(echo 'Covalent\${i} : \`\${msgStart}\`')
+msgStart=\$(cat \${cfgDir}/logs/covalent\${i}.log | awk '{print tolower(\\\$0)}' | grep 'client' | grep -ow '\w*0x\w*')
+accStart=\$(eval \"echo 'Covalent\${i} : \\\\`\${msgStart}\\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
 done
 unset i
