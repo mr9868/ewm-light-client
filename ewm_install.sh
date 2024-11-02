@@ -169,10 +169,10 @@ do
 for i in \$(seq 1 \${ipfsCount});
 do  
 ipfsError=\$(eval \" cat \${cfgDir}/logs/ipfs\${i}.log | grep 'ERROR' | tail -1 \")
-if cat \${cfgDir}/logs/ipfs\${i}.log | grep -q 'ERROR' ; then
+if cat \${cfgDir}/logs/ipfs\${i}.log | grep -q 'ERROR' | tail -1 ; then
 ipfsMsg=\$(eval \"echo -e 'ipfs\${i} daemon : \n \${ipfsError} \n There is an error. Restart ipfs\${i} daemon for better performance'\")  
-fi
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\"
+fi
 done
 
 
@@ -180,13 +180,13 @@ for i in \$(seq 1 \${#privKey[@]});
 do  
 covError=\$(eval \" cat \${cfgDir}/logs/covalent\${i}.log | grep 'FATAL|ERROR' | tail -1\")
 
-if cat \${cfgDir}/logs/covalent\${i}.log | grep -q 'ERROR' ; then
+if cat \${cfgDir}/logs/covalent\${i}.log | grep -q 'ERROR' | tail -1 ; then
 covMsg=\$(eval \"echo -e 'covalent\${i} light-client : \n \${covError} \n There is an error. Restart ipfs daemon that contain error inside for better performance'\")  
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg}\"                
 fi
 
 msgCount=\$(eval \" cat \${cfgDir}/logs/covalent\${i}.log | grep -c 'verified'\")
 accMsg=\$(eval \"echo ' Account \${i}: \${msgCount} verified samples'\")  
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg}\"                
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg}\"                
 # Use the curl command to send the message       
 done
