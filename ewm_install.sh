@@ -221,18 +221,17 @@ echo "Check the logs 'screen -r ewmLogs'"
 }
 function runAll(){
 echo "
+for i in \$(seq 1 \${ipfsCount});
+do
+rm -rf \${cfgDir}/logs/ipfs*
+bash \${cfgDir}/ipfs\${i}.sh
+echo 'Successfull to run all ipfs daemon ✅'
 for i in \$(seq 1 \${#privKey[@]});
 do
 rm -rf \${cfgDir}/logs/covalent*
 bash \${cfgDir}/covalent\${i}.sh
 echo 'Successfull to run all covalent node ✅'
 done
-
-for i in \$(seq 1 \${ipfsCount});
-do
-rm -rf \${cfgDir}/logs/ipfs*
-bash \${cfgDir}/ipfs\${i}.sh
-echo 'Successfull to run all ipfs daemon ✅'
 done
 " > ${cfgDir}/runAll.sh
 }
