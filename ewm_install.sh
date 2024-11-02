@@ -613,7 +613,7 @@ then
      echo -e "Config directories found !\n"
      echo -e "1. Add Light Client\n"
      echo -e "2. Configure monitor bot\n"
-     echo -r "3. Upgrade git version / Migration\n"
+     echo -e "3. Upgrade git version / Migration\n"
      echo -e "4. Reinstall Light Client\n"
      echo -e "5. Uninstall Light Client\n"
      echo -e "6. Exit setup\n"
@@ -634,7 +634,7 @@ then
      echo -e "Please select 1-6 !\n"
      read -p "Choose your option : " dirFound
      done
-     if [ ${dirFound} == "1" ];
+     if [[ "${dirFound}" == "1" ]];
      then
      . $cfgDir/config
      lastKey="$((${#privKey[@]}+1))"
@@ -642,20 +642,20 @@ then
      sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" $cfgDir/config
      installer
      fi
-     if [ ${dirFound} == "2" ];
+     if [[ "${dirFound}" == "2" ]];
      then
      entryPointTg;
      fi
-     if [ ${dirFound} == "3" ];
+     if [[ "${dirFound}" == "3" ]];
      then
      backup
      fi
-     if [ ${dirFound} == "4" ];
+     if [[ "${dirFound}" == "4" ]];
      then
      notInstalled
      installer
      fi
-     if [ ${dirFound} == "5" ];
+     if [[ "${dirFound}" == "5" ]];
      then
      sudo rm -rf ~/ewm-das
      sudo rm -rf ~/.ipfs*
@@ -666,7 +666,7 @@ then
      sed -r -i "s/cfgDir=.*/ /g" ~/.bashrc
      :
      fi
-     if [ ${dirFound} == "6" ];
+     if [[ "${dirFound}" == "6" ]];
      then
      :
      echo "good bye..."
@@ -750,7 +750,7 @@ function notInstalled(){
      }
 
 function installer(){
-if [ ${dirFound} == "1" ];
+if [[ "${dirFound}" == "1" ]];
      then
      echo "Next ..."
      sleep 2;
@@ -782,7 +782,7 @@ echo
 echo "==================== INSTALLATION START ===================="
 echo
 
-if [ ${dirFound} == "1" ];
+if [[ "${dirFound}" == "1" ]];
      then
      echo "Next ..."
      sleep 2;
