@@ -484,9 +484,9 @@ echo '
   },
   "Reprovider": {},
   "Routing": {
-    "Methods": null,
-    "Routers": null
-  },
+  "Type": "dht",
+  "AcceleratedDHTClient": true
+},
   "Swarm": {
     "AddrFilters": null,
     "ConnMgr": {},
