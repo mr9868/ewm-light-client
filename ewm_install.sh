@@ -657,6 +657,7 @@ then
      if [[ "${dirFound}" == "1" ]];
      then
      . ${cfgDir}/config
+     sumIpfs=$(cd ${cfgDir}  && ls -dq *ipfs* | wc -l)
      ipfsCount="$((${sumIpfs}+1))"
      lastKey="$((${#privKey[@]}+1))"
      installer
