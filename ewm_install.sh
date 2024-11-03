@@ -767,6 +767,8 @@ function notInstalled(){
 # Install ewm-das
      git clone https://github.com/covalenthq/ewm-das  &&
      cd ewm-das &&
+     sudo cp -r ~/ewm-das/bin/light-client /usr/local/bin/light-client 
+     
      mkdir $cfgDir
      mkdir $cfgDir/logs
      lastKey=1
@@ -805,6 +807,7 @@ myHeader;
 echo
 echo "==================== INSTALLATION START ===================="
 echo
+sudo cp -r ~/ewm-das/bin/light-client /usr/local/bin/light-client 
 
 if [[ "${dirFound}" == "1" ]];
      then
