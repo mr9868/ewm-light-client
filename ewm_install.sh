@@ -767,7 +767,13 @@ function notInstalled(){
 # Install ewm-das
      git clone https://github.com/covalenthq/ewm-das  &&
      cd ewm-das &&
-     sudo cp -r ~/ewm-das/bin/light-client /usr/local/bin/light-client 
+     # Installing required Go packages
+     go install honnef.co/go/tools/cmd/staticcheck@latest && 
+     make deps &&
+     make  && 
+     sudo bash install-trusted-setup &&
+     # Installing covalent light-client node
+     sudo cp -r bin/light-client /usr/local/bin/light-client 
      
      mkdir $cfgDir
      mkdir $cfgDir/logs
@@ -807,21 +813,6 @@ myHeader;
 echo
 echo "==================== INSTALLATION START ===================="
 echo
-sudo cp -r ~/ewm-das/bin/light-client /usr/local/bin/light-client 
-
-if [[ "${dirFound}" == "1" ]];
-     then
-     echo "Next ..."
-     sleep 2;
-     else
-     # Installing required Go packages
-     go install honnef.co/go/tools/cmd/staticcheck@latest && 
-     make deps &&
-     make  && 
-     sudo bash install-trusted-setup &&
-     # Installing covalent light-client node
-     sudo cp -r ~/ewm-das/bin/light-client /usr/local/bin/light-client 
- fi
 
 
 runLightClient &&
