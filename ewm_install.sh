@@ -272,7 +272,7 @@ done
 
 if [ -f \${cfgDir}/tgInit -a -f \${cfgDir}/tgConf -a  -f \${cfgDir}/config ];
 then
-chmod 777 *
+chmod 777 tgInit
 bash tgInit
 fi
 
@@ -722,7 +722,7 @@ myHeader
      cp -r ~/.mr9868 ~/ewm-das
      cd ${cfgDir}
      myHeader
-     chmod 777 *
+     chmod 777  ${cfgDir}/runAll
      bash ${cfgDir}/runAll
      covalentLog
      
