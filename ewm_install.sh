@@ -20,12 +20,6 @@ sed -r -i "s/cfgDir=.*/cfgDir=${cfgDir}/g" ${cfgDir}/config
 fi
 
 
-. ${cfgDir}/config
-sumIpfs=$(cd ${cfgDir} && ls -dq *ipfs* | wc -l)
-sed -r -i "s/ipfsCount=.*/ipfsCount=${sumIpfs}/g" ${cfgDir}/config
-ipfsCount="$((${sumIpfs}+1))"
-lastKey="$((${#privKey[@]}+1))"
-
 # My Header function
 function myHeader(){
 clear;
@@ -177,6 +171,7 @@ fi
 
 function tgConf(){
 echo "
+cfgDir=${cfgDir}
 . \${cfgDir}/config
 # Send tg message
 function tgMsg(){
@@ -241,6 +236,7 @@ done
 tgMsg;
 " > ${cfgDir}/tgConf
 echo "
+cfgDir=${cfgDir}
 . \${cfgDir}/config
 function runTg(){
 sudo pkill -f 'ewmLog'
@@ -255,6 +251,7 @@ echo "Check the logs 'screen -r ewmLog'"
 
 function runAll(){
 echo "
+cfgDir=${cfgDir}
 . \${cfgDir}/config
 for i in \$(seq 1 \${ipfsCount});
 do
@@ -282,6 +279,7 @@ fi
 
 function stopAll(){
 echo "
+cfgDir=${cfgDir}
 . \${cfgDir}/config
 sudo rm -rf \${cfgDir}/logs/ipfs*
 sudo rm -rf \${cfgDir}/logs/covalent*
@@ -322,8 +320,8 @@ done
 
 # Covalent log
 function covalentLog(){
-sumCov=$(cd /run/screen/S-root && ls -dq *covalent* | wc -l)
-sumIpfs=$(cd /run/screen/S-root && ls -dq *ipfs* | wc -l)
+sumCov=$(cd ${cfgDir} && ls -dq *covalent* | wc -l)
+sumIpfs=$(cd ${cfgDir}  && ls -dq *ipfs* | wc -l)
  
 for i in $(seq 1 ${sumCov});
 do
@@ -334,6 +332,8 @@ for i in $(seq 1 ${sumIpfs});
 do
 echo "To view ipfs${i} log execute 'screen -r ipfs${i}'"
 done
+. ${cfgDir}/config
+sed -r -i "s/ipfsCount=.*/ipfsCount=${sumIpfs}/g" ${cfgDir}/config
 }
 
 function ipfsConf(){
@@ -647,6 +647,9 @@ then
      done
      if [[ "${dirFound}" == "1" ]];
      then
+     . ${cfgDir}/config
+     ipfsCount="$((${sumIpfs}+1))"
+     lastKey="$((${#privKey[@]}+1))"
      installer
      fi
      if [[ "${dirFound}" == "2" ]];
