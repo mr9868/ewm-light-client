@@ -170,7 +170,6 @@ fi
 
 function tgConf(){
 echo "
-cfgDir=${cfgDir};
 . \${cfgDir}/config
 # Send tg message
 function tgMsg(){
@@ -237,7 +236,6 @@ done
 tgMsg;
 " > ${cfgDir}/tgConf
 echo "
-cfgDir=${cfgDir};
 . \${cfgDir}/config
 function runTg(){
 sudo pkill -f 'ewmLog'
@@ -252,7 +250,6 @@ echo "Check the logs 'screen -r ewmLog'"
 
 function runAll(){
 echo "
-cfgDir=${cfgDir};
 . \${cfgDir}/config
 for i in \$(seq 1 \${ipfsCount});
 do
@@ -280,7 +277,6 @@ fi
 
 function stopAll(){
 echo "
-cfgDir=${cfgDir}
 . \${cfgDir}/config
 sudo rm -rf \${cfgDir}/logs/ipfs*
 sudo rm -rf \${cfgDir}/logs/covalent*
@@ -646,7 +642,6 @@ then
      done
      if [[ "${dirFound}" == "1" ]];
      then
-     
      installer
      fi
      if [[ "${dirFound}" == "2" ]];
