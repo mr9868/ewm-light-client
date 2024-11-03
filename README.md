@@ -3,9 +3,10 @@ WELCOME, and don't forget to leave a star to my project :)
 
 Update feature :
 1. Better notification report on telegram BOT
-2. Backup and Migrate, so if there is an update you can upgrade without input anything again
-3. Auto ipfs setting with dht acceleration
-4. Auto restart the ipfs service if there is an error on it
+2. Multi port for ipfs and light-client
+3. Backup and Migrate, so if there is an update you can upgrade without input anything again
+4. Auto ipfs setting with dht acceleration
+5. Auto restart the ipfs service if there is an error on it
 
 We will update more feature soon ! so stay tune !
 
