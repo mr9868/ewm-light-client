@@ -7,9 +7,11 @@ ipfsLts="31" &&
 cfgDir=~/ewm-das/.mr9868;
 if grep -wq "cfgDir" ~/.bashrc; then
 sed -r -i "s/cfgDir=.*/cfgDir=${cfgDir}/g" ~/.bashrc
+sed -r -i "s/cfgDir=.*/cfgDir=${cfgDir}/g" ${cfgDir}/config
 else
 echo "cfgDir=${cfgDir}" >> ~/.bashrc
 source .bashrc
+echo "cfgDir=${cfgDir}" >> ${cfgDir}/config
 fi
 . ${cfgDir}/config
 sumIpfs=$(cd ${cfgDir} && ls -dq *ipfs* | wc -l)
