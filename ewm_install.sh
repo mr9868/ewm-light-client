@@ -5,18 +5,7 @@
 goLts="1.23.2" &&
 ipfsLts="31" &&
 cfgDir=~/ewm-das/.mr9868;
-if grep -wq "cfgDir" ~/.bashrc; then
-sed -r -i "s/cfgDir=.*/cfgDir=${cfgDir}/g" ~/.bashrc
-else
-echo "cfgDir=${cfgDir}" >> ~/.bashrc
-source .bashrc
-fi
 
-if grep -wq "cfgDir" ${cfgDir}/config; then
-echo "cfgDir=${cfgDir}" >> ${cfgDir}/config
-else
-sed -r -i "s/cfgDir=.*/cfgDir=${cfgDir}/g" ${cfgDir}/config
-fi
 
 
 # My Header function
