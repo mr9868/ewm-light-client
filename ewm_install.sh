@@ -195,7 +195,7 @@ gitCommit=\$(git log -1 | grep commit)
 msgGit=\$(eval \" echo 'You are using git version = \${gitVer} with commit id \${gitCommit}'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgGit}\"
 
-sleep 20;
+sleep 60;
 for ipfsDaemon in \$(seq 1 \${ipfsCount});
 do  
 MESSAGE=\$(cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep 'ready' | tail -1); 
