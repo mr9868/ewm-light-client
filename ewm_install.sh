@@ -5,7 +5,18 @@
 goLts="1.23.2" &&
 ipfsLts="31" &&
 cfgDir=~/ewm-das/.mr9868;
+if grep -wq "cfgDir" ~/.bashrc; then
+sed -r -i "s/cfgDir=.*/cfgDir=${cfgDir}/g" ~/.bashrc
+else
+echo "cfgDir=${cfgDir}" >> ~/.bashrc
+source .bashrc
+fi
 
+if grep -wq "cfgDir" ${cfgDir}/config; then
+echo "cfgDir=${cfgDir}" >> ${cfgDir}/config
+else
+sed -r -i "s/cfgDir=.*/cfgDir=${cfgDir}/g" ${cfgDir}/config
+fi
 
 
 # My Header function
@@ -184,7 +195,7 @@ gitCommit=\$(git log -1 | grep commit)
 msgGit=\$(eval \" echo 'You are using git version = \${gitVer} with commit id \${gitCommit}'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgGit}\"
 
-sleep 20;
+sleep 60;
 for ipfsDaemon in \$(seq 1 \${ipfsCount});
 do  
 MESSAGE=\$(cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep 'ready' | tail -1); 
@@ -322,18 +333,20 @@ done
 
 # Covalent log
 function covalentLog(){
-
-for i in $(seq 1 ${#privKey[@]});
+sumCov=$(cd ${cfgDir} && ls -dq *covalent* | wc -l)
+sumIpfs=$(cd ${cfgDir}  && ls -dq *ipfs* | wc -l)
+ 
+for i in $(seq 1 ${sumCov});
 do
 echo "To view covalent${i} log execute 'screen -r covalent${i}'"
 done
 
-for i in $(seq 1 ${ipfsCount});
+for i in $(seq 1 ${sumIpfs});
 do
 echo "To view ipfs${i} log execute 'screen -r ipfs${i}'"
 done
 . ${cfgDir}/config
-sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" ${cfgDir}/config
+sed -r -i "s/ipfsCount=.*/ipfsCount=${sumIpfs}/g" ${cfgDir}/config
 }
 
 function ipfsConf(){
@@ -720,7 +733,7 @@ myHeader
      go install honnef.co/go/tools/cmd/staticcheck@latest && 
      make deps &&
      make  && 
-     sudo bash install-trusted-setup &&
+     sudo bash install-trusted-setup.sh &&
      # Installing covalent light-client node
      sudo cp -r bin/light-client /usr/local/bin/light-client 
      cp -r ~/.mr9868 ~/ewm-das
@@ -754,27 +767,27 @@ function notInstalled(){
 # Install ewm-das
      git clone https://github.com/covalenthq/ewm-das  &&
      cd ewm-das &&
-     # Installing required Go packages
-     go install honnef.co/go/tools/cmd/staticcheck@latest && 
-     make deps &&
-     make  && 
-     sudo bash install-trusted-setup.sh &&
-     sudo cp -r ~/ewm-das/bin /usr/local/bin &&
-     echo "success"
      mkdir $cfgDir
      mkdir $cfgDir/logs
      lastKey=1
      ipfsCount=1
-     command -v lsof >/dev/null 2>&1 || { echo >&2 "lsof is not found on this machine, Installing lsof ... "; sleep 2;sudo apt install lsof -y;} 
+     }
+
+function installer(){
+if [[ "${dirFound}" == "1" ]];
+     then
+     echo "Next ..."
+     sleep 2;
+     else
+myHeader;
+   command -v lsof >/dev/null 2>&1 || { echo >&2 "lsof is not found on this machine, Installing lsof ... "; sleep 2;sudo apt install lsof -y;} 
    command -v sed >/dev/null 2>&1 || { echo >&2 "sed is not found on this machine, Installing sed ... "; sleep 2;sudo apt install sed -y;} 
    command -v screen >/dev/null 2>&1 || { echo >&2 "Screen is not found on this machine, Installing screen ... "; sleep 2;sudo apt install screen -y;} 
    command -v git >/dev/null 2>&1 || { echo >&2 "Git is not found on this machine, Installing git ... "; sleep 2;sudo apt install git -y;}
    command -v wget >/dev/null 2>&1 || { echo >&2 "Wget is not found on this machine, Installing Wget ... "; sleep 2;sudo apt install wget -y;}
    command -v ufw >/dev/null 2>&1 || { echo >&2 "Ufw is not found on this machine, Installing ufw ... "; sleep 2;sudo apt install ufw -y;}
-     }
-
-function installer(){
-myHeader;
+     fi
+myHeader;  
 entryPointPK;
 myHeader;
 read -p "Do you want to set client port ? (y/n)  : " ipfsQn
@@ -793,7 +806,21 @@ echo
 echo "==================== INSTALLATION START ===================="
 echo
 
-runLightClient &&
+if [[ "${dirFound}" == "1" ]];
+     then
+     echo "Next ..."
+     sleep 2;
+     else
+     # Installing required Go packages
+     go install honnef.co/go/tools/cmd/staticcheck@latest && 
+     make deps &&
+     make  && 
+     sudo bash install-trusted-setup.sh &&
+     # Installing covalent light-client node
+     sudo cp -r bin/light-client /usr/local/bin/light-client 
+ fi
+
+ runLightClient &&
 
 # Welldone ! 
 myHeader;
@@ -812,3 +839,4 @@ unset $loop;
 }
 
 startUp
+  
