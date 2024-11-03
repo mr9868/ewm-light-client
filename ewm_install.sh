@@ -7,17 +7,24 @@ ipfsLts="31" &&
 cfgDir=~/ewm-das/.mr9868;
 if grep -wq "cfgDir" ~/.bashrc; then
 sed -r -i "s/cfgDir=.*/cfgDir=${cfgDir}/g" ~/.bashrc
-sed -r -i "s/cfgDir=.*/cfgDir=${cfgDir}/g" ${cfgDir}/config
 else
 echo "cfgDir=${cfgDir}" >> ~/.bashrc
 source .bashrc
-echo "cfgDir=${cfgDir}" >> ${cfgDir}/config
 fi
+
+if grep -wq "cfgDir" ${cfgDir}/config; then
+echo "cfgDir=${cfgDir}" >> ${cfgDir}/config
+else
+sed -r -i "s/cfgDir=.*/cfgDir=${cfgDir}/g" ${cfgDir}/config
+. ${cfgDir}/config
+fi
+
+
 . ${cfgDir}/config
 sumIpfs=$(cd ${cfgDir} && ls -dq *ipfs* | wc -l)
+sed -r -i "s/ipfsCount=.*/ipfsCount=${sumIpfs}/g" ${cfgDir}/config
 ipfsCount="$((${sumIpfs}+1))"
 lastKey="$((${#privKey[@]}+1))"
-sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" ${cfgDir}/config
 
 # My Header function
 function myHeader(){
