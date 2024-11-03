@@ -772,9 +772,6 @@ function notInstalled(){
      make deps &&
      make  && 
      sudo bash install-trusted-setup &&
-     # Installing covalent light-client node
-     sudo cp -r ~/ewm-das/bin/light-client /usr/local/bin/light-client 
-     echo "success"
      mkdir $cfgDir
      mkdir $cfgDir/logs
      lastKey=1
@@ -814,7 +811,8 @@ echo
 echo "==================== INSTALLATION START ===================="
 echo
 
-
+     sudo cp -r ~/ewm-das/bin /usr/local/bin
+     echo "success"
 runLightClient &&
 
 # Welldone ! 
