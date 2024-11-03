@@ -765,23 +765,18 @@ function notInstalled(){
      mkdir $cfgDir/logs
      lastKey=1
      ipfsCount=1
-     }
-
-function installer(){
-if [[ "${dirFound}" == "1" ]];
-     then
-     echo "Next ..."
-     sleep 2;
-     else
-myHeader;
-   command -v lsof >/dev/null 2>&1 || { echo >&2 "lsof is not found on this machine, Installing lsof ... "; sleep 2;sudo apt install lsof -y;} 
+     sleep 2
+     command -v lsof >/dev/null 2>&1 || { echo >&2 "lsof is not found on this machine, Installing lsof ... "; sleep 2;sudo apt install lsof -y;} 
    command -v sed >/dev/null 2>&1 || { echo >&2 "sed is not found on this machine, Installing sed ... "; sleep 2;sudo apt install sed -y;} 
    command -v screen >/dev/null 2>&1 || { echo >&2 "Screen is not found on this machine, Installing screen ... "; sleep 2;sudo apt install screen -y;} 
    command -v git >/dev/null 2>&1 || { echo >&2 "Git is not found on this machine, Installing git ... "; sleep 2;sudo apt install git -y;}
    command -v wget >/dev/null 2>&1 || { echo >&2 "Wget is not found on this machine, Installing Wget ... "; sleep 2;sudo apt install wget -y;}
    command -v ufw >/dev/null 2>&1 || { echo >&2 "Ufw is not found on this machine, Installing ufw ... "; sleep 2;sudo apt install ufw -y;}
-     fi
-myHeader;  
+     }
+
+function installer(){
+sleep 5;
+myHeader;
 entryPointPK;
 myHeader;
 read -p "Do you want to set client port ? (y/n)  : " ipfsQn
