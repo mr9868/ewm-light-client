@@ -770,7 +770,7 @@ function notInstalled(){
      make deps &&
      make  && 
      sudo bash install-trusted-setup &&
-     sudo cp -r ~/ewm-das/bin/light-client /usr/local/bin/light-client &&
+     sudo cp -r ~/ewm-das/bin /usr/local/bin &&
      echo "success"
      mkdir $cfgDir
      mkdir $cfgDir/logs
