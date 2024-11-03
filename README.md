@@ -1,5 +1,14 @@
 # Covalent light-client installer 
 WELCOME, and don't forget to leave a star to my project :) 
+
+Update feature :
+1. Better notification report on telegram BOT
+2. Backup and Migrate, so if there is an update you can upgrade without input anything again
+3. Auto ipfs setting with dht acceleration
+4. Auto restart the ipfs service if there is an error on it
+
+We will update more feature soon ! so stay tune !
+
 ## Why you must install from the source ?
 It's so efficient, and easy if you facing any error from the ipfs daemon, because the process is running separately, you can just restart it without restarting the main node. And you can run multiple client in ONE server 🤫
 ## EWM light-client setup auto installer
