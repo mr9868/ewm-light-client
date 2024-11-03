@@ -122,29 +122,33 @@ fi
 
 # Entrypoint for telegram monitor question
 function entryPointTg(){
+myHeader
 read -p "Do you want to add telegram monitor ? (y/n)  : " tgQn
 if [[ "${tgQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
-then                                                                       
+then    
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 until [ -n "${tgApiQn}" ];
 do
 echo "Please input the API ! "
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 done
-
+echo "Please provide your bot API Key from @botFather : ${tgApiQn}"
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
 until [ -n "${tgIdQn}" ];
 do
 echo "Please input chat id !"
+echo "Please provide your bot API Key from @botFather : ${tgApiQn}"
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
 done
 API_TOKEN=${tgApiQn}
 CHAT_ID=${tgIdQn}
+myHeader
 msgTg=$(echo -e "Authorized !\nPlease wait for up to 1 minute ... ")
 tgTest=$(curl -s -X POST https://api.telegram.org/bot${API_TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d text="${msgTg}" | grep 'error_code')
 tgTest=$(echo ${tgTest})
 until [ -z "${tgTest}" ];
 do
+myHeader
 echo -e "Unauthorized !\nPlease recheck your API and CHAT ID"
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
 read -p "Please provide your telegram ID's from @getidsbot : " tgIdQn
