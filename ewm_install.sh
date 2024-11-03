@@ -1,5 +1,8 @@
 # WELCOME, don't forget to leave a star to my project :) mr9868
 
+# set udp buffer size
+sudo sysctl -w net.core.rmem_max=8388608
+sudo sysctl -w net.core.wmem_max=8388608
 
 # Make sure there is nothing complicated
 goLts="1.23.2" &&
