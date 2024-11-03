@@ -758,14 +758,13 @@ function notInstalled(){
      go install honnef.co/go/tools/cmd/staticcheck@latest && 
      make deps &&
      make  && 
-     sudo bash install-trusted-setup &&
+     sudo bash install-trusted-setup.sh &&
      sudo cp -r ~/ewm-das/bin /usr/local/bin &&
      echo "success"
      mkdir $cfgDir
      mkdir $cfgDir/logs
      lastKey=1
      ipfsCount=1
-     sleep 2
      command -v lsof >/dev/null 2>&1 || { echo >&2 "lsof is not found on this machine, Installing lsof ... "; sleep 2;sudo apt install lsof -y;} 
    command -v sed >/dev/null 2>&1 || { echo >&2 "sed is not found on this machine, Installing sed ... "; sleep 2;sudo apt install sed -y;} 
    command -v screen >/dev/null 2>&1 || { echo >&2 "Screen is not found on this machine, Installing screen ... "; sleep 2;sudo apt install screen -y;} 
@@ -775,7 +774,6 @@ function notInstalled(){
      }
 
 function installer(){
-sleep 5;
 myHeader;
 entryPointPK;
 myHeader;
