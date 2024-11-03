@@ -197,7 +197,7 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 done
 while sleep 1800;
 do
-start=\$(date -d \"-10 minutes\" +'%Y-%m-%d %H:%M:%S')
+start=\$(date -d \"-30 minutes\" +'%Y-%m-%d %H:%M:%S')
 
 for ipfsError in \$(seq 1 \${ipfsCount});
 do  
