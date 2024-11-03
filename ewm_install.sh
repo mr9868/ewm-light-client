@@ -186,6 +186,10 @@ function tgMsg(){
 # Set the API token and chat ID
 API_TOKEN=\"\${tgApiQn}\"
 CHAT_ID=\"\${tgIdQn}\"
+
+msgStart=\$(eval \" echo -e 'Covalent Monitor Bot, Coded By Mr9868\nGithub: Https://www\\.github\\.com/mr9868'\")
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgStart}\" -d parse_mode=\"MarkdownV2\"
+
 gitVer=\$(git describe --abbrev=0)
 gitCommit=\$(git log -1 | grep commit)
 msgGit=\$(eval \" echo 'You are using git version = \${gitVer} with commit id \${gitCommit}'\")
