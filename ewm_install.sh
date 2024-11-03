@@ -16,7 +16,6 @@ if grep -wq "cfgDir" ${cfgDir}/config; then
 echo "cfgDir=${cfgDir}" >> ${cfgDir}/config
 else
 sed -r -i "s/cfgDir=.*/cfgDir=${cfgDir}/g" ${cfgDir}/config
-. ${cfgDir}/config
 fi
 
 
