@@ -249,7 +249,7 @@ cfgDir=${cfgDir}
 . \${cfgDir}/config
 function runTg(){
 sudo pkill -f 'ewmLog'
-screen -dmS ewmLog bash -c \"cd \${cfgDir}; chmod 777 \${cfgDir}/tgConf;bash \${cfgDir}/tgConf;exec bash\"
+screen -dmS ewmLog bash -c \"cd \${cfgDir}; chmod 777 \${cfgDir}/tgConf;bash \${cfgDir}/tgConf;exec bash;cd ${cfgDir}\"
 }
 runTg
 " > ${cfgDir}/tgInit
@@ -309,7 +309,7 @@ then
 echo "
 function covalent${i}(){
 rm -rf ${cfgDir}/covalent${i}.log
-screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash\"
+screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash;cd ${cfgDir}\"
 }
 covalent${i}
 " >  ${cfgDir}/covalent${i}
@@ -318,7 +318,7 @@ else
 echo "
 function covalent${i}(){
 rm -rf ${cfgDir}/covalent${i}.log
-screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash\"
+screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash;cd ${cfgDir}\"
 }
 covalent${i}
 " >  ${cfgDir}/covalent${i}
@@ -569,7 +569,7 @@ ipfsConf
 echo "
 function ipfs${ipfsCount}(){
 rm -rf ${cfgDir}/ipfs${ipfsCount}.log
-screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;\" 
+screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;cd ${cfgDir}\" 
 }
 ipfs${ipfsCount}
 " > ${cfgDir}/ipfs${ipfsCount};
@@ -608,7 +608,7 @@ ipfsConf
 echo "
 function ipfs${ipfsCount}(){
 rm -rf ${cfgDir}/ipfs${ipfsCount}.log
-screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash\" 
+screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;cd ${cfgDir}\" 
 }
 ipfs${ipfsCount}
 " > ${cfgDir}/ipfs${ipfsCount};
