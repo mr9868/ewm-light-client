@@ -333,20 +333,18 @@ done
 
 # Covalent log
 function covalentLog(){
-sumCov=$(cd ${cfgDir} && ls -dq *covalent* | wc -l)
-sumIpfs=$(cd ${cfgDir}  && ls -dq *ipfs* | wc -l)
- 
-for i in $(seq 1 ${sumCov});
+
+for i in $(seq 1 ${#privKey[@]});
 do
 echo "To view covalent${i} log execute 'screen -r covalent${i}'"
 done
 
-for i in $(seq 1 ${sumIpfs});
+for i in $(seq 1 ${ipfsCount});
 do
 echo "To view ipfs${i} log execute 'screen -r ipfs${i}'"
 done
 . ${cfgDir}/config
-sed -r -i "s/ipfsCount=.*/ipfsCount=${sumIpfs}/g" ${cfgDir}/config
+sed -r -i "s/ipfsCount=.*/ipfsCount=${ipfsCount}/g" ${cfgDir}/config
 }
 
 function ipfsConf(){
