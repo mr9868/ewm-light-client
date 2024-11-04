@@ -299,12 +299,20 @@ function stopAll(){
 echo "
 cfgDir=${cfgDir}
 . \${cfgDir}/config
+for i in \$(seq 1 \${ipfsCount});
+do
+pkill -f 'ipfs'\${i}''
 sudo rm -rf \${cfgDir}/logs/ipfs*
+echo 'Successfull to stop ipfs'\${i}' daemon ✅'
+done
+
+for i in \$(seq 1 \${#privKey[@]});
+do
+pkill -f 'covalent'\${i}''
 sudo rm -rf \${cfgDir}/logs/covalent*
-sudo pkill -f 'ipfs*'
-sudo pkill -f 'covalent*'
-echo 'Successfull to stop all ipfs daemon ✅'
-echo 'Successfull to stop covalent node ✅'
+echo 'Successfull to stop covalent'\${i}' node ✅'
+done
+
 " > ${cfgDir}/runAll
 }
 
@@ -679,6 +687,7 @@ echo
 echo "=================== INSTALLATION SUCCESS ==================="
 echo
 runAll
+stopAll
 }
 
 startUp
