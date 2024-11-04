@@ -354,164 +354,7 @@ done
 sed -r -i "s/ipfsCount=.*/ipfsCount=${sumIpfs}/g" ${cfgDir}/config
 }
 
-function ipfsConf(){
-echo '
-{
-  "API": {
-    "HTTPHeaders": {}
-  },
-  "Addresses": {
-    "API": "/ip4/127.0.0.1/tcp/'${mainPort}'",
-    "Announce": null,
-    "AppendAnnounce": null,
-    "Gateway": "/ip4/127.0.0.1/tcp/'${trdPort}'",
-    "NoAnnounce": null,
-    "Swarm": [
-      "/ip4/0.0.0.0/tcp/'${secPort}'",
-      "/ip6/::/tcp/'${secPort}'",
-      "/ip4/0.0.0.0/udp/'${secPort}'/webrtc-direct",
-      "/ip4/0.0.0.0/udp/'${secPort}'/quic-v1",
-      "/ip4/0.0.0.0/udp/'${secPort}'/quic-v1/webtransport",
-      "/ip6/::/udp/'${secPort}'/webrtc-direct",
-      "/ip6/::/udp/'${secPort}'/quic-v1",
-      "/ip6/::/udp/'${secPort}'/quic-v1/webtransport"
-    ]
-  },
-  "AutoNAT": {},
-  "Bootstrap": [
-    "/dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN",
-    "/dnsaddr/bootstrap.libp2p.io/p2p/QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa",
-    "/dnsaddr/bootstrap.libp2p.io/p2p/QmbLHAnMoJPWSCR5Zhtx6BHJX9KiKNN6tpvbUcqanj75Nb",
-    "/dnsaddr/bootstrap.libp2p.io/p2p/QmcZf59bWwK5XFi76CZX8cbJ4BhTzzA3gU1ZjYZcYW3dwt",
-    "/ip4/104.131.131.82/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ",
-    "/ip4/104.131.131.82/udp/4001/quic-v1/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ"
-  ],
-  "DNS": {
-    "Resolvers": {}
-  },
-  "Datastore": {
-    "BloomFilterSize": 0,
-    "GCPeriod": "1h",
-    "HashOnRead": false,
-    "Spec": {
-      "mounts": [
-        {
-          "child": {
-            "path": "blocks",
-            "shardFunc": "/repo/flatfs/shard/v1/next-to-last/2",
-            "sync": true,
-            "type": "flatfs"
-          },
-          "mountpoint": "/blocks",
-          "prefix": "flatfs.datastore",
-          "type": "measure"
-        },
-        {
-          "child": {
-            "compression": "none",
-            "path": "datastore",
-            "type": "levelds"
-          },
-          "mountpoint": "/",
-          "prefix": "leveldb.datastore",
-          "type": "measure"
-        }
-      ],
-      "type": "mount"
-    },
-    "StorageGCWatermark": 90,
-    "StorageMax": "10GB"
-  },
-  "Discovery": {
-    "MDNS": {
-      "Enabled": true
-    }
-  },
-  "Experimental": {
-    "FilestoreEnabled": false,
-    "Libp2pStreamMounting": false,
-    "OptimisticProvide": false,
-    "OptimisticProvideJobsPoolSize": 0,
-    "P2pHttpProxy": false,
-    "StrategicProviding": false,
-    "UrlstoreEnabled": false
-  },
-  "Gateway": {
-    "DeserializedResponses": null,
-    "DisableHTMLErrors": null,
-    "ExposeRoutingAPI": null,
-    "HTTPHeaders": {},
-    "NoDNSLink": false,
-    "NoFetch": false,
-    "PublicGateways": null,
-    "RootRedirect": ""
-  },
-  "Identity": {
-    "PeerID": "'${ipfsPeerId}'",
-    "PrivKey": "'${ipfsPrivKey}'"
-  },
-  "Import": {
-    "CidVersion": null,
-    "HashFunction": null,
-    "UnixFSChunker": null,
-    "UnixFSRawLeaves": null
-  },
-  "Internal": {},
-  "Ipns": {
-    "RecordLifetime": "",
-    "RepublishPeriod": "",
-    "ResolveCacheSize": 128
-  },
-  "Migration": {
-    "DownloadSources": [],
-    "Keep": ""
-  },
-  "Mounts": {
-    "FuseAllowOther": false,
-    "IPFS": "/ipfs",
-    "IPNS": "/ipns"
-  },
-  "Peering": {
-    "Peers": null
-  },
-  "Pinning": {
-    "RemoteServices": {}
-  },
-  "Plugins": {
-    "Plugins": null
-  },
-  "Provider": {
-    "Strategy": ""
-  },
-  "Pubsub": {
-    "DisableSigning": false,
-    "Router": ""
-  },
-  "Reprovider": {},
-  "Routing": {
-  "Type": "dht",
-  "AcceleratedDHTClient": true
-},
-  "Swarm": {
-    "AddrFilters": null,
-    "ConnMgr": {},
-    "DisableBandwidthMetrics": false,
-    "DisableNatPortMap": false,
-    "RelayClient": {},
-    "RelayService": {},
-    "ResourceMgr": {},
-    "Transports": {
-      "Multiplexers": {},
-      "Network": {},
-      "Security": {}
-    }
-  }
-}
-' > ${cfgDir}/.ipfs${ipfsCount}/config
 
-echo '{"mounts":[{"mountpoint":"/blocks","path":"blocks","shardFunc":"/repo/flatfs/shard/v1/next-to-last/2","type":"flatfs"},{"mountpoint":"/","path":"datastore","type":"levelds"}],"type":"mount"}' > ${cfgDir}/.ipfs${ipfsCount}/datastore_spec
-echo '16' > ${cfgDir}/.ipfs${ipfsCount}/version
-}
 
 
 
@@ -519,8 +362,6 @@ echo '16' > ${cfgDir}/.ipfs${ipfsCount}/version
 function entryPointIpfs(){
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
-read -p "Input your ipfs peer Id : " ipfsPeerId
-read -p "Input your ipfs private key : " ipfsPrivKey
 
 # Cek main Port
 read -p "Set main port eg. 5001 : " mainPort
@@ -539,56 +380,38 @@ cekPort=$(eval "lsof -Pi :${mainPort} -sTCP:LISTEN -t")
 done
 
 # Cek sec Port
-read -p "Set second port eg. 4001 : " secPort
+read -p "Set second port eg. 8080 : " secPort
 cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
 until [[ ${secPort} =~ ^[0-9]{4}$ ]]
 do
 echo "Please input in 4 digits number !"
-read -p "Set second port eg. 4001 : " secPort
+read -p "Set second port eg. 8080 : " secPort
 cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
 done
 until [[ -z "$cekPort" ]]
 do
 echo "Port ${secPort} is already in use !"
-read -p "Set second port eg. 4001 : " secPort
+read -p "Set second port eg. 8080 : " secPort
 cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
 done
 
-
-# Cek third Port
-read -p "Set third port eg. 8080 : " trdPort
-cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
-until [[ ${trdPort} =~ ^[0-9]{4}$ ]]
-do
-echo "Please input in 4 digits number !"
-read -p "Set third port eg. 8080 : " trdPort
-cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
-done
-until [[ -z "$cekPort" ]]
-do
-echo "Port ${trdPort} is already in use !"
-read -p "Set third port eg. 8080 : " trdPort
-cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
-done
-
-
-sudo ufw allow ${mainPort}
-sudo ufw allow ${secPort}
-sudo ufw allow ${trdPort}
 mkdir ${cfgDir}/.ipfs${ipfsCount} &&
-ipfsConf
 echo "
 function ipfs${ipfsCount}(){
 rm -rf ${cfgDir}/ipfs${ipfsCount}.log
-screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;cd ${cfgDir}\" 
+screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} sudo ufw allow ${mainPort} && sudo ufw allow ${secPort} && ipfs init && ipfs config Addresses.Gateway /ip4/127.0.0.1/tcp/${secPort} &&
+ipfs config Addresses.API /ip4/127.0.0.1/tcp/${mainPort} &&
+ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/${secPort} && ipfs daemon --enable-gc=true;exec bash;cd ${cfgDir}\" 
 }
 ipfs${ipfsCount}
 " > ${cfgDir}/ipfs${ipfsCount};
 chmod 777 ${cfgDir}/ipfs${ipfsCount} && bash ${cfgDir}/ipfs${ipfsCount}
 # screen -dmS ipfs${ipfsCount} -L -Logfile $cfgDir/ipfs${ipfsCount}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;" 
+
+
 else
-read -p "Input your ipfs peer Id : " ipfsPeerId
-read -p "Input your ipfs private key : " ipfsPrivKey
+
+
 mainPort=5001
 cekPort=$(eval "lsof -Pi :${mainPort} -sTCP:LISTEN -t")
 until [[ -z "$cekPort" ]]
@@ -597,7 +420,7 @@ mainPort=$((${mainPort}+1))
 cekPort=$(eval "lsof -Pi :${mainPort} -sTCP:LISTEN -t")
 done
 
-secPort=4001
+secPort=8080
 cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
 until [[ -z "$cekPort" ]]
 do
@@ -605,23 +428,14 @@ secPort=$((${secPort}+1))
 cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
 done
 
-trdPort=8080
-cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
-until [[ -z "$cekPort" ]]
-do
-trdPort=$((${trdPort}+1))
-cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
-done
 
-sudo ufw allow ${mainPort}
-sudo ufw allow ${secPort}
-sudo ufw allow ${trdPort}
 mkdir ${cfgDir}/.ipfs${ipfsCount} &&
-ipfsConf
 echo "
 function ipfs${ipfsCount}(){
 rm -rf ${cfgDir}/ipfs${ipfsCount}.log
-screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;cd ${cfgDir}\" 
+screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} sudo ufw allow ${mainPort} && sudo ufw allow ${secPort} && ipfs init && ipfs config Addresses.Gateway /ip4/127.0.0.1/tcp/${secPort} &&
+ipfs config Addresses.API /ip4/127.0.0.1/tcp/${mainPort} &&
+ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/${secPort} && ipfs daemon --enable-gc=true;exec bash;cd ${cfgDir}\" 
 }
 ipfs${ipfsCount}
 " > ${cfgDir}/ipfs${ipfsCount};
