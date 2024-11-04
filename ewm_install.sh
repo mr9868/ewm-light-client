@@ -789,7 +789,15 @@ myHeader;
    command -v git >/dev/null 2>&1 || { echo >&2 "Git is not found on this machine, Installing git ... "; sleep 2;sudo apt install git -y;}
    command -v wget >/dev/null 2>&1 || { echo >&2 "Wget is not found on this machine, Installing Wget ... "; sleep 2;sudo apt install wget -y;}
    command -v ufw >/dev/null 2>&1 || { echo >&2 "Ufw is not found on this machine, Installing ufw ... "; sleep 2;sudo apt install ufw -y;}
+     # Installing required Go packages
+     go install honnef.co/go/tools/cmd/staticcheck@latest && 
+     make deps &&
+     make  && 
+     sudo bash install-trusted-setup.sh &&
+     # Installing covalent light-client node
+     sudo cp -r bin/light-client /usr/local/bin/light-client 
      fi
+     
 myHeader;  
 entryPointPK;
 myHeader;
@@ -809,19 +817,6 @@ echo
 echo "==================== INSTALLATION START ===================="
 echo
 
-if [[ "${dirFound}" == "1" ]];
-     then
-     echo "Next ..."
-     sleep 2;
-     else
-     # Installing required Go packages
-     go install honnef.co/go/tools/cmd/staticcheck@latest && 
-     make deps &&
-     make  && 
-     sudo bash install-trusted-setup.sh &&
-     # Installing covalent light-client node
-     sudo cp -r bin/light-client /usr/local/bin/light-client 
- fi
 
  runLightClient &&
 
@@ -838,7 +833,6 @@ echo
 echo "=================== INSTALLATION SUCCESS ==================="
 echo
 runAll
-unset $loop;
 }
 
 startUp
