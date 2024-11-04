@@ -317,7 +317,7 @@ sudo rm -rf \${cfgDir}/logs/covalent*
 echo 'Successfull to stop covalent'\${i}' node ✅'
 done
 
-" > ${cfgDir}/runAll
+" > ${cfgDir}/stopAll
 }
 
 # Run light-client node
