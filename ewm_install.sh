@@ -395,11 +395,12 @@ read -p "Set second port eg. 8080 : " secPort
 cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
 done
 
+sudo ufw allow ${mainPort} && sudo ufw allow ${secPort} &&
 mkdir ${cfgDir}/.ipfs${ipfsCount} &&
 echo "
 function ipfs${ipfsCount}(){
 rm -rf ${cfgDir}/ipfs${ipfsCount}.log
-screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} sudo ufw allow ${mainPort} && sudo ufw allow ${secPort} && ipfs init && ipfs config Addresses.Gateway /ip4/127.0.0.1/tcp/${secPort} &&
+screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs init && ipfs config Addresses.Gateway /ip4/127.0.0.1/tcp/${secPort} &&
 ipfs config Addresses.API /ip4/127.0.0.1/tcp/${mainPort} &&
 ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/${secPort} && ipfs daemon --enable-gc=true;exec bash;cd ${cfgDir}\" 
 }
@@ -428,12 +429,12 @@ secPort=$((${secPort}+1))
 cekPort=$(eval "lsof -Pi :${secPort} -sTCP:LISTEN -t")
 done
 
-
+sudo ufw allow ${mainPort} && sudo ufw allow ${secPort} &&
 mkdir ${cfgDir}/.ipfs${ipfsCount} &&
 echo "
 function ipfs${ipfsCount}(){
 rm -rf ${cfgDir}/ipfs${ipfsCount}.log
-screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} sudo ufw allow ${mainPort} && sudo ufw allow ${secPort} && ipfs init && ipfs config Addresses.Gateway /ip4/127.0.0.1/tcp/${secPort} &&
+screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs init && ipfs config Addresses.Gateway /ip4/127.0.0.1/tcp/${secPort} &&
 ipfs config Addresses.API /ip4/127.0.0.1/tcp/${mainPort} &&
 ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/${secPort} && ipfs daemon --enable-gc=true;exec bash;cd ${cfgDir}\" 
 }
