@@ -277,6 +277,7 @@ for i in \$(seq 1 \${ipfsCount});
 do
 pkill -f 'ipfs'\${i}''
 sudo rm -rf \${cfgDir}/logs/ipfs*
+sudo rm -rf \${cfgDir}/.ipfs*
 bash \${cfgDir}/ipfs\${i}
 echo 'Successfull to run  ipfs'\${i}' daemon ✅'
 done
@@ -307,6 +308,7 @@ for i in \$(seq 1 \${ipfsCount});
 do
 pkill -f 'ipfs'\${i}''
 sudo rm -rf \${cfgDir}/logs/ipfs*
+sudo rm -rf \${cfgDir}/.ipfs*
 echo 'Successfull to stop ipfs'\${i}' daemon ✅'
 done
 
