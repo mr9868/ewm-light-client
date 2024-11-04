@@ -461,7 +461,7 @@ function ipfs${ipfsCount}(){
 rm -rf ${cfgDir}/ipfs${ipfsCount}.log
 screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs init && ipfs config Addresses.Gateway /ip4/127.0.0.1/tcp/${secPort} &&
 ipfs config Addresses.API /ip4/127.0.0.1/tcp/${mainPort} &&
-ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/${secPort} && sed -i \"s/'tcp/4001'/'tcp/${trdPort}'/g\"  ${cfgDir}/.ipfs${ipfsCount} && sed -i \"s/'udp/4001'/'udp/${trdPort}'/g\" ${cfgDir}/.ipfs${ipfsCount} && IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --enable-gc=true;exec bash;cd ${cfgDir}\" 
+ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/${secPort} && sed -i \"s/'tcp/4001'/'tcp/${trdPort}'/g\"  ${cfgDir}/.ipfs${ipfsCount} && sed -i \"s/'udp/4001'/'udp/${trdPort}'/g\" ${cfgDir}/.ipfs${ipfsCount} && IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon ;exec bash;cd ${cfgDir}\" 
 }
 ipfs${ipfsCount}
 " > ${cfgDir}/ipfs${ipfsCount};
