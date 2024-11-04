@@ -447,8 +447,8 @@ echo '
     "RootRedirect": ""
   },
   "Identity": {
-    "PeerID": "12D3KooWQHfx6z8tYf35wPpidxEnom4cczkg55fUBU2wpFRwxdek",
-    "PrivKey": "CAESQNbZWjzcfuv2euUlx2c8o+XoxAlHhaG+jEI7FvzsiLGC1wJnsaxmbVj2ieVryhlrzKAaoXF4iU+D9ry52cKBSZU="
+    "PeerID": "'${ipfsPeerId}'",
+    "PrivKey": "'${ipfsPrivKey}'"
   },
   "Import": {
     "CidVersion": null,
@@ -519,6 +519,8 @@ echo '16' > ${cfgDir}/.ipfs${ipfsCount}/version
 function entryPointIpfs(){
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
+read -p "Input your ipfs peer Id : " ipfsPeerId
+read -p "Input your ipfs private key : " ipfsPrivKey
 
 # Cek main Port
 read -p "Set main port eg. 5001 : " mainPort
@@ -585,6 +587,8 @@ ipfs${ipfsCount}
 chmod 777 ${cfgDir}/ipfs${ipfsCount} && bash ${cfgDir}/ipfs${ipfsCount}
 # screen -dmS ipfs${ipfsCount} -L -Logfile $cfgDir/ipfs${ipfsCount}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;" 
 else
+read -p "Input your ipfs peer Id : " ipfsPeerId
+read -p "Input your ipfs private key : " ipfsPrivKey
 mainPort=5001
 cekPort=$(eval "lsof -Pi :${mainPort} -sTCP:LISTEN -t")
 until [[ -z "$cekPort" ]]
