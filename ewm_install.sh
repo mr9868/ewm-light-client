@@ -271,6 +271,7 @@ cfgDir=${cfgDir}
 . \${cfgDir}/config
 for i in \$(seq 1 \${ipfsCount});
 do
+pkill -f 'ipfs'\${i}''
 sudo rm -rf \${cfgDir}/logs/ipfs*
 bash \${cfgDir}/ipfs\${i}
 echo 'Successfull to run  ipfs'\${i}' daemon ✅'
@@ -278,6 +279,7 @@ done
 
 for i in \$(seq 1 \${#privKey[@]});
 do
+pkill -f 'covalent'\${i}''
 sudo rm -rf \${cfgDir}/logs/covalent*
 bash \${cfgDir}/covalent\${i}
 echo 'Successfull to run covalent'\${i}' node ✅'
