@@ -224,7 +224,8 @@ start=\$(date -d \"-30 minutes\" +'%Y-%m-%d %H:%M:%S')
 for ipfsError in \$(seq 1 \${ipfsCount});
 do  
 lastIpfsError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/ipfs\${ipfsError}.log | grep -E 'ERROR|FATAL' | tail -1)
-if [ -n \"\${lastIpfsError}\" ] ; then
+if [ -n \"\${lastIpfsError}\" ] ; 
+then
 ipfsMsg=\$(eval \"echo 'There is an error on ipfs\"\${ipfsError}\" daemon, auto restarting your ipfs\"\${ipfsError}\"'\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\" -d parse_mode='MarkdownV2' &&
 sudo pkill -f 'ipfs'\${ipfsError}'' && sudo rm -rf \${cfgDir}/logs/ipfs\${ipfsError}.log && bash \${cfgDir}/ipfs\${ipfsError} &&
@@ -236,7 +237,8 @@ done
 for covError in \$(seq 1 \${#privKey[@]});
 do  
 lastCovError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/covalent\${covError}.log | grep -E 'ERROR|FATAL' | tail -1)
-if [ -n \"\${lastCovError}\" ]; then
+if [ -n \"\${lastCovError}\" ];
+then
 covMsg=\$(eval \"echo 'There is an error on covalent\"\${covError}\" node, auto restarting your covalent\"\${covError}\" node'\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg}\" -d parse_mode='MarkdownV2' &&
 sed -i \"s/.*ERROR.*//g\" \${cfgDir}/logs/covalent\${covError}.log && sed -i \"s/.*FATAL.*//g\" \${cfgDir}/logs/covalent\${covError}.log &&
@@ -248,7 +250,8 @@ done
 for accCov in \$(seq 1 \${#privKey[@]});
 do
 msgCount=\$(cat \${cfgDir}/logs/covalent\${accCov}.log | grep -c 'verified')
-if ((\${msgCount}>0)) then
+if ((\${msgCount}>0)); 
+then
 accMsg=\$(eval \" echo ' Covalent\${accCov}: \${msgCount} verified samples' ✅\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg}\"                
 # Use the curl command to send the message 
