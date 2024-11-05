@@ -278,6 +278,9 @@ tgMsg;
 echo "
 cfgDir=${cfgDir}
 . \${cfgDir}/config
+# Set the API token and chat ID
+API_TOKEN=\"\${tgApiQn}\"
+CHAT_ID=\"\${tgIdQn}\"
 function tgServer(){
 while sleep 5;
 do
