@@ -322,33 +322,7 @@ done
 " > ${cfgDir}/stopAll
 }
 
-# Run light-client node
-function runLightClient(){
-for i in $(seq ${lastKey} ${#privKey[@]});
-do
-varPkey=${privKey[$((${i}-1))]}
-if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
-then
-echo "
-function covalent${i}(){
-rm -rf ${cfgDir}/covalent${i}.log
-screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash;cd ${cfgDir}\"
-}
-covalent${i}
-" >  ${cfgDir}/covalent${i}
-chmod 777 ${cfgDir}/covalent${i} && bash ${cfgDir}/covalent${i}
-else
-echo "
-function covalent${i}(){
-rm -rf ${cfgDir}/covalent${i}.log
-screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash;cd ${cfgDir}\"
-}
-covalent${i}
-" >  ${cfgDir}/covalent${i}
-chmod 777 ${cfgDir}/covalent${i} && bash ${cfgDir}/covalent${i}
-fi
-done
-}
+
 
 # Covalent log
 function covalentLog(){
@@ -373,7 +347,7 @@ sed -r -i "s/ipfsCount=.*/ipfsCount=${sumIpfs}/g" ${cfgDir}/config
 
 
 # ipfs entrypoint
-function entryPointIpfs(){
+function entryPoint(){
 if [[ "${ipfsQn}" =~ ^([yY][eE][sS]|[yY])$ ]];
 then
 
@@ -442,6 +416,20 @@ chmod 777 ${cfgDir}/ipfs${ipfsCount} && bash ${cfgDir}/ipfs${ipfsCount}
 # screen -dmS ipfs${ipfsCount} -L -Logfile $cfgDir/ipfs${ipfsCount}.log bash -c "IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --init;exec bash;" 
 
 
+for i in $(seq ${lastKey} ${#privKey[@]});
+do
+varPkey=${privKey[$((${i}-1))]}
+echo "
+function covalent${i}(){
+rm -rf ${cfgDir}/covalent${i}.log
+screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash;cd ${cfgDir}\"
+}
+covalent${i}
+" >  ${cfgDir}/covalent${i}
+chmod 777 ${cfgDir}/covalent${i} && bash ${cfgDir}/covalent${i}
+done
+
+
 else
 
 
@@ -482,6 +470,21 @@ IPFS_PATH=${cfgDir}/.ipfs${ipfsCount}  ipfs config Addresses.Gateway /ip4/0.0.0.
 ipfs${ipfsCount}
 " > ${cfgDir}/ipfs${ipfsCount};
 chmod 777 ${cfgDir}/ipfs${ipfsCount} && bash ${cfgDir}/ipfs${ipfsCount}
+
+for i in $(seq ${lastKey} ${#privKey[@]});
+do
+varPkey=${privKey[$((${i}-1))]}
+echo "
+function covalent${i}(){
+rm -rf ${cfgDir}/covalent${i}.log
+screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash;cd ${cfgDir}\"
+}
+covalent${i}
+" >  ${cfgDir}/covalent${i}
+chmod 777 ${cfgDir}/covalent${i} && bash ${cfgDir}/covalent${i}
+done
+
+
 fi
 }
 
@@ -666,7 +669,7 @@ myHeader;
 read -p "Do you want to set client port ? (y/n)  : " ipfsQn
 
 # Running ipfs daemon
-entryPointIpfs &&
+entryPoint &&
 if [ -f ${cfgDir}/tgConf ]
 then
 chmod 777 ${cfgDir}/tgInit && bash ${cfgDir}/tgInit 
@@ -678,9 +681,6 @@ myHeader;
 echo
 echo "==================== INSTALLATION START ===================="
 echo
-
-
- runLightClient &&
 
 # Welldone ! 
 myHeader;
