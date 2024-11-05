@@ -304,7 +304,7 @@ mid=\$(curl https://api.telegram.org/bot\${API_TOKEN}/getUpdates?offset=-1 | jq 
 mid2=\${mid}
 CHAT_ID=\$(curl https://api.telegram.org/bot\${API_TOKEN}/getUpdates?offset=-1 | jq '.result[0].message.chat.id')
 msgTxt=\$(curl https://api.telegram.org/bot\${API_TOKEN}/getUpdates?offset=-1  | jq '.result[0].message.text' )
-if [[ \${msgTxt} == '/address' ]]
+if [[ \${msgTxt}=\"/address\" ]]
 then
 
 accStart=\$(for akun in \$(seq 1 \${#privKey[@]});
