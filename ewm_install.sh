@@ -157,7 +157,7 @@ tgTest=$(echo ${tgTest})
 until [ -z "${tgTest}" ];
 do
 myHeader
-echo -e "Unauthorized !\nPlease recheck your API and CHAT ID"
+echo -e "Unauthorized !\nPlease recheck your API and CHAT ID and make sure you starting your bot"
 tgQnCheck
 API_TOKEN=${tgApiQn}
 CHAT_ID=${tgIdQn}
