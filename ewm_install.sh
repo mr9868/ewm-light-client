@@ -233,7 +233,7 @@ if [ -n \"\${lastIpfsError}\" ] ;
 then
 ipfsMsg=\$(eval \"echo 'There is an error on ipfs\"\${ipfsError}\" daemon, auto restarting your ipfs\"\${ipfsError}\"'\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\" -d parse_mode='MarkdownV2' &&
-sudo pkill -f 'ipfs'\${ipfsError}'' && sudo rm -rf \${cfgDir}/logs/ipfs\${ipfsError}.log && bash \${cfgDir}/ipfs\${ipfsError} &&
+sudo pkill -f 'ipfs'\${ipfsError}'' && sudo rm -rf \${cfgDir}/.ipfs\${ipfsError} && sudo rm -rf \${cfgDir}/logs/ipfs\${ipfsError}.log && bash \${cfgDir}/ipfs\${ipfsError} &&
 ipfsMsg2=\$(eval \"echo 'Auto restart complete on ipfs\"\${ipfsError}\" daemon ✅'\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg2}\" -d parse_mode='MarkdownV2'
 fi
