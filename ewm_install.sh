@@ -274,12 +274,49 @@ done
 }
 tgMsg;
 " > ${cfgDir}/tgConf
+
+echo "
+cfgDir=${cfgDir}
+. \${cfgDir}/config
+function tgServer(){
+while sleep 5;
+do
+mid=\$(curl https://api.telegram.org/bot\${API_TOKEN}/getUpdates?offset=-1 | jq '.result[0].message.message_id')
+mid2=\${mid}
+CHAT_ID=\$(curl https://api.telegram.org/bot\${API_TOKEN}/getUpdates?offset=-1 | jq '.result[0].message.chat.id')
+msgTxt=\$(curl https://api.telegram.org/bot\${API_TOKEN}/getUpdates?offset=-1  | jq '.result[0].message.text' )
+if [[ \${msgTxt}='/address_list' ]]
+then
+
+accStart=\$(for akun in \$(seq 1 \${#privKey[@]});
+do  
+accCount=\$(cat \${cfgDir}/logs/covalent\${akun}.log | awk '{print tolower(\$0)}' | grep 'client' | grep -ow '\w*0x\w*' | tail -1);
+accCount2=\$(eval \" echo 'Address covalent\${akun} : \\\`\${msgStart}\\\`'\");
+done
+);
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
+
+
+until [ \$mid2 -ne \$mid ]
+do
+mid2=\$(curl https://api.telegram.org/bot\${API_TOKEN}/getUpdates?offset=-1 |  jq '.result[0].message.message_id')
+sleep 5;
+done
+fi
+done
+}
+tgServer;
+" > ${cfgDir}/tgServer
+
 echo "
 cfgDir=${cfgDir}
 . \${cfgDir}/config
 function runTg(){
 sudo pkill -f 'ewmLog'
+sudo pkill -f 'tgServer'
 screen -dmS ewmLog bash -c \"cd \${cfgDir}; chmod 777 \${cfgDir}/tgConf;bash \${cfgDir}/tgConf;exec bash;cd ${cfgDir}\"
+screen -dmS tgServer bash -c \"cd \${cfgDir}; chmod 777 \${cfgDir}/tgServer;bash \${cfgDir}/tgServer;exec bash;cd ${cfgDir}\"
+
 }
 runTg
 " > ${cfgDir}/tgInit
