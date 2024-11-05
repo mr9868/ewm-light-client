@@ -239,24 +239,24 @@ do
 lastCovError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/covalent\${covError}.log | grep 'ERROR' | tail -1)
 if [ -n \"\${lastCovError}\" ];
 then
-covMsg=\$(eval \"echo 'There is an error on covalent\"\${covError}\" node, covalent\"\${covError}\"  will reconnect it self'\")  
+covMsg=\$(eval \"echo 'There is an error on covalent\${covError} node, covalent\${covError}  will reconnect it self'\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg}\" -d parse_mode='MarkdownV2' &&
 sed -i \"s/.*ERROR.*//g\" \${cfgDir}/logs/covalent\${covError}.log &&
-covMsg2=\$(eval \"echo 'Auto reconnect complete on covalent\"\${covError}\" node ✅'\")  
+covMsg2=\$(eval \"echo 'Auto reconnect complete on covalent\${covError} node ✅'\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg2}\" -d parse_mode='MarkdownV2'
 fi
 done
 
-for covError in \$(seq 1 \${#privKey[@]});
+for covFatal in \$(seq 1 \${#privKey[@]});
 do  
-lastCovError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/covalent\${covError}.log | grep 'FATAL' | tail -1)
-if [ -n \"\${lastCovError}\" ];
+lastCovFatal=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/covalent\${covFatal}.log | grep 'FATAL' | tail -1)
+if [ -n \"\${lastCovFatal}\" ];
 then
-covMsg=\$(eval \"echo 'There is an error on covalent\"\${covError}\" node, covalent\"\${covError}\"  will restart it self'\")  
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg}\" -d parse_mode='MarkdownV2' &&
-sudo pkill -f 'covalent\${covError}' && sudo rm -rf \${cfgDir}/logs/covalent\${covError}.log && bash \${cfgDir}/covalent\${covError} &&
-covMsg2=\$(eval \"echo 'Auto restart complete on covalent\"\${covError}\" node ✅'\")  
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg2}\" -d parse_mode='MarkdownV2'
+covFatalMsg=\$(eval \"echo 'There is an error on covalent\${covFatal} node, covalent\${covFatal}  will restart it self'\")  
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covFatalMsg}\" -d parse_mode='MarkdownV2' &&
+sudo pkill -f 'covalent'\${covFatal}'' && sudo rm -rf \${cfgDir}/logs/covalent\${covFatal}.log && bash \${cfgDir}/covalent\${covFatal} &&
+covFatalMsg2=\$(eval \"echo 'Auto restart complete on covalent\"\${covFatal}\" node ✅'\")  
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covFatalMsg2}\" -d parse_mode='MarkdownV2'
 fi
 done
 
