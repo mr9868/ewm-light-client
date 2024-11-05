@@ -199,20 +199,28 @@ msgGit=\$(eval \" echo 'You are using git version = \${gitVer} with commit id \$
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgGit}\"
 
 sleep 60;
-for ipfsDaemon in \$(seq 1 \${ipfsCount});
+MESSAGE=\$(for ipfsDaemon in \$(seq 1 \${ipfsCount});
 do  
-MESSAGE=\$(cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep 'ready' | tail -1); 
-MESSAGE=\$(eval \"echo 'ipfs\${ipfsDaemon} status : \${MESSAGE} ✅'\")
+ipfsInfo=\$(cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep 'ready' | tail -1); 
+ipfsInfo2=\$(eval \"echo 'ipfs\${ipfsDaemon} status : \${ipfsInfo} ✅'\")
+echo \${ipfsInfo2};
+echo
+done
+);
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
-done
 
 
-for akun in \$(seq 1 \${#privKey[@]});
+
+accCount=\$(for akun in \$(seq 1 \${#privKey[@]});
 do  
-msgStart=\$(cat \${cfgDir}/logs/covalent\${akun}.log | awk '{print tolower(\$0)}' | grep 'client' | grep -ow '\w*0x\w*' | tail -1)
-accStart=\$(eval \" echo 'Address covalent\${akun} : \\\`\${msgStart}\\\`'\")
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
+accStart=\$(cat \${cfgDir}/logs/covalent\${akun}.log | awk '{print tolower(\$0)}' | grep 'client' | grep -ow '\w*0x\w*' | tail -1)
+accStart2=\$(eval \" echo 'Address covalent\${akun} : \\\`\${accStart}\\\`'\")
+echo \${accStart2}
+echo
 done
+);
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accCount}\" -d parse_mode='MarkdownV2'
+
 
 msgInfo=\$(eval \" echo -e 'INFO : If your covalent address not showing up, try to execute this command :\n \\\`\\\`\\\` chmod 777 \${cfgDir}/tgInit %26%26 bash \${cfgDir}/tgInit \\\`\\\`\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo}\" -d parse_mode=\"MarkdownV2\"
@@ -266,14 +274,17 @@ fi
 done
 
 
-for accCov in \$(seq 1 \${#privKey[@]});
+accMsg2=\$(for accCov in \$(seq 1 \${#privKey[@]});
 do
 msgCount=\$(cat \${cfgDir}/logs/covalent\${accCov}.log | grep -c 'verified')
-
-accMsg=\$(eval \" echo ' Covalent\${accCov}: \${msgCount} verified samples' ✅\")  
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg}\"                
+accMsg=\$(eval \" echo ' Covalent\${accCov}: \${msgCount} verified samples' ✅\") 
+echo \${accMsg}
+echo
 # Use the curl command to send the message 
 done
+);
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg2}\"                
+
 sleep 1800;
 done
 }
