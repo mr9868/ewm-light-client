@@ -193,13 +193,6 @@ CHAT_ID=\"\${tgIdQn}\"
 msgStart=\$(eval \" echo -e 'Covalent Monitor Bot, Coded By Mr9868\nGithub: Https://www\\.github\\.com/mr9868'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgStart}\" -d parse_mode=\"MarkdownV2\"
 
-msgInfo=\$(eval \" echo -e 'INFO : If your covalent address not showing up, try to execute this command :\n \\\`\\\`\\\` chmod 777 \${cfgDir}/tgInit %26%26 bash \${cfgDir}/tgInit \\\`\\\`\\\`'\")
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo}\" -d parse_mode=\"MarkdownV2\"
-
-msgInfo2=\$(eval \" echo -e 'INFO : Type /address to show address list'\")
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo2}\" -d parse_mode=\"MarkdownV2\"
-
-
 gitVer=\$(git describe --abbrev=0)
 gitCommit=\$(git log -1 | grep commit)
 msgGit=\$(eval \" echo 'You are using git version = \${gitVer} with commit id \${gitCommit}'\")
@@ -213,6 +206,7 @@ MESSAGE=\$(eval \"echo 'ipfs\${ipfsDaemon} status : \${MESSAGE} ✅'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
 done
 
+
 for akun in \$(seq 1 \${#privKey[@]});
 do  
 msgStart=\$(cat \${cfgDir}/logs/covalent\${akun}.log | awk '{print tolower(\$0)}' | grep 'client' | grep -ow '\w*0x\w*' | tail -1)
@@ -220,7 +214,15 @@ accStart=\$(eval \" echo 'Address covalent\${akun} : \\\`\${msgStart}\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
 done
 
-while sleep 5;
+msgInfo=\$(eval \" echo -e 'INFO : If your covalent address not showing up, try to execute this command :\n \\\`\\\`\\\` chmod 777 \${cfgDir}/tgInit %26%26 bash \${cfgDir}/tgInit \\\`\\\`\\\`'\")
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo}\" -d parse_mode=\"MarkdownV2\"
+
+msgInfo2=\$(eval \" echo -e 'INFO : Type /address to show address list'\")
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo2}\" -d parse_mode=\"MarkdownV2\"
+
+
+
+while sleep 120;
 do
 start=\$(date -d \"-30 minutes\" +'%Y-%m-%d %H:%M:%S')
 
