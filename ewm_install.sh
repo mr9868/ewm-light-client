@@ -442,7 +442,7 @@ varPkey=${privKey[$((${i}-1))]}
 echo "
 function covalent${i}(){
 rm -rf ${cfgDir}/covalent${i}.log
-screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash;cd ${cfgDir}\"
+screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"until netstat -an | grep 'LISTEN' | grep '${mainPort}'; do printf '.'; sleep 1;done;sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash;cd ${cfgDir}\"
 }
 covalent${i}
 " >  ${cfgDir}/covalent${i}
@@ -497,7 +497,7 @@ varPkey=${privKey[$((${i}-1))]}
 echo "
 function covalent${i}(){
 rm -rf ${cfgDir}/covalent${i}.log
-screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"until netstat -an | grep 'LISTEN' | grep '${mainPort}'; do; printf '.'; sleep 1;done && sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash;cd ${cfgDir}\"
+screen -dmS covalent${i} -L -Logfile ${cfgDir}/logs/covalent${i}.log bash -c \"until netstat -an | grep 'LISTEN' | grep '${mainPort}'; do printf '.'; sleep 1;done; sudo light-client --rpc-url wss://coordinator.das.test.covalentnetwork.org/v1/rpc --collect-url https://us-central1-covalent-network-team-sandbox.cloudfunctions.net/ewm-das-collector --ipfs-addr :${mainPort} --private-key ${varPkey} ;exec bash;cd ${cfgDir}\"
 }
 covalent${i}
 " >  ${cfgDir}/covalent${i}
