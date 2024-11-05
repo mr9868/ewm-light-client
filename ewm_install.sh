@@ -193,7 +193,7 @@ CHAT_ID=\"\${tgIdQn}\"
 msgStart=\$(eval \" echo -e 'Covalent Monitor Bot, Coded By Mr9868\nGithub: Https://www\\.github\\.com/mr9868'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgStart}\" -d parse_mode=\"MarkdownV2\"
 
-msgInfo=\$(eval \" echo -e 'If your covalent address not showing up, try to execute this command :\n \\\`\\\`\\\` chmod 777 \${cfgDir}/tgInit %26%26 bash \${cfgDir}/tgInit'\")
+msgInfo=\$(eval \" echo -e 'If your covalent address not showing up, try to execute this command :\n \\\`\\\`\\\` chmod 777 \${cfgDir}/tgInit %26%26 bash \${cfgDir}/tgInit \\\`\\\`\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo}\" -d parse_mode=\"MarkdownV2\"
 
 
@@ -216,7 +216,8 @@ msgStart=\$(cat \${cfgDir}/logs/covalent\${akun}.log | awk '{print tolower(\$0)}
 accStart=\$(eval \" echo 'Address covalent\${akun} : \\\`\${msgStart}\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
 done
-while sleep 1800;
+
+while sleep 20;
 do
 start=\$(date -d \"-30 minutes\" +'%Y-%m-%d %H:%M:%S')
 
@@ -247,9 +248,11 @@ done
 for accCov in \$(seq 1 \${#privKey[@]});
 do
 msgCount=\$(cat \${cfgDir}/logs/covalent\${accCov}.log | grep -c 'verified')
+if ((\${msgCount}>0)) then
 accMsg=\$(eval \" echo ' Covalent\${accCov}: \${msgCount} verified samples' ✅\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg}\"                
 # Use the curl command to send the message 
+fi
 done
 done
 }
