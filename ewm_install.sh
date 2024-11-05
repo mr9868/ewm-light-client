@@ -254,7 +254,7 @@ if [ -n \"\${lastCovError}\" ];
 then
 covMsg=\$(eval \"echo 'There is an error on covalent\"\${covError}\" node, covalent\"\${covError}\"  will restart it self'\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg}\" -d parse_mode='MarkdownV2' &&
-bash \${cfgDir}/covalent\${covError}
+sudo pkill -f 'covalent\${covError}' && sudo rm -rf \${cfgDir}/logs/covalent\${covError}.log && bash \${cfgDir}/covalent\${covError} &&
 covMsg2=\$(eval \"echo 'Auto restart complete on covalent\"\${covError}\" node ✅'\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg2}\" -d parse_mode='MarkdownV2'
 fi
