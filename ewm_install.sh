@@ -217,7 +217,7 @@ accStart=\$(eval \" echo 'Address covalent\${akun} : \\\`\${msgStart}\\\`'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
 done
 
-while sleep 20;
+while sleep 5;
 do
 start=\$(date -d \"-30 minutes\" +'%Y-%m-%d %H:%M:%S')
 
@@ -264,13 +264,12 @@ done
 for accCov in \$(seq 1 \${#privKey[@]});
 do
 msgCount=\$(cat \${cfgDir}/logs/covalent\${accCov}.log | grep -c 'verified')
-if ((\${msgCount}>0)); 
-then
+
 accMsg=\$(eval \" echo ' Covalent\${accCov}: \${msgCount} verified samples' ✅\")  
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg}\"                
 # Use the curl command to send the message 
-fi
 done
+sleep 1800;
 done
 }
 tgMsg;
