@@ -231,7 +231,7 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 function grepError(){
 
 while sleep 5;
-do
+do 
 
 start=\$(date -d \"-30 minutes\" +'%Y-%m-%d %H:%M:%S')
 
@@ -279,7 +279,7 @@ done
 
 function grepVerified(){
 while sleep 120;
-do;
+do
 
 accMsg2=\$(for accCov in \$(seq 1 \${#privKey[@]});
 do
