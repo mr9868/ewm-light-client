@@ -228,10 +228,11 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 msgInfo2=\$(eval \" echo -e 'INFO : Type /address to show address list'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo2}\" -d parse_mode=\"MarkdownV2\"
 
+function grepError(){
 
-
-while sleep 120;
+while sleep 5;
 do
+
 start=\$(date -d \"-30 minutes\" +'%Y-%m-%d %H:%M:%S')
 
 for ipfsError in \$(seq 1 \${ipfsCount});
@@ -272,7 +273,13 @@ covFatalMsg2=\$(eval \"echo 'Auto restart complete on covalent\"\${covFatal}\" n
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covFatalMsg2}\" -d parse_mode='MarkdownV2'
 fi
 done
+done
 
+}
+
+function grepVerified(){
+while sleep 120;
+do;
 
 accMsg2=\$(for accCov in \$(seq 1 \${#privKey[@]});
 do
@@ -287,6 +294,10 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 
 sleep 1800;
 done
+}
+grepError & grepVerified
+
+
 }
 tgMsg;
 " > ${cfgDir}/tgConf
