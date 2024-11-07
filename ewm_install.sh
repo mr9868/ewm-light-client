@@ -195,7 +195,7 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 
 gitVer=\$(git describe --abbrev=0)
 gitCommit=\$(git log -1 | grep commit)
-msgGit=\$(eval \" echo '<b>[ INFO ]</b> You are using git version = \${gitVer} with commit id \${gitCommit}'\")
+msgGit=\$(eval \" echo '<b>[ INFO ]</b> You are using git version = \${gitVer} with id \${gitCommit}'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgGit}\" -d parse_mode=\"HTML\"
 
 sleep 60;
