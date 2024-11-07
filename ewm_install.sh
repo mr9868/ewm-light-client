@@ -493,7 +493,7 @@ mkdir ${cfgDir}/.ipfs${ipfsCount} &&
 echo "
 function ipfs${ipfsCount}(){
 sudo rm -rf ${cfgDir}/ipfs${ipfsCount}.log
-sudo pkill -f 'ipfs${ipfsCount}.log'
+sudo pkill -f 'ipfs${ipfsCount}'
 screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs init && IPFS_PATH=${cfgDir}/.ipfs${ipfsCount}  ipfs config Addresses.Gateway /ip4/127.0.0.1/tcp/${secPort} &&
 IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs config Addresses.API /ip4/127.0.0.1/tcp/${mainPort} &&
 IPFS_PATH=${cfgDir}/.ipfs${ipfsCount}  ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/${secPort} && sed -r -i 's/tcp\/4001/tcp\/${trdPort}/g' ${cfgDir}/.ipfs${ipfsCount}/config && sed -r -i 's/udp\/4001/udp\/${trdPort}/g' ${cfgDir}/.ipfs${ipfsCount}/config && IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --routing=dhtclient;exec bash;cd ${cfgDir}\" 
@@ -550,7 +550,7 @@ mkdir ${cfgDir}/.ipfs${ipfsCount} &&
 echo "
 function ipfs${ipfsCount}(){
 sudo rm -rf ${cfgDir}/ipfs${ipfsCount}.log
-sudo pkill -f 'ipfs${ipfsCount}.log'
+sudo pkill -f 'ipfs${ipfsCount}'
 screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs init && IPFS_PATH=${cfgDir}/.ipfs${ipfsCount}  ipfs config Addresses.Gateway /ip4/127.0.0.1/tcp/${secPort} &&
 IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs config Addresses.API /ip4/127.0.0.1/tcp/${mainPort} &&
 IPFS_PATH=${cfgDir}/.ipfs${ipfsCount}  ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/${secPort} && sed -r -i 's/tcp\/4001/tcp\/${trdPort}/g' ${cfgDir}/.ipfs${ipfsCount}/config && sed -r -i 's/udp\/4001/udp\/${trdPort}/g' ${cfgDir}/.ipfs${ipfsCount}/config && IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --routing=dhtclient;exec bash;cd ${cfgDir}\" 
