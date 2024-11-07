@@ -228,6 +228,9 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 msgInfo2=\$(eval \" echo -e 'INFO : Type /address to show address list'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo2}\" -d parse_mode=\"MarkdownV2\"
 
+msgInfo3=\$(eval \" echo -e 'INFO : Type /check to get total verified samples'\")
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo3}\" -d parse_mode=\"MarkdownV2\"
+
 function grepError(){
 
 while sleep 5;
@@ -327,6 +330,26 @@ echo
 done
 );
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
+fi
+
+if [[ \${msgTxt} == '\"/check\"' ]]
+then
+
+accMsg2=\$(for accCov in \$(seq 1 \${#privKey[@]});
+do
+msgCount=\$(cat \${cfgDir}/logs/covalent\${accCov}.log | grep -c 'verified')
+accMsg=\$(eval \" echo ' Covalent\${accCov}: \${msgCount} verified samples' ✅\") 
+echo \${accMsg}
+echo
+# Use the curl command to send the message 
+done
+);
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg2}\"
+fi
+
+
+
+
 
 
 until [ \$mid2 -ne \$mid ]
@@ -334,7 +357,6 @@ do
 mid2=\$(curl https://api.telegram.org/bot\${API_TOKEN}/getUpdates?offset=-1 |  jq '.result[0].message.message_id')
 sleep 5;
 done
-fi
 done
 }
 tgServer;
