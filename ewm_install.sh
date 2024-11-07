@@ -212,7 +212,7 @@ else
 ipfsInfo2=\$(eval \"echo '<b>[ ERROR ]</b> ipfs\${ipfsDaemon} doesn't running properly, please check screen process name ! ❌'\")
 echo \${ipfsInfo2};
 echo
-
+fi
 done
 );
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\" -d parse_mode=\"HTML\"
@@ -231,8 +231,6 @@ nodeHealth2=\$(eval \" echo '<b>[ ERROR ]</b> covalent\${svcHealth} doesn't runn
 echo \${nodeHealth2}
 echo
 fi
-
-
 done
 );
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${nodeHealth}\" -d parse_mode='HTML'
@@ -257,6 +255,13 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 
 msgInfo3=\$(eval \" echo -e ''<b>[ INFO ]</b> Type /check to get total verified samples'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo3}\" -d parse_mode=\"HTML\"
+
+
+msgInfo4=\$(eval \" echo -e ''<b>[ INFO ]</b> Type /ipfsHealth to show ipfs daemon health'\")
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo4}\" -d parse_mode=\"HTML\"
+
+msgInfo5=\$(eval \" echo -e ''<b>[ INFO ]</b> Type /covalentHealth to show covalent node health'\")
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo5}\" -d parse_mode=\"HTML\"
 
 function grepError(){
 
@@ -391,7 +396,7 @@ else
 ipfsInfo2=\$(eval \"echo '<b>[ ERROR ]</b> ipfs\${ipfsDaemon} doesn't running properly, please check screen process name ! ❌'\")
 echo \${ipfsInfo2};
 echo
-
+fi
 done
 );
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\" -d parse_mode=\"HTML\"
