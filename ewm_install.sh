@@ -195,19 +195,19 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 
 gitVer=\$(git describe --abbrev=0)
 gitCommit=\$(git log -1 | grep commit)
-msgGit=\$(eval \" echo 'You are using git version = \${gitVer} with commit id \${gitCommit}'\")
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgGit}\"
+msgGit=\$(eval \" echo '<b>[ INFO ]</b> You are using git version = \${gitVer} with commit id \${gitCommit}'\")
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgGit}\" -d parse_mode=\"HTML\"
 
 sleep 60;
 MESSAGE=\$(for ipfsDaemon in \$(seq 1 \${ipfsCount});
 do  
 ipfsInfo=\$(cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep 'ready' | tail -1); 
-ipfsInfo2=\$(eval \"echo 'ipfs\${ipfsDaemon} status : \${ipfsInfo} ✅'\")
+ipfsInfo2=\$(eval \"echo '<b>[ INFO ]</b> ipfs\${ipfsDaemon} status : \${ipfsInfo} ✅'\")
 echo \${ipfsInfo2};
 echo
 done
 );
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\"
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\" -d parse_mode=\"HTML\"
 
 
 
@@ -222,14 +222,14 @@ done
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accCount}\" -d parse_mode='MarkdownV2'
 
 
-msgInfo=\$(eval \" echo -e 'INFO : If your covalent address not showing up, try to execute this command :\n \\\`\\\`\\\` chmod 777 \${cfgDir}/tgInit %26%26 bash \${cfgDir}/tgInit \\\`\\\`\\\`'\")
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo}\" -d parse_mode=\"MarkdownV2\"
+msgInfo=\$(eval \" echo -e '<b>[ INFO ]</b> If your covalent address not showing up, try to execute this command :\n <pre> chmod 777 \${cfgDir}/tgInit %26%26 bash \${cfgDir}/tgInit</pre>'\")
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo}\" -d parse_mode=\"HTML\"
 
-msgInfo2=\$(eval \" echo -e 'INFO : Type /address to show address list'\")
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo2}\" -d parse_mode=\"MarkdownV2\"
+msgInfo2=\$(eval \" echo -e '<b>[ INFO ]</b> Type /address to show address list'\")
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo2}\" -d parse_mode=\"HTML\"
 
-msgInfo3=\$(eval \" echo -e 'INFO : Type /check to get total verified samples'\")
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo3}\" -d parse_mode=\"MarkdownV2\"
+msgInfo3=\$(eval \" echo -e ''<b>[ INFO ]</b> Type /check to get total verified samples'\")
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo3}\" -d parse_mode=\"HTML\"
 
 function grepError(){
 
@@ -243,11 +243,11 @@ do
 lastIpfsError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/ipfs\${ipfsError}.log | grep -E 'ERROR|FATAL' | tail -1)
 if [ -n \"\${lastIpfsError}\" ] ; 
 then
-ipfsMsg=\$(eval \"echo 'There is an error on ipfs\"\${ipfsError}\" daemon, auto restarting your ipfs\"\${ipfsError}\"'\")  
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\" -d parse_mode='MarkdownV2' &&
+ipfsMsg=\$(eval \"echo '<b>[ ERROR ]</b> There is an error on ipfs\"\${ipfsError}\" daemon, auto restarting your ipfs\"\${ipfsError}\"'\")  
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg}\" -d parse_mode='HTML' &&
 sudo pkill -f 'ipfs'\${ipfsError}'' && sudo rm -rf \${cfgDir}/.ipfs\${ipfsError} && sudo rm -rf \${cfgDir}/logs/ipfs\${ipfsError}.log && bash \${cfgDir}/ipfs\${ipfsError} &&
-ipfsMsg2=\$(eval \"echo 'Auto restart complete on ipfs\"\${ipfsError}\" daemon ✅'\")  
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg2}\" -d parse_mode='MarkdownV2'
+ipfsMsg2=\$(eval \"echo '<b>[ INFO ]</b> Auto restart complete on ipfs\"\${ipfsError}\" daemon ✅'\")  
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${ipfsMsg2}\" -d parse_mode='HTML'
 fi
 done
 
@@ -256,11 +256,11 @@ do
 lastCovError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/covalent\${covError}.log | grep 'ERROR' | tail -1)
 if [ -n \"\${lastCovError}\" ];
 then
-covMsg=\$(eval \"echo 'There is an error on covalent\${covError} node, covalent\${covError} will reconnect it self'\")  
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg}\" -d parse_mode='MarkdownV2' &&
+covMsg=\$(eval \"echo '<b>[ ERROR ]</b> There is an error on covalent\${covError} node, covalent\${covError} will reconnect it self'\")  
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg}\" -d parse_mode='HTML' &&
 sed -i \"s/.*ERROR.*//g\" \${cfgDir}/logs/covalent\${covError}.log &&
-covMsg2=\$(eval \"echo 'Auto reconnect complete on covalent\${covError} node ✅'\")  
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg2}\" -d parse_mode='MarkdownV2'
+covMsg2=\$(eval \"echo ''<b>[ INFO ]</b> Auto reconnect complete on covalent\${covError} node ✅'\")  
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg2}\" -d parse_mode='HTML'
 fi
 done
 
@@ -269,11 +269,11 @@ do
 lastCovFatal=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/covalent\${covFatal}.log | grep 'FATAL' | tail -1)
 if [ -n \"\${lastCovFatal}\" ];
 then
-covFatalMsg=\$(eval \"echo 'There is an error on covalent\${covFatal} node, covalent\${covFatal} will restart it self'\")  
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covFatalMsg}\" -d parse_mode='MarkdownV2' &&
+covFatalMsg=\$(eval \"echo '<b>[ FATAL ]</b> There is a fatal error on covalent\${covFatal} node, covalent\${covFatal} will restart it self'\")  
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covFatalMsg}\" -d parse_mode='HTML' &&
 sudo pkill -f 'covalent'\${covFatal}'' && sudo rm -rf \${cfgDir}/logs/covalent\${covFatal}.log && bash \${cfgDir}/covalent\${covFatal} &&
-covFatalMsg2=\$(eval \"echo 'Auto restart complete on covalent\"\${covFatal}\" node ✅'\")  
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covFatalMsg2}\" -d parse_mode='MarkdownV2'
+covFatalMsg2=\$(eval \"echo '<b>[ INFO ]</b> Auto restart complete on covalent\"\${covFatal}\" node ✅'\")  
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covFatalMsg2}\" -d parse_mode='HTML'
 fi
 done
 done
@@ -287,13 +287,13 @@ do
 accMsg2=\$(for accCov in \$(seq 1 \${#privKey[@]});
 do
 msgCount=\$(cat \${cfgDir}/logs/covalent\${accCov}.log | grep -c 'verified')
-accMsg=\$(eval \" echo ' Covalent\${accCov}: \${msgCount} verified samples' ✅\") 
+accMsg=\$(eval \" echo '<b>[ INFO ]</b> Covalent\${accCov}: \${msgCount} verified samples' ✅\") 
 echo \${accMsg}
 echo
 # Use the curl command to send the message 
 done
 );
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg2}\"                
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg2}\" -d parse_mode=\"HTML\"             
 
 sleep 1800;
 done
@@ -338,13 +338,13 @@ then
 accMsg2=\$(for accCov in \$(seq 1 \${#privKey[@]});
 do
 msgCount=\$(cat \${cfgDir}/logs/covalent\${accCov}.log | grep -c 'verified')
-accMsg=\$(eval \" echo ' Covalent\${accCov}: \${msgCount} verified samples' ✅\") 
+accMsg=\$(eval \" echo '<b>[ INFO ]</b> Covalent\${accCov}: \${msgCount} verified samples' ✅\") 
 echo \${accMsg}
 echo
 # Use the curl command to send the message 
 done
 );
-curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg2}\"
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg2}\" -d parse_mode=\"HTML\"
 fi
 
 
