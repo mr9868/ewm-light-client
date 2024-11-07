@@ -202,7 +202,7 @@ sleep 60;
 MESSAGE=\$(for ipfsDaemon in \$(seq 1 \${ipfsCount});
 do  
 ipfsInfo=\$(cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep 'ready' | tail -1); 
-if [[ -z ${ipfsInfo} ]];
+if [[ -n \${ipfsInfo} ]];
 then
 ipfsInfo2=\$(eval \"echo '<b>[ INFO ]</b> ipfs\${ipfsDaemon} status : Daemon running successfully ✅'\")
 echo \${ipfsInfo2};
@@ -381,7 +381,7 @@ then
 MESSAGE=\$(for ipfsDaemon in \$(seq 1 \${ipfsCount});
 do  
 ipfsInfo=\$(cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep 'ready' | tail -1); 
-if [[ -z ${ipfsInfo} ]];
+if [[ -n \${ipfsInfo} ]];
 then
 ipfsInfo2=\$(eval \"echo '<b>[ INFO ]</b> ipfs\${ipfsDaemon} status : Daemon running successfully ✅'\")
 echo \${ipfsInfo2};
