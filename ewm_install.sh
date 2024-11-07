@@ -151,17 +151,17 @@ tgQnCheck
 API_TOKEN=${tgApiQn}
 CHAT_ID=${tgIdQn}
 myHeader
-msgTg=$(echo -e "Authorized !\nPlease wait for up to 1 minute ... ")
-tgTest=$(curl -s -X POST https://api.telegram.org/bot${API_TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d text="${msgTg}" | grep 'error_code')
+msgTg=$(echo -e "<b>[ INFO ]</b> Authorized !\nPlease wait for up to 1 minute ... ")
+tgTest=$(curl -s -X POST https://api.telegram.org/bot${API_TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d text="${msgTg}" -d parse_mode="HTML" | grep 'error_code') 
 tgTest=$(echo ${tgTest})
 until [ -z "${tgTest}" ];
 do
 myHeader
-echo -e "Unauthorized !\nPlease recheck your API and CHAT ID and make sure you starting your bot"
+echo -e "[ ERROR ] Unauthorized !\nPlease recheck your API and CHAT ID and make sure you starting your bot"
 tgQnCheck
 API_TOKEN=${tgApiQn}
 CHAT_ID=${tgIdQn}
-tgTest=$(curl -s -X POST https://api.telegram.org/bot${API_TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d text="${msgTg}" | grep 'error_code')
+tgTest=$(curl -s -X POST https://api.telegram.org/bot${API_TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d text="${msgTg}" -d parse_mode="HTML" | grep 'error_code')
 tgTest=$(echo ${tgTest})
 done
 echo -e ${msgTg}
@@ -202,7 +202,8 @@ sleep 60;
 MESSAGE=\$(for ipfsDaemon in \$(seq 1 \${ipfsCount});
 do  
 ipfsInfo=\$(cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep 'ready' | tail -1); 
-if [[ -z ${ipfsInfo} ]] then
+if [[ -z ${ipfsInfo} ]];
+then
 ipfsInfo2=\$(eval \"echo '<b>[ INFO ]</b> ipfs\${ipfsDaemon} status : Daemon running successfully ✅'\")
 echo \${ipfsInfo2};
 echo
@@ -374,13 +375,14 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 fi
 
 
-if [[ \${msgTxt} == '\"/ipfsHealth\"' ]]
+if [[ \${msgTxt} == '\"/ipfsHealth\"' ]];
 then
 
 MESSAGE=\$(for ipfsDaemon in \$(seq 1 \${ipfsCount});
 do  
 ipfsInfo=\$(cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep 'ready' | tail -1); 
-if [[ -z ${ipfsInfo} ]] then
+if [[ -z ${ipfsInfo} ]];
+then
 ipfsInfo2=\$(eval \"echo '<b>[ INFO ]</b> ipfs\${ipfsDaemon} status : Daemon running successfully ✅'\")
 echo \${ipfsInfo2};
 echo
@@ -397,7 +399,7 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 fi
 
 
-if [[ \${msgTxt} == '\"/covalentHealth\"' ]]
+if [[ \${msgTxt} == '\"/covalentHealth\"' ]];
 then
 
 nodeHealth=\$(for svcHealth in \$(seq 1 \${#privKey[@]});
