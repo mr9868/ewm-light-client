@@ -493,6 +493,7 @@ mkdir ${cfgDir}/.ipfs${ipfsCount} &&
 echo "
 function ipfs${ipfsCount}(){
 sudo rm -rf ${cfgDir}/ipfs${ipfsCount}.log
+sudo rm -rf .ipfs${ipfsCount}
 sudo pkill -f 'ipfs${ipfsCount}'
 screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs init && IPFS_PATH=${cfgDir}/.ipfs${ipfsCount}  ipfs config Addresses.Gateway /ip4/127.0.0.1/tcp/${secPort} &&
 IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs config Addresses.API /ip4/127.0.0.1/tcp/${mainPort} &&
@@ -550,6 +551,7 @@ mkdir ${cfgDir}/.ipfs${ipfsCount} &&
 echo "
 function ipfs${ipfsCount}(){
 sudo rm -rf ${cfgDir}/ipfs${ipfsCount}.log
+sudo rm -rf .ipfs${ipfsCount}
 sudo pkill -f 'ipfs${ipfsCount}'
 screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bash -c \"IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs init && IPFS_PATH=${cfgDir}/.ipfs${ipfsCount}  ipfs config Addresses.Gateway /ip4/127.0.0.1/tcp/${secPort} &&
 IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs config Addresses.API /ip4/127.0.0.1/tcp/${mainPort} &&
