@@ -317,7 +317,6 @@ do
 msgCount=\$(cat \${cfgDir}/logs/covalent\${accCov}.log | grep -c 'verified')
 accMsg=\$(eval \" echo '<b>[ INFO ]</b> Covalent\${accCov}: \${msgCount} verified samples' ✅\") 
 echo \${accMsg}
-echo
 # Use the curl command to send the message 
 done
 );
@@ -368,7 +367,6 @@ do
 msgCount=\$(cat \${cfgDir}/logs/covalent\${accCov}.log | grep -c 'verified')
 accMsg=\$(eval \" echo '<b>[ INFO ]</b> Covalent\${accCov}: \${msgCount} verified samples' ✅\") 
 echo \${accMsg}
-echo
 # Use the curl command to send the message 
 done
 );
@@ -386,7 +384,6 @@ if [[ -n \${ipfsInfo} ]];
 then
 ipfsInfo2=\$(eval \"echo '<b>[ INFO ]</b> ipfs\${ipfsDaemon} status : Daemon running successfully ✅'\")
 echo \${ipfsInfo2};
-echo
 else
 
 ipfsInfo2=\$(eval \"echo '<b>[ ERROR ]</b> ipfs\${ipfsDaemon} doesn't running properly, please check screen process name ! ❌'\")
@@ -410,12 +407,11 @@ if [[ -n \$(cd \${scrDir}; ls | grep covalent${svcHealth} ) ]];
 then
 nodeHealth2=\$(eval \" echo '<b>[ INFO ]</b> covalent\${svcHealth} running successfully ✅'\")
 echo \${nodeHealth2}
-echo
 else
 nodeHealth2=\$(eval \" echo '<b>[ ERROR ]</b> covalent\${svcHealth} doesn't running properly, please check screen process name ! ❌'\")
 echo \${nodeHealth2}
-echo
 fi
+done
 fi
 
 
