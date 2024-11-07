@@ -249,7 +249,7 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 msgInfo2=\$(eval \" echo -e '<b>[ INFO ]</b> Type /address to show address list'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo2}\" -d parse_mode=\"HTML\"
 
-msgInfo3=\$(eval \" echo -e ''<b>[ INFO ]</b> Type /check to get total verified samples'\")
+msgInfo3=\$(eval \" echo -e '<b>[ INFO ]</b> Type /check to get total verified samples'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo3}\" -d parse_mode=\"HTML\"
 
 
@@ -258,6 +258,7 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 
 msgInfo5=\$(eval \" echo -e '<b>[ INFO ]</b> Type /covalentHealth to show covalent node health'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo5}\" -d parse_mode=\"HTML\"
+
 
 function grepError(){
 
