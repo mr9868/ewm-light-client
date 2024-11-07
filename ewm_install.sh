@@ -202,13 +202,39 @@ sleep 60;
 MESSAGE=\$(for ipfsDaemon in \$(seq 1 \${ipfsCount});
 do  
 ipfsInfo=\$(cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep 'ready' | tail -1); 
-ipfsInfo2=\$(eval \"echo '<b>[ INFO ]</b> ipfs\${ipfsDaemon} status : \${ipfsInfo} ✅'\")
+if [[ -z ${ipfsInfo} ]] then
+ipfsInfo2=\$(eval \"echo '<b>[ INFO ]</b> ipfs\${ipfsDaemon} status : Daemon running successfully ✅'\")
 echo \${ipfsInfo2};
 echo
+else
+
+ipfsInfo2=\$(eval \"echo '<b>[ ERROR ]</b> ipfs\${ipfsDaemon} doesn't running properly, please check screen process name ! ❌'\")
+echo \${ipfsInfo2};
+echo
+
 done
 );
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\" -d parse_mode=\"HTML\"
 
+
+nodeHealth=\$(for svcHealth in \$(seq 1 \${#privKey[@]});
+do  
+scrDir=/run/screen/S-root
+if [[ -n \$(cd \${scrDir}; ls | grep covalent${svcHealth} ) ]];
+then
+nodeHealth2=\$(eval \" echo '<b>[ INFO ]</b> covalent\${svcHealth} running successfully ✅'\")
+echo \${nodeHealth2}
+echo
+else
+nodeHealth2=\$(eval \" echo '<b>[ ERROR ]</b> covalent\${svcHealth} doesn't running properly, please check screen process name ! ❌'\")
+echo \${nodeHealth2}
+echo
+fi
+
+
+done
+);
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${nodeHealth}\" -d parse_mode='HTML'
 
 
 accCount=\$(for akun in \$(seq 1 \${#privKey[@]});
@@ -348,6 +374,46 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 fi
 
 
+if [[ \${msgTxt} == '\"/ipfsHealth\"' ]]
+then
+
+MESSAGE=\$(for ipfsDaemon in \$(seq 1 \${ipfsCount});
+do  
+ipfsInfo=\$(cat \${cfgDir}/logs/ipfs\${ipfsDaemon}.log | grep 'ready' | tail -1); 
+if [[ -z ${ipfsInfo} ]] then
+ipfsInfo2=\$(eval \"echo '<b>[ INFO ]</b> ipfs\${ipfsDaemon} status : Daemon running successfully ✅'\")
+echo \${ipfsInfo2};
+echo
+else
+
+ipfsInfo2=\$(eval \"echo '<b>[ ERROR ]</b> ipfs\${ipfsDaemon} doesn't running properly, please check screen process name ! ❌'\")
+echo \${ipfsInfo2};
+echo
+
+done
+);
+curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${MESSAGE}\" -d parse_mode=\"HTML\"
+
+fi
+
+
+if [[ \${msgTxt} == '\"/covalentHealth\"' ]]
+then
+
+nodeHealth=\$(for svcHealth in \$(seq 1 \${#privKey[@]});
+do  
+scrDir=/run/screen/S-root
+if [[ -n \$(cd \${scrDir}; ls | grep covalent${svcHealth} ) ]];
+then
+nodeHealth2=\$(eval \" echo '<b>[ INFO ]</b> covalent\${svcHealth} running successfully ✅'\")
+echo \${nodeHealth2}
+echo
+else
+nodeHealth2=\$(eval \" echo '<b>[ ERROR ]</b> covalent\${svcHealth} doesn't running properly, please check screen process name ! ❌'\")
+echo \${nodeHealth2}
+echo
+fi
+fi
 
 
 
