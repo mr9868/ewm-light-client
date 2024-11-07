@@ -220,7 +220,7 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 
 nodeHealth=\$(for svcHealth in \$(seq 1 \${#privKey[@]});
 do  
-scrDir=/run/screen/S-root
+scrDir=/run/screen/S-\${USER}
 if [[ -n \$(cd \${scrDir}; ls | grep covalent${svcHealth} ) ]];
 then
 nodeHealth2=\$(eval \" echo '<b>[ INFO ]</b> covalent\${svcHealth} running successfully ✅'\")
@@ -404,7 +404,7 @@ then
 
 nodeHealth=\$(for svcHealth in \$(seq 1 \${#privKey[@]});
 do  
-scrDir=/run/screen/S-root
+scrDir=/run/screen/S-${USER}
 if [[ -n \$(cd \${scrDir}; ls | grep covalent${svcHealth} ) ]];
 then
 nodeHealth2=\$(eval \" echo '<b>[ INFO ]</b> covalent\${svcHealth} running successfully ✅'\")
