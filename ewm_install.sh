@@ -412,10 +412,9 @@ nodeHealth2=\$(eval \" echo '<b>[ ERROR ]</b> covalent\${svcHealth} doesn't runn
 echo \${nodeHealth2}
 fi
 done
-fi
 );
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${nodeHealth}\" -d parse_mode='HTML'
-
+fi
 
 
 until [ \$mid2 -ne \$mid ]
