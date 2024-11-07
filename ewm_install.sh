@@ -70,6 +70,7 @@ echo "Your go version '${version}' is up to date, Next step ...";sleep 5;
 fi
 unset IFS;
 }
+# m\r\9\8\6\8
 
 # Check if installed go is not outdated
 function checkIpfs(){
@@ -120,6 +121,7 @@ sed -r -i "s/privKey=.*/$(set | grep ^privKey= )/g" $cfgDir/config
 
 fi
 }
+# m\r\9\8\6\8
 
 function tgQnCheck(){
 read -p "Please provide your bot API Key from @botFather : " tgApiQn
@@ -179,6 +181,7 @@ else
 echo "See yaa ..."
 fi
 }
+# m\r\9\8\6\8
 
 function tgConf(){
 echo "
@@ -192,6 +195,7 @@ CHAT_ID=\"\${tgIdQn}\"
 
 msgStart=\$(eval \" echo -e 'Covalent Monitor Bot, Coded By Mr9868\nGithub: Https://www\\.github\\.com/mr9868'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgStart}\" -d parse_mode=\"MarkdownV2\"
+# m\r\9\8\6\8
 
 gitVer=\$(git describe --abbrev=0)
 gitCommit=\$(git log -1 | grep commit)
@@ -207,6 +211,7 @@ then
 ipfsInfo2=\$(eval \"echo '<b>[ INFO ]</b> ipfs\${ipfsDaemon} status : Daemon running successfully ✅'\")
 echo \${ipfsInfo2};
 else
+# m\r\9\8\6\8
 
 ipfsInfo2=\$(eval \"echo '<b>[ ERROR ]</b> ipfs\${ipfsDaemon} doesn't running properly, please check screen process name ! ❌'\")
 echo \${ipfsInfo2};
@@ -231,6 +236,7 @@ done
 );
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${nodeHealth}\" -d parse_mode='HTML'
 
+# m\r\9\8/_6\8
 
 accCount=\$(for akun in \$(seq 1 \${#privKey[@]});
 do  
@@ -258,7 +264,7 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 
 msgInfo5=\$(eval \" echo -e '<b>[ INFO ]</b> Type /covalentHealth to show covalent node health'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo5}\" -d parse_mode=\"HTML\"
-
+# m/r\9/8\6/8
 
 function grepError(){
 
@@ -280,6 +286,8 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 fi
 done
 
+# m/r\9/8\6/8
+
 for covError in \$(seq 1 \${#privKey[@]});
 do  
 lastCovError=\$(awk -v s=\"\$start\" 's<\$0' \${cfgDir}/logs/covalent\${covError}.log | grep 'ERROR' | tail -1)
@@ -292,6 +300,7 @@ covMsg2=\$(eval \"echo ''<b>[ INFO ]</b> Auto reconnect complete on covalent\${c
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg2}\" -d parse_mode='HTML'
 fi
 done
+# m/r\9/8\6/8
 
 for covFatal in \$(seq 1 \${#privKey[@]});
 do  
@@ -308,6 +317,8 @@ done
 done
 
 }
+# m/r\9/8\6/8
+
 
 function grepVerified(){
 while sleep 120;
@@ -321,6 +332,8 @@ echo \${accMsg}
 # Use the curl command to send the message 
 done
 );
+# m/r\9/8\6/8
+
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg2}\" -d parse_mode=\"HTML\"             
 
 sleep 1800;
@@ -348,6 +361,7 @@ CHAT_ID=\$(curl https://api.telegram.org/bot\${API_TOKEN}/getUpdates?offset=-1 |
 msgTxt=\$(curl https://api.telegram.org/bot\${API_TOKEN}/getUpdates?offset=-1  | jq '.result[0].message.text' )
 if [[ \${msgTxt} == '\"/address\"' ]]
 then
+# m/r\9/8\6/8
 
 accStart=\$(for akun in \$(seq 1 \${#privKey[@]});
 do  
@@ -359,6 +373,7 @@ done
 );
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
 fi
+# m/r\9/8\6/8
 
 if [[ \${msgTxt} == '\"/check\"' ]]
 then
@@ -374,6 +389,7 @@ done
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg2}\" -d parse_mode=\"HTML\"
 fi
 
+# m/r\9/8\6/8
 
 if [[ \${msgTxt} == '\"/ipfsHealth\"' ]];
 then
@@ -416,6 +432,7 @@ done
 );
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${nodeHealth}\" -d parse_mode='HTML'
 fi
+# m/r\9/8\6/8
 
 
 until [ \$mid2 -ne \$mid ]
@@ -519,6 +536,7 @@ sed -r -i "s/ipfsCount=.*/ipfsCount=${sumIpfs}/g" ${cfgDir}/config
 }
 
 
+# m/r\9/8\6/8
 
 
 
@@ -575,6 +593,7 @@ read -p "Set third port eg. 4001 : " trdPort
 cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
 done
 
+# m/r\9/8\6/8
 
 sudo ufw allow ${mainPort} && sudo ufw allow ${secPort} &&
 mkdir ${cfgDir}/.ipfs${ipfsCount} &&
@@ -633,6 +652,7 @@ do
 trdPort=$((${trdPort}+1))
 cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
 done
+# m/r\9/8\6/8
 
 sudo ufw allow ${mainPort} && sudo ufw allow ${secPort} &&
 mkdir ${cfgDir}/.ipfs${ipfsCount} &&
@@ -645,6 +665,8 @@ screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bas
 IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs config Addresses.API /ip4/127.0.0.1/tcp/${mainPort} &&
 IPFS_PATH=${cfgDir}/.ipfs${ipfsCount}  ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/${secPort} && sed -r -i 's/tcp\/4001/tcp\/${trdPort}/g' ${cfgDir}/.ipfs${ipfsCount}/config && sed -r -i 's/udp\/4001/udp\/${trdPort}/g' ${cfgDir}/.ipfs${ipfsCount}/config && IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --routing=dhtclient;exec bash;cd ${cfgDir}\" 
 }
+# m/r\9/8\6/8
+
 ipfs${ipfsCount}
 " > ${cfgDir}/ipfs${ipfsCount};
 chmod 777 ${cfgDir}/ipfs${ipfsCount} && bash ${cfgDir}/ipfs${ipfsCount}
@@ -752,6 +774,8 @@ else
    installer
    
 fi
+# m/r\9/8\6/8
+
 }
 
 function backup(){
@@ -859,6 +883,7 @@ myHeader;
 echo
 echo "==================== INSTALLATION START ===================="
 echo
+# m/r\9/8\6/8
 
 # Welldone ! 
 myHeader;
@@ -877,4 +902,5 @@ stopAll
 }
 
 startUp
-  
+
+# mr9868
