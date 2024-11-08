@@ -660,7 +660,7 @@ screen -dmS ipfs${ipfsCount} -L -Logfile ${cfgDir}/logs/ipfs${ipfsCount}.log bas
 IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs config Addresses.API /ip4/127.0.0.1/tcp/${mainPort} &&
 IPFS_PATH=${cfgDir}/.ipfs${ipfsCount}  ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/${secPort} && sed -r -i 's/tcp\/4001/tcp\/${trdPort}/g' ${cfgDir}/.ipfs${ipfsCount}/config && sed -r -i 's/udp\/4001/udp\/${trdPort}/g' ${cfgDir}/.ipfs${ipfsCount}/config && IPFS_PATH=${cfgDir}/.ipfs${ipfsCount} ipfs daemon --routing=dhtclient;exec bash;cd ${cfgDir}\" 
 }
-# m/r\9/8\6/8
+
 
 ipfs${ipfsCount}
 " > ${cfgDir}/ipfs${ipfsCount};
