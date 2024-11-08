@@ -232,7 +232,7 @@ done
 );
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${nodeHealth}\" -d parse_mode='HTML'
 
-# m\r\9\8/_6\8
+
 
 accCount=\$(for akun in \$(seq 1 \${#privKey[@]});
 do  
@@ -260,7 +260,7 @@ curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id
 
 msgInfo5=\$(eval \" echo -e '<b>[ INFO ]</b> Type /covalentHealth to show covalent node health'\")
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${msgInfo5}\" -d parse_mode=\"HTML\"
-# m/r\9/8\6/8
+
 
 function grepError(){
 
@@ -296,7 +296,7 @@ covMsg2=\$(eval \"echo ''<b>[ INFO ]</b> Auto reconnect complete on covalent\${c
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${covMsg2}\" -d parse_mode='HTML'
 fi
 done
-# m/r\9/8\6/8
+
 
 for covFatal in \$(seq 1 \${#privKey[@]});
 do  
@@ -313,7 +313,7 @@ done
 done
 
 }
-# m/r\9/8\6/8
+
 
 
 function grepVerified(){
@@ -328,7 +328,6 @@ echo \${accMsg}
 # Use the curl command to send the message 
 done
 );
-# m/r\9/8\6/8
 
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg2}\" -d parse_mode=\"HTML\"             
 
@@ -357,7 +356,7 @@ CHAT_ID=\$(curl https://api.telegram.org/bot\${API_TOKEN}/getUpdates?offset=-1 |
 msgTxt=\$(curl https://api.telegram.org/bot\${API_TOKEN}/getUpdates?offset=-1  | jq '.result[0].message.text' )
 if [[ \${msgTxt} == '\"/address\"' ]]
 then
-# m/r\9/8\6/8
+
 
 accStart=\$(for akun in \$(seq 1 \${#privKey[@]});
 do  
@@ -369,7 +368,7 @@ done
 );
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accStart}\" -d parse_mode='MarkdownV2'
 fi
-# m/r\9/8\6/8
+
 
 if [[ \${msgTxt} == '\"/check\"' ]]
 then
@@ -385,7 +384,7 @@ done
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${accMsg2}\" -d parse_mode=\"HTML\"
 fi
 
-# m/r\9/8\6/8
+
 
 if [[ \${msgTxt} == '\"/ipfsHealth\"' ]];
 then
@@ -428,7 +427,7 @@ done
 );
 curl -s -X POST https://api.telegram.org/bot\${API_TOKEN}/sendMessage -d chat_id=\${CHAT_ID} -d text=\"\${nodeHealth}\" -d parse_mode='HTML'
 fi
-# m/r\9/8\6/8
+
 
 
 until [ \$mid2 -ne \$mid ]
@@ -532,7 +531,7 @@ sed -r -i "s/ipfsCount=.*/ipfsCount=${sumIpfs}/g" ${cfgDir}/config
 }
 
 
-# m/r\9/8\6/8
+
 
 
 
@@ -589,7 +588,7 @@ read -p "Set third port eg. 4001 : " trdPort
 cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
 done
 
-# m/r\9/8\6/8
+
 
 sudo ufw allow ${mainPort} && sudo ufw allow ${secPort} &&
 mkdir ${cfgDir}/.ipfs${ipfsCount} &&
@@ -648,7 +647,7 @@ do
 trdPort=$((${trdPort}+1))
 cekPort=$(eval "lsof -Pi :${trdPort} -sTCP:LISTEN -t")
 done
-# m/r\9/8\6/8
+
 
 sudo ufw allow ${mainPort} && sudo ufw allow ${secPort} &&
 mkdir ${cfgDir}/.ipfs${ipfsCount} &&
@@ -770,7 +769,7 @@ else
    installer
    
 fi
-# m/r\9/8\6/8
+
 
 }
 
@@ -851,7 +850,7 @@ myHeader;
    command -v screen >/dev/null 2>&1 || { echo >&2 "Screen is not found on this machine, Installing screen ... "; sleep 2;sudo apt install screen -y;} 
    command -v git >/dev/null 2>&1 || { echo >&2 "Git is not found on this machine, Installing git ... "; sleep 2;sudo apt install git -y;}
    command -v wget >/dev/null 2>&1 || { echo >&2 "Wget is not found on this machine, Installing Wget ... "; sleep 2;sudo apt install wget -y;}
-   command -v ufw >/dev/null 2>&1 || { echo >&2 "Ufw is not found on this machine, Installing ufw ... "; sleep 2;sudo apt install ufw -y;}
+   command -v ufw >/dev/null 2>&1 || { echo >&2 "Ufw is not found on this machine, Installing ufw ... "; sleep 2;sudo apt install ufw -y;} &&
      # Installing required Go packages
      go install honnef.co/go/tools/cmd/staticcheck@latest && 
      make deps &&
@@ -879,7 +878,7 @@ myHeader;
 echo
 echo "==================== INSTALLATION START ===================="
 echo
-# m/r\9/8\6/8
+l
 
 # Welldone ! 
 myHeader;
