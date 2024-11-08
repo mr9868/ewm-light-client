@@ -15,11 +15,7 @@ echo "cfgDir=${cfgDir}" >> ~/.bashrc
 source .bashrc
 fi
 
-if grep -wq "cfgDir" ${cfgDir}/config; then
-echo "cfgDir=${cfgDir}" >> ${cfgDir}/config
-else
-sed -r -i "s/cfgDir=.*/cfgDir=${cfgDir}/g" ${cfgDir}/config
-fi
+
 
 
 # My Header function
@@ -806,7 +802,7 @@ myHeader
      sudo bash install-trusted-setup.sh &&
      # Installing covalent light-client node
      sudo cp -r ~/ewm-das/bin/light-client /usr/local/bin/light-client 
-     cp -r ~/.mr9868 ~/ewm-das
+     sudo cp -r ~/.mr9868 ~/ewm-das
      cd ${cfgDir}
      myHeader
      chmod 777  ${cfgDir}/runAll
