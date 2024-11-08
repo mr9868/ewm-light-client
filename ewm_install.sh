@@ -859,7 +859,7 @@ myHeader;
      sudo bash install-trusted-setup.sh &&
      # Installing covalent light-client node
      sudo cp -r ~/ewm-das/bin/light-client /usr/local/bin/light-client 
-     sleep 5;
+     sleep 15;
      fi
      
 myHeader;  
