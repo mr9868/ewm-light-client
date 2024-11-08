@@ -619,7 +619,7 @@ covalent${i}
 " >  ${cfgDir}/covalent${i}
 chmod 777 ${cfgDir}/covalent${i} && bash ${cfgDir}/covalent${i}
 done
-
+sleep 10;
 
 else
 
@@ -678,7 +678,7 @@ covalent${i}
 " >  ${cfgDir}/covalent${i}
 chmod 777 ${cfgDir}/covalent${i} && bash ${cfgDir}/covalent${i}
 done
-
+sleep 10;
 
 fi
 }
