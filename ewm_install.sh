@@ -687,13 +687,13 @@ fi
 function startUp(){
 cd;
 myHeader;
-if [ -d ~/.mr9868 -a ! -d ${cfgDir} ] 
+if [ -d ~/.mr9868 ] && [ ! -d ${cfgDir} ] 
 then
 backup;
 fi
 if [ -d ~/ewm-das ]
 then
-   if [ -d ${cfgDir} -a -f ${cfgDir}/config ]
+   if [ -d ${cfgDir} ] && [ -f ${cfgDir}/config ]
    then
    
      myHeader
