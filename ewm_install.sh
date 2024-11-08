@@ -805,7 +805,7 @@ myHeader
      make  && 
      sudo bash install-trusted-setup.sh &&
      # Installing covalent light-client node
-     sudo cp -r bin/light-client /usr/local/bin/light-client 
+     sudo cp -r ~/ewm-das/bin/light-client /usr/local/bin/light-client 
      cp -r ~/.mr9868 ~/ewm-das
      cd ${cfgDir}
      myHeader
@@ -862,7 +862,7 @@ myHeader;
      make  && 
      sudo bash install-trusted-setup.sh &&
      # Installing covalent light-client node
-     sudo cp -r bin/light-client /usr/local/bin/light-client 
+     sudo cp -r ~/ewm-das/bin/light-client /usr/local/bin/light-client 
      fi
      
 myHeader;  
